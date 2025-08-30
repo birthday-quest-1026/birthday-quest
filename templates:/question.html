@@ -1,0 +1,16 @@
+question.html
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Escape Room</title>
+</head>
+<body>
+  <h2>{{ question }}</h2>
+  <form method="post">
+    <input type="text" name="answer" placeholder="Your answer" required autofocus>
+    <button type="submit">Submit</button>
+  </form>
+  <p style="color:red;">{{ message }}</p>
+</body>
+</html>

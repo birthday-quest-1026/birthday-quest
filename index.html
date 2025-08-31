@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
@@ -22,14 +23,15 @@
       justify-content: center;
       gap: 5px;
       margin: 10px 0;
+      flex-wrap: wrap;
     }
 
     .code-box input {
-      width: 40px;
-      height: 45px;
-      line-height: 45px;
+      width: clamp(35px, 12vw, 45px);
+      height: clamp(40px, 12vw, 50px);
+      line-height: 1.2;
       text-align: center;
-      font-size: 22px;
+      font-size: clamp(16px, 4vw, 22px);
       text-transform: uppercase;
       font-family: 'Special Elite', monospace;
       box-sizing: border-box;
@@ -43,20 +45,41 @@
 
     input[type="text"] {
       margin-top: 10px;
-      padding: 5px;
+      padding: 8px;
       width: 100%;
+      font-size: clamp(14px, 3vw, 18px);
       font-family: 'Special Elite', monospace;
     }
 
     button {
       margin-top: 10px;
-      padding: 5px 10px;
+      padding: 8px 15px;
+      font-size: clamp(14px, 3vw, 18px);
       font-family: 'Special Elite', monospace;
       cursor: pointer;
     }
 
     .hidden {
       display: none;
+    }
+
+    /* 📱 Mobile-specific tweaks */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      #game {
+        max-width: 100%;
+      }
+      h1 {
+        font-size: 6vw;
+      }
+      h2, h3 {
+        font-size: 5vw;
+      }
+      p {
+        font-size: 4vw;
+      }
     }
   </style>
 </head>
@@ -148,7 +171,6 @@
           const input = document.createElement("input");
           input.maxLength = 1;
 
-          // Use number pad for digits, normal for letters
           if (i <= 3) {
             input.setAttribute("inputmode", "numeric");
           } else {
@@ -183,7 +205,6 @@
           container.appendChild(input);
         }
 
-
         document.getElementById("verification").style.display = "block";
         document.getElementById("main-question").style.display = "none";
 
@@ -192,7 +213,6 @@
 
         document.getElementById("answer").value = answers[current] || "";
       } else {
-        // Move to final stage
         document.getElementById("question-stage").classList.add("hidden");
         document.getElementById("final-stage").classList.remove("hidden");
       }

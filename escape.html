@@ -1,8 +1,10 @@
+in this code I don't want you to change anything other than that I only what the mainq to be shown (simultanously with the introq) once the code has been correctly enterred at each question:
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
@@ -22,14 +24,15 @@
       justify-content: center;
       gap: 5px;
       margin: 10px 0;
+      flex-wrap: wrap;
     }
 
     .code-box input {
-      width: 40px;
-      height: 45px;
-      line-height: 45px;
+      width: clamp(35px, 12vw, 45px);
+      height: clamp(40px, 12vw, 50px);
+      line-height: 1.2;
       text-align: center;
-      font-size: 22px;
+      font-size: clamp(16px, 4vw, 22px);
       text-transform: uppercase;
       font-family: 'Special Elite', monospace;
       box-sizing: border-box;
@@ -43,20 +46,73 @@
 
     input[type="text"] {
       margin-top: 10px;
-      padding: 5px;
+      padding: 8px;
       width: 100%;
+      font-size: clamp(14px, 3vw, 18px);
       font-family: 'Special Elite', monospace;
+      text-transform: capitalize;
     }
 
     button {
       margin-top: 10px;
-      padding: 5px 10px;
+      padding: 8px 15px;
+      font-size: clamp(14px, 3vw, 18px);
       font-family: 'Special Elite', monospace;
       cursor: pointer;
     }
 
     .hidden {
       display: none;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: clamp(12px, 3vw, 16px);
+      font-style: italic;
+      color: #444;
+    }
+
+    /* 📖 Better spacing + justification for questions */
+    #intro-question,
+    #main-q-text {
+      line-height: 1.6;
+      /* spacing between lines */
+      text-align: justify;
+      /* sorkizárt formatting */
+      text-justify: inter-word;
+      margin-bottom: 15px;
+    }
+
+    #intro-question br,
+    #main-q-text br {
+      display: block;
+      margin-bottom: 75px;
+      /* extra spacing after <br> */
+      content: "";
+    }
+
+
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+
+      #game {
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: 6vw;
+      }
+
+      h2,
+      h3 {
+        font-size: 5vw;
+      }
+
+      p {
+        font-size: 4vw;
+      }
     }
   </style>
 </head>
@@ -78,31 +134,27 @@
       <button onclick="startGame()">Start the Game</button>
     </div>
 
-    <!-- Step 1: Question Flow -->
+    <!-- Question Stage -->
     <div id="question-stage" class="hidden">
-      <h2 id="question"></h2>
+      <h2 id="intro-question"></h2>
 
+      <!-- Postcode verification -->
       <div id="verification">
-        <p>To proceed further enter the postcode of the place you suspect:</p>
+        <p>Enter the postcode:</p>
         <div class="code-box" id="code-inputs"></div>
         <button onclick="checkVerification()">Verify</button>
         <p id="verification-message"></p>
+        <p id="hint" class="hint"></p>
       </div>
 
+      <!-- Follow-up question -->
       <div id="main-question" style="display:none;">
-        <input type="text" id="answer" placeholder="Your answer">
+        <h2 id="main-q-text"></h2>
+        <input type="text" id="answer" placeholder="Your answer" autocapitalize="words">
         <button onclick="checkAnswer()">Submit</button>
         <button onclick="goBack()">Back</button>
         <p id="message"></p>
       </div>
-    </div>
-
-    <!-- Step 2: Final Challenge -->
-    <div id="final-stage" class="hidden">
-      <h2>Final Challenge</h2>
-      <p>[Placeholder: A secret riddle or puzzle will appear here.]</p>
-      <input type="text" placeholder="Your final answer">
-      <button>Submit Final Answer</button>
     </div>
 
   </div>
@@ -110,19 +162,32 @@
   <script>
     const questions = [
       {
-        q: `You wake up on a gorgeous sunny day in Amsterdam. After putting on your sunglasses as you ascend to the upper floor
-        you feel a puissante hunger striking you. To remedy that you shall choose a place to brunch. Where would you head?`,
+        introQ: `You wake up on a gorgeous sunny day in Amsterdam.
+        After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
+        To remedy that you shall choose a place to brunch. Where would you head?`,
+        // Answer: The Greek Embassy
+        mainQ: "[Placeholder follow-up Q1]",
         a: "The Greek Embassy",
         code: "1091EJ"
       },
-
       {
-        q: `Pantha Rhei has done exceptionally well this year. It's AUM increased by 30.3% YoY and its returns were 51.7%,
-      outperforming even legendary trader Nancy Pelosi.
-      All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
-      On your upcoming trip which hotel would you lodge at?`,
+        introQ: `Pantha Rhei has done exceptionally well this year.
+        It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
+        All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
+        On your upcoming trip which hotel would you lodge at?`,
+        // Answer: Amstel Hotel
+        mainQ: "[Placeholder follow-up Q2]",
         a: "Amstel Hotel",
         code: "1018GX"
+      },
+      {
+        introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
+        // Answer: Utrechtsestraat
+        mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
+        a: "Boerejongens",
+        code: "1017XK",
+        // Answer: Frederiksplein 1a
+        hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma."
       }
     ];
 
@@ -137,9 +202,12 @@
 
     function showQuestion() {
       if (current < questions.length) {
-        document.getElementById("question").textContent = questions[current].q;
+        document.getElementById("intro-question").innerHTML = questions[current].introQ;
         document.getElementById("message").textContent = "";
         document.getElementById("verification-message").textContent = "";
+
+        // Show hint if available
+        document.getElementById("hint").textContent = questions[current].hint || "";
 
         const code = questions[current].code;
         const container = document.getElementById("code-inputs");
@@ -148,12 +216,8 @@
           const input = document.createElement("input");
           input.maxLength = 1;
 
-          // Use number pad for digits, normal for letters
-          if (i <= 3) {
-            input.setAttribute("inputmode", "numeric");
-          } else {
-            input.setAttribute("inputmode", "text");
-          }
+          if (i <= 3) input.setAttribute("inputmode", "numeric");
+          else input.setAttribute("inputmode", "text");
 
           if (i === 0 || i === 1 || i === 4) {
             input.value = code[i];
@@ -163,9 +227,7 @@
           input.addEventListener("input", function () {
             if (this.value.length === 1) {
               let next = this.nextElementSibling;
-              while (next && next.disabled) {
-                next = next.nextElementSibling;
-              }
+              while (next && next.disabled) next = next.nextElementSibling;
               if (next) next.focus();
             }
           });
@@ -173,9 +235,7 @@
           input.addEventListener("keydown", function (e) {
             if (e.key === "Backspace" && this.value === "") {
               let prev = this.previousElementSibling;
-              while (prev && prev.disabled) {
-                prev = prev.previousElementSibling;
-              }
+              while (prev && prev.disabled) prev = prev.previousElementSibling;
               if (prev) prev.focus();
             }
           });
@@ -183,18 +243,12 @@
           container.appendChild(input);
         }
 
-
         document.getElementById("verification").style.display = "block";
         document.getElementById("main-question").style.display = "none";
 
-        const editable = container.querySelector("input:not([disabled])");
-        if (editable) editable.focus();
-
         document.getElementById("answer").value = answers[current] || "";
       } else {
-        // Move to final stage
-        document.getElementById("question-stage").classList.add("hidden");
-        document.getElementById("final-stage").classList.remove("hidden");
+        document.getElementById("game").innerHTML = "<h2>🎉 You Escaped!</h2>";
       }
     }
 
@@ -202,10 +256,7 @@
       const code = questions[current].code;
       const inputs = document.querySelectorAll("#code-inputs input");
 
-      let entered = "";
-      let expected = "";
-      let masterSlice = "";
-
+      let entered = "", expected = "", masterSlice = "";
       const masterCode = "XXXXXX";
 
       inputs.forEach((inp, i) => {
@@ -219,6 +270,7 @@
       if (entered === expected || entered === masterSlice) {
         document.getElementById("verification").style.display = "none";
         document.getElementById("main-question").style.display = "block";
+        document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";
         document.getElementById("answer").focus();
       } else {
@@ -239,11 +291,8 @@
     }
 
     function goBack() {
-      if (current > 0) {
-        current--;
-      } else {
-        current = 0;
-      }
+      if (current > 0) current--;
+      else current = 0;
       showQuestion();
     }
 
@@ -251,11 +300,8 @@
       if (event.key === "Enter") {
         const verifyVisible = document.getElementById("verification").style.display !== "none";
         const mainVisible = document.getElementById("main-question").style.display !== "none";
-        if (verifyVisible) {
-          checkVerification();
-        } else if (mainVisible) {
-          checkAnswer();
-        }
+        if (verifyVisible) checkVerification();
+        else if (mainVisible) checkAnswer();
       }
     });
   </script>

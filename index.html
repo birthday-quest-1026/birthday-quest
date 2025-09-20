@@ -128,8 +128,9 @@
     </div>
 
     <div id="question-stage" class="hidden">
+      <h2 id="title-question"></h2>   <!-- shows Question X -->
       <h2 id="intro-question"></h2>
-
+    
       <div id="verification">
         <p>Enter the postcode:</p>
         <div class="code-box" id="code-inputs"></div>
@@ -137,8 +138,9 @@
         <p id="verification-message"></p>
         <p id="hint" class="hint"></p>
       </div>
-
+    
       <div id="main-question" style="display:none;">
+        <h2 id="title-question-main"></h2>   <!-- shows Question X again -->
         <h2 id="main-q-text"></h2>
         <input type="text" id="answer" placeholder="Your answer" autocapitalize="words">
         <button onclick="goBack()">Back</button>
@@ -146,6 +148,7 @@
         <p id="message"></p>
       </div>
     </div>
+    
 
   </div>
 
@@ -155,7 +158,8 @@
 
     const questions = [
       {
-        introQ: `YYou wake up on a gorgeous sunny day in Amsterdam.
+        titleQ: "Question 1",
+        introQ: `You wake up on a gorgeous sunny day in Amsterdam.
         After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
         To remedy that you shall choose a place to brunch. Where would you head?`,
         // Answer: The Greek Embassy
@@ -164,6 +168,7 @@
         code: "1091EJ"
       },
       {
+        titleQ: "Question 2",
         introQ: `Pantha Rhei has done exceptionally well this year.
         It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
@@ -174,6 +179,7 @@
         code: "1018GX"
       },
       {
+        titleQ: "Question 3",
         introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
         // Answer: Utrechtsestraat
         mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,

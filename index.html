@@ -32,10 +32,11 @@
       content:""; position:absolute; left:24px; bottom:-10px; border-width:10px 10px 0 10px; border-style:solid;
       border-color:#f2f7ff transparent transparent transparent; filter:drop-shadow(0 -1px 0 #cfe1ff);
     }
-    .number-box{ margin-top:10px; display:flex; justify-content:center; }
+    .number-box{ margin-top:10px; display:flex; justify-content:center; gap:10px; align-items:center; }
     #number-input{
-      width:180px; padding:8px 10px; border:1px solid #bbb; border-radius:8px; text-align:center; font-size:18px; line-height:1.4;
+      width:200px; padding:8px 10px; border:1px solid #bbb; border-radius:8px; text-align:center; font-size:18px; line-height:1.4;
     }
+    #number-hint { font-size: 16px; color:#666; }
 
     .code-box{ display:flex; justify-content:center; gap:5px; margin:10px 0; flex-wrap:wrap; }
     .code-box input{ width:clamp(35px,12vw,45px); height:clamp(40px,12vw,50px); line-height:1.2; text-align:center; text-transform:uppercase; padding:0; }
@@ -69,7 +70,7 @@
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
-        19:10 TO BE REMOVED <br>
+        19:56 TO BE REMOVED <br>
         1. Enter the correct postcodes to unlock each stage.<br>
         2. Answer the questions carefully.<br>
         3. You may go back if needed.<br>
@@ -81,11 +82,15 @@
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
 
+      <!-- Confidence number (intro-only) -->
       <div id="number-section">
         <div id="number-instruction" class="bubble"></div>
         <div class="number-box">
-          <input id="number-input" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Enter number" autocomplete="off"/>
+          <!-- Use text + inputmode=decimal for iOS decimal keypad; step=any if browsers treat as number -->
+          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="e.g., 7.5" autocomplete="off"/>
+          <span id="number-hint">(1–10, decimals allowed)</span>
         </div>
+        <div id="number-warning" class="hint" style="display:none;color:#b00;">Please enter a number between 1 and 10.</div>
       </div>
 
       <div id="verification">
@@ -109,7 +114,10 @@
   <script>
     const MASTER_CODE = "XXXXXX";
     const MASTER_ANSWER = "XXX";
-    const NUM_NOTE = "Type the special number for this step (digits only).";
+    const NUM_NOTE = "How sure are you that your answer will be correct? Indicate below on a scale from 1 to 10.";
+
+    const LS_KEY = "confidenceByQuestion";          // localStorage key
+    let confidenceByQuestion = loadConfidenceMap(); // {index: value}
 
     const questions = [
       {
@@ -144,6 +152,28 @@
     let current = 0;
     let answers = Array(questions.length).fill("");
 
+    function loadConfidenceMap(){
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch { return {}; }
+    }
+    function saveConfidenceMap(){
+      try { localStorage.setItem(LS_KEY, JSON.stringify(confidenceByQuestion)); } catch {}
+    }
+    function parseConfidence(str){
+      if (!str) return null;
+      const num = parseFloat(str.replace(',', '.'));
+      if (isNaN(num) || num < 1 || num > 10) return null;
+      return num;
+    }
+    function averageConfidence(){
+      const vals = Object.values(confidenceByQuestion).map(Number).filter(v => !isNaN(v));
+      if (!vals.length) return null;
+      const sum = vals.reduce((a,b)=>a+b,0);
+      return sum / vals.length;
+    }
+
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
       document.getElementById("question-stage").classList.remove("hidden");
@@ -160,10 +190,14 @@
         document.getElementById("verification-message").textContent = "";
         document.getElementById("hint").textContent = questions[current].hint || "";
 
+        // Intro confidence UI (visible only in intro)
         document.getElementById("number-instruction").textContent = NUM_NOTE;
-        document.getElementById("number-input").value = "";
         document.getElementById("number-section").style.display = "block";
+        document.getElementById("number-warning").style.display = "none";
+        const prev = confidenceByQuestion[current];
+        document.getElementById("number-input").value = (prev ?? "").toString();
 
+        // Build postcode inputs
         const code = questions[current].code;
         const container = document.getElementById("code-inputs");
         container.innerHTML = "";
@@ -197,15 +231,39 @@
         document.getElementById("main-question").style.display = "none";
         document.getElementById("answer").value = answers[current] || "";
       } else {
-        document.getElementById("game").innerHTML = "<h2>🎉 You Escaped!</h2>";
+        // Game finished — compute average and show
+        const avg = averageConfidence();
+        const avgText = (avg === null) ? "No confidence numbers were entered." : `Average confidence: ${avg.toFixed(2)} / 10`;
+        document.getElementById("game").innerHTML = `<h2>🎉 You Escaped!</h2><p>${avgText}</p>`;
       }
     }
 
     function checkVerification() {
+      // save the intro confidence (if valid) just before proceeding to main question
+      const raw = document.getElementById("number-input").value.trim();
+      const num = parseConfidence(raw);
+      if (raw !== "" && num === null) {
+        document.getElementById("number-warning").style.display = "block";
+        return; // block until valid or cleared
+      } else {
+        document.getElementById("number-warning").style.display = "none";
+        if (num !== null) {
+          confidenceByQuestion[current] = num; // save for this question index
+          saveConfidenceMap();
+        } else {
+          // if user cleared input, remove stored value for this question
+          if (confidenceByQuestion.hasOwnProperty(current)) {
+            delete confidenceByQuestion[current];
+            saveConfidenceMap();
+          }
+        }
+      }
+
+      // postcode verification
       const code = questions[current].code;
       const inputs = document.querySelectorAll("#code-inputs input");
-
       let entered = "", expected = "", masterSlice = "";
+
       inputs.forEach((inp, i) => {
         if (!inp.disabled) {
           entered += inp.value.toUpperCase();
@@ -216,7 +274,7 @@
 
       if (entered === expected || entered === masterSlice) {
         document.getElementById("verification").style.display = "none";
-        document.getElementById("number-section").style.display = "none";
+        document.getElementById("number-section").style.display = "none"; // hide in main section
         document.getElementById("main-question").style.display = "block";
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";

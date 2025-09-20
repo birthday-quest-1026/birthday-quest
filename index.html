@@ -54,6 +54,44 @@
 
     #game { max-width: 600px; margin: auto; text-align: center; }
 
+    /* --- NUMBER SECTION (new) --- */
+    #number-section { margin: 18px 0 8px; }
+    .bubble {
+      display: inline-block;
+      max-width: 100%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: #f2f7ff;
+      border: 1px solid #cfe1ff;
+      text-align: left;
+      position: relative;
+    }
+    .bubble:after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      bottom: -10px;
+      border-width: 10px 10px 0 10px;
+      border-style: solid;
+      border-color: #f2f7ff transparent transparent transparent;
+      filter: drop-shadow(0 -1px 0 #cfe1ff);
+    }
+    .number-box {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    #number-input {
+      width: 180px;
+      padding: 8px 10px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      text-align: center;
+      /* iOS no-zoom: keep ≥16px */
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
     .code-box {
       display: flex;
       justify-content: center;
@@ -84,7 +122,7 @@
       border: 1px solid #bbb;
       border-radius: 6px;
       text-transform: capitalize;
-      font-size: 18px;
+      font-size: 18px;       /* iOS no-zoom */
       line-height: 1.4;
     }
 
@@ -135,7 +173,7 @@
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
-        19:10
+        19:10 TO BE REMOVED <br>
         1. Enter the correct postcodes to unlock each stage.<br>
         2. Answer the questions carefully.<br>
         3. You may go back if needed.<br>
@@ -146,6 +184,23 @@
 
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
+
+      <!-- NEW: Number field + instruction bubble -->
+      <div id="number-section">
+        <div id="number-instruction" class="bubble">
+          <!-- per-question text goes here from JS -->
+        </div>
+        <div class="number-box">
+          <input
+            id="number-input"
+            type="tel"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            placeholder="Enter number"
+            autocomplete="off"
+          />
+        </div>
+      </div>
 
       <div id="verification">
         <p>Enter the postcode:</p>
@@ -171,31 +226,34 @@
 
     const questions = [
       {
-        titleQ: "Question 1",
+        titleQ: "Spawn Point",
         introQ: `You wake up on a gorgeous sunny day in Amsterdam.
         After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
         To remedy that you shall choose a place to brunch. Where would you head?`,
         mainQ: "[Placeholder follow-up Q1]",
         a: "The Greek Embassy",
-        code: "1091EJ"
+        code: "1091EJ",
+        numNote: "Type the special number for this step (digits only)."
       },
       {
-        titleQ: "Question 2",
+        titleQ: "Checkpoint 1",
         introQ: `Pantha Rhei has done exceptionally well this year.
         It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
         On your upcoming trip which hotel would you lodge at?`,
         mainQ: "[Placeholder follow-up Q2]",
         a: "Amstel Hotel",
-        code: "1018GX"
+        code: "1018GX",
+        numNote: "Enter the required number for this checkpoint."
       },
       {
-        titleQ: "Question 3",
+        titleQ: "Checkpoint 2",
         introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
         mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
         a: "Boerejongens",
         code: "1017XK",
-        hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma."
+        hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma.",
+        numNote: "Írd be a szükséges számot (csak számjegyek)."
       }
     ];
 
@@ -218,21 +276,24 @@
         document.getElementById("verification-message").textContent = "";
         document.getElementById("hint").textContent = questions[current].hint || "";
 
+        // Set number bubble text and clear previous entry
+        document.getElementById("number-instruction").textContent =
+          questions[current].numNote || "Enter the number for this step.";
+        document.getElementById("number-input").value = "";
+
+        // Build postcode inputs
         const code = questions[current].code;
         const container = document.getElementById("code-inputs");
         container.innerHTML = "";
         for (let i = 0; i < 6; i++) {
           const input = document.createElement("input");
           input.maxLength = 1;
-
           if (i <= 3) input.setAttribute("inputmode", "numeric");
           else input.setAttribute("inputmode", "text");
-
           if (i === 0 || i === 1 || i === 4) {
             input.value = code[i];
             input.disabled = true;
           }
-
           input.addEventListener("input", function () {
             if (this.value.length === 1) {
               let next = this.nextElementSibling;
@@ -240,7 +301,6 @@
               if (next) next.focus();
             }
           });
-
           input.addEventListener("keydown", function (e) {
             if (e.key === "Backspace" && this.value === "") {
               let prev = this.previousElementSibling;
@@ -248,13 +308,11 @@
               if (prev) prev.focus();
             }
           });
-
           container.appendChild(input);
         }
 
         document.getElementById("verification").style.display = "block";
         document.getElementById("main-question").style.display = "none";
-
         document.getElementById("answer").value = answers[current] || "";
       } else {
         document.getElementById("game").innerHTML = "<h2>🎉 You Escaped!</h2>";

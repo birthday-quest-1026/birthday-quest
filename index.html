@@ -72,17 +72,42 @@
       margin: 18px 0 8px;
     }
 
+    /* tweak this to control how much the photo is faded (0 = no fade, 1 = fully white) */
+    :root {
+      --bubble-fade: 0.35;
+    }
+
+    /* 35% white overlay */
+
     .bubble {
       display: inline-block;
       max-width: 100%;
-      padding: 10px 14px;
+      padding: 12px 16px;
       border-radius: 16px;
-      background: #f2f7ff;
+      /* 1) overlay (top layer) + 2) your image (bottom layer) */
+      background:
+        linear-gradient(rgba(255, 255, 255, var(--bubble-fade)),
+          rgba(255, 255, 255, var(--bubble-fade))),
+        url("gambling.jpg");
+      /* <-- put your image file name here */
+      background-size: cover;
+      /* cover the bubble nicely */
+      background-position: center;
+      background-repeat: no-repeat;
+
       border: 1px solid #cfe1ff;
-      text-align: left;
+      text-align: center;
+      /* or left; your call */
+      white-space: pre-line;
+      /* keeps \n if you remove <br> later */
       position: relative;
+      color: #000;
+      /* stays readable on light images */
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .4);
+      /* subtle lift on busy photos */
     }
 
+    /* bubble tail – make it match the faded look */
     .bubble:after {
       content: "";
       position: absolute;
@@ -90,9 +115,11 @@
       bottom: -10px;
       border-width: 10px 10px 0 10px;
       border-style: solid;
-      border-color: #f2f7ff transparent transparent transparent;
+      /* same fade color as overlay so it blends in */
+      border-color: rgba(255, 255, 255, calc(var(--bubble-fade) + .05)) transparent transparent transparent;
       filter: drop-shadow(0 -1px 0 #cfe1ff);
     }
+
 
     .number-box {
       margin-top: 10px;
@@ -215,7 +242,7 @@
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
-        22:52 TO BE REMOVED <br>
+        23:02 TO BE REMOVED <br>
         1. Enter the correct postcodes to unlock each stage.<br>
         2. Answer the questions carefully.<br>
         3. You may go back if needed.<br>
@@ -232,8 +259,8 @@
         <div id="number-instruction" class="bubble"></div>
         <div class="number-box">
           <!-- Use text + inputmode=decimal for iOS decimal keypad; step=any if browsers treat as number -->
-          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="Mennyi az annyi?"
-            autocomplete="off" />
+          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*"
+            placeholder="Mennyi az annyi?" autocomplete="off" />
         </div>
         <div id="number-warning" class="hint" style="display:none;color:#b00;">Please enter a number between 1 and 10.
         </div>
@@ -341,7 +368,7 @@
         document.getElementById("hint").textContent = questions[current].hint || "";
 
         // Intro confidence UI (visible only in intro)
-        document.getElementById("number-instruction").textContent = NUM_NOTE;
+        document.getElementById("number-instruction").textHTML = NUM_NOTE;
         document.getElementById("number-section").style.display = "block";
         document.getElementById("number-warning").style.display = "none";
         const prev = confidenceByQuestion[current];

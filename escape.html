@@ -7,9 +7,45 @@
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --header-height-desktop: 88px;
+      --header-height-mobile: 96px;
+    }
+
     body {
       font-family: 'Special Elite', monospace;
       padding: 20px;
+      padding-top: var(--header-height-desktop);
+    }
+
+    #sticky-title {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: none;
+      padding: 10px 14px;
+      box-sizing: border-box;
+      background: transparent;
+    }
+
+    #sticky-title .title-box {
+      margin: 0 auto;
+      max-width: 700px;
+      border-radius: 14px;
+      background: rgb(0, 66, 3);
+      color: rgb(255, 253, 208);
+      padding: 14px 18px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.5px;
+    }
+
+    #sticky-title .title-box #title-question {
+      display: block;
+      font-size: 24px;
+      line-height: 1.2;
     }
 
     #game {
@@ -88,7 +124,8 @@
 
     @media (max-width: 600px) {
       body {
-        padding: 10px;
+        padding: 32px 20px 20px 20px;
+        padding-top: var(--header-height-mobile);
       }
 
       #game {
@@ -96,7 +133,7 @@
       }
 
       h1 {
-        font-size: 6vw;
+        font-size: 7vw;
       }
 
       h2,
@@ -105,15 +142,32 @@
       }
 
       p {
-        font-size: 4vw;
+        font-size: 4.4vw;
+      }
+
+      #intro-question {
+        font-size: 5.6vw;
+      }
+
+      #main-q-text {
+        font-size: 6.2vw;
+      }
+
+      #sticky-title .title-box #title-question {
+        font-size: 6.4vw;
       }
     }
   </style>
 </head>
 
 <body>
-  <div id="game">
+  <div id="sticky-title">
+    <div class="title-box">
+      <span id="title-question"></span>
+    </div>
+  </div>
 
+  <div id="game">
     <div id="intro">
       <h1>🔐 Birthday Escape Room</h1>
       <h3>Can you solve all the puzzles and escape?</h3>
@@ -128,61 +182,56 @@
     </div>
 
     <div id="question-stage" class="hidden">
-  <h2 id="title-question"></h2>   <!-- shows Question X -->
-  <h2 id="intro-question"></h2>
+      <h2 id="intro-question"></h2>
 
-  <div id="verification">
-    <p>Enter the postcode:</p>
-    <div class="code-box" id="code-inputs"></div>
-    <button onclick="checkVerification()">Verify</button>
-    <p id="verification-message"></p>
-    <p id="hint" class="hint"></p>
-  </div>
+      <div id="verification">
+        <p>Enter the postcode:</p>
+        <div class="code-box" id="code-inputs"></div>
+        <button onclick="checkVerification()">Verify</button>
+        <p id="verification-message"></p>
+        <p id="hint" class="hint"></p>
+      </div>
 
-  <div id="main-question" style="display:none;">
-    <h2 id="title-question-main"></h2>   <!-- shows Question X again -->
-    <h2 id="main-q-text"></h2>
-    <input type="text" id="answer" placeholder="Your answer" autocapitalize="words">
-    <button onclick="goBack()">Back</button>
-    <button onclick="checkAnswer()">Submit</button>
-    <p id="message"></p>
-  </div>
-</div>
-
-
+      <div id="main-question" style="display:none;">
+        <h2 id="main-q-text"></h2>
+        <input type="text" id="answer" placeholder="Your answer" autocapitalize="words">
+        <button onclick="goBack()">Back</button>
+        <button onclick="checkAnswer()">Submit</button>
+        <p id="message"></p>
+      </div>
+    </div>
   </div>
 
   <script>
-    const MASTER_CODE = "XXXXXX";   // universal postcode override
-    const MASTER_ANSWER = "XXX";    // universal answer override
+    const MASTER_CODE = "XXXXXX";
+    const MASTER_ANSWER = "XXX";
 
     const questions = [
       {
+        titleQ: "Question 1",
         introQ: `You wake up on a gorgeous sunny day in Amsterdam.
         After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
         To remedy that you shall choose a place to brunch. Where would you head?`,
-        // Answer: The Greek Embassy
         mainQ: "[Placeholder follow-up Q1]",
         a: "The Greek Embassy",
         code: "1091EJ"
       },
       {
+        titleQ: "Question 2",
         introQ: `Pantha Rhei has done exceptionally well this year.
         It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
         On your upcoming trip which hotel would you lodge at?`,
-        // Answer: Amstel Hotel
         mainQ: "[Placeholder follow-up Q2]",
         a: "Amstel Hotel",
         code: "1018GX"
       },
       {
+        titleQ: "Question 3",
         introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
-        // Answer: Utrechtsestraat
         mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
         a: "Boerejongens",
         code: "1017XK",
-        // Answer: Frederiksplein 1a
         hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma."
       }
     ];
@@ -193,11 +242,13 @@
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
       document.getElementById("question-stage").classList.remove("hidden");
+      document.getElementById("sticky-title").style.display = "block";
       showQuestion();
     }
 
     function showQuestion() {
       if (current < questions.length) {
+        document.getElementById("title-question").textContent = questions[current].titleQ;
         document.getElementById("intro-question").innerHTML = questions[current].introQ;
         document.getElementById("main-q-text").innerHTML = "";
         document.getElementById("message").textContent = "";

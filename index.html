@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
@@ -12,21 +11,30 @@
       --header-height-mobile: 96px;
     }
 
+    html { -webkit-text-size-adjust: 100%; }
+
     body {
       font-family: 'Special Elite', monospace;
+      font-size: 18px;
+      line-height: 1.6;
       padding: 20px;
       padding-top: var(--header-height-desktop);
+      margin: 0;
+      color: #000;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      font: inherit;
+      color: inherit;
     }
 
     #sticky-title {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 1000;
       display: none;
       padding: 10px 14px;
-      box-sizing: border-box;
       background: transparent;
     }
 
@@ -34,7 +42,7 @@
       margin: 0 auto;
       max-width: 700px;
       border-radius: 14px;
-      background: rgb(0, 66, 3);
+      background: rgb(0, 66, 37);
       color: rgb(255, 253, 208);
       padding: 14px 18px;
       text-align: center;
@@ -42,17 +50,9 @@
       letter-spacing: 0.5px;
     }
 
-    #sticky-title .title-box #title-question {
-      display: block;
-      font-size: 24px;
-      line-height: 1.2;
-    }
+    #sticky-title .title-box #title-question { display: block; }
 
-    #game {
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
-    }
+    #game { max-width: 600px; margin: auto; text-align: center; }
 
     .code-box {
       display: flex;
@@ -67,10 +67,8 @@
       height: clamp(40px, 12vw, 50px);
       line-height: 1.2;
       text-align: center;
-      font-size: clamp(16px, 4vw, 22px);
       text-transform: uppercase;
-      font-family: 'Special Elite', monospace;
-      box-sizing: border-box;
+      padding: 0;
     }
 
     .code-box input:disabled {
@@ -79,83 +77,47 @@
       -webkit-text-fill-color: black;
     }
 
-    input[type="text"] {
+    input[type="text"], textarea, select {
       margin-top: 10px;
       padding: 8px;
       width: 100%;
-      font-size: clamp(14px, 3vw, 18px);
-      font-family: 'Special Elite', monospace;
+      border: 1px solid #bbb;
+      border-radius: 6px;
       text-transform: capitalize;
+      font-size: 18px;
+      line-height: 1.4;
     }
+
+    input::placeholder { opacity: 0.6; font-size: inherit; }
 
     button {
       margin-top: 10px;
       padding: 8px 15px;
-      font-size: clamp(14px, 3vw, 18px);
-      font-family: 'Special Elite', monospace;
+      border-radius: 10px;
+      border: none;
+      background: #eee;
       cursor: pointer;
     }
 
-    .hidden {
-      display: none;
-    }
+    .hidden { display: none; }
 
-    .hint {
-      margin-top: 8px;
-      font-size: clamp(12px, 3vw, 16px);
-      font-style: italic;
-      color: #444;
-    }
+    .hint { margin-top: 8px; font-style: italic; color: #444; }
 
-    #intro-question,
-    #main-q-text {
-      line-height: 1.6;
+    #intro-question, #main-q-text {
       text-align: justify;
       text-justify: inter-word;
       margin-bottom: 15px;
     }
 
-    #intro-question br,
-    #main-q-text br {
+    #intro-question br, #main-q-text br {
       display: block;
       margin-bottom: 75px;
       content: "";
     }
 
     @media (max-width: 600px) {
-      body {
-        padding: 32px 20px 20px 20px;
-        padding-top: var(--header-height-mobile);
-      }
-
-      #game {
-        max-width: 100%;
-      }
-
-      h1 {
-        font-size: 7vw;
-      }
-
-      h2,
-      h3 {
-        font-size: 5vw;
-      }
-
-      p {
-        font-size: 4.4vw;
-      }
-
-      #intro-question {
-        font-size: 5.6vw;
-      }
-
-      #main-q-text {
-        font-size: 6.2vw;
-      }
-
-      #sticky-title .title-box #title-question {
-        font-size: 6.4vw;
-      }
+      body { padding: 32px 20px 20px 20px; padding-top: var(--header-height-mobile); }
+      #game { max-width: 100%; }
     }
   </style>
 </head>
@@ -173,6 +135,7 @@
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
+        19:10
         1. Enter the correct postcodes to unlock each stage.<br>
         2. Answer the questions carefully.<br>
         3. You may go back if needed.<br>
@@ -352,5 +315,4 @@
     });
   </script>
 </body>
-
 </html>

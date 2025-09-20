@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
@@ -17,6 +17,17 @@
       padding: 20px;
       padding-top: var(--header-height-desktop);
     }
+
+    input, textarea, select {
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      input, textarea, select { font-size: 16px; }
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
 
     #sticky-title {
       position: fixed;

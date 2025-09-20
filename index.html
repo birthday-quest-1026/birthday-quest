@@ -232,9 +232,8 @@
         <div id="number-instruction" class="bubble"></div>
         <div class="number-box">
           <!-- Use text + inputmode=decimal for iOS decimal keypad; step=any if browsers treat as number -->
-          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="e.g., 7.5"
+          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="Mennyi az annyi?"
             autocomplete="off" />
-          <span id="number-hint">(1–10, decimals allowed)</span>
         </div>
         <div id="number-warning" class="hint" style="display:none;color:#b00;">Please enter a number between 1 and 10.
         </div>
@@ -261,7 +260,9 @@
   <script>
     const MASTER_CODE = "XXXXXX";
     const MASTER_ANSWER = "XXX";
-    const NUM_NOTE = "How sure are you that your answer will be correct? Indicate below on a scale from 1 to 10.";
+    const NUM_NOTE = `🎲 🎲 Gambling time!! 🎲🎲
+    How confident are you that the answer you will give is correct?
+    The house offers a bet size of €1, choose your odds.`;
     const FINAL_TITLE = "The End";
 
 

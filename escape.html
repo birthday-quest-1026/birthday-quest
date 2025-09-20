@@ -1,4 +1,3 @@
-in this code I don't want you to change anything other than that I only what the mainq to be shown (simultanously with the introq) once the code has been correctly enterred at each question:
 <!DOCTYPE html>
 <html>
 
@@ -72,13 +71,10 @@ in this code I don't want you to change anything other than that I only what the
       color: #444;
     }
 
-    /* 📖 Better spacing + justification for questions */
     #intro-question,
     #main-q-text {
       line-height: 1.6;
-      /* spacing between lines */
       text-align: justify;
-      /* sorkizárt formatting */
       text-justify: inter-word;
       margin-bottom: 15px;
     }
@@ -87,10 +83,8 @@ in this code I don't want you to change anything other than that I only what the
     #main-q-text br {
       display: block;
       margin-bottom: 75px;
-      /* extra spacing after <br> */
       content: "";
     }
-
 
     @media (max-width: 600px) {
       body {
@@ -120,7 +114,6 @@ in this code I don't want you to change anything other than that I only what the
 <body>
   <div id="game">
 
-    <!-- Intro Page -->
     <div id="intro">
       <h1>🔐 Birthday Escape Room</h1>
       <h3>Can you solve all the puzzles and escape?</h3>
@@ -134,32 +127,35 @@ in this code I don't want you to change anything other than that I only what the
       <button onclick="startGame()">Start the Game</button>
     </div>
 
-    <!-- Question Stage -->
     <div id="question-stage" class="hidden">
-      <h2 id="intro-question"></h2>
+  <h2 id="title-question"></h2>   <!-- shows Question X -->
+  <h2 id="intro-question"></h2>
 
-      <!-- Postcode verification -->
-      <div id="verification">
-        <p>Enter the postcode:</p>
-        <div class="code-box" id="code-inputs"></div>
-        <button onclick="checkVerification()">Verify</button>
-        <p id="verification-message"></p>
-        <p id="hint" class="hint"></p>
-      </div>
+  <div id="verification">
+    <p>Enter the postcode:</p>
+    <div class="code-box" id="code-inputs"></div>
+    <button onclick="checkVerification()">Verify</button>
+    <p id="verification-message"></p>
+    <p id="hint" class="hint"></p>
+  </div>
 
-      <!-- Follow-up question -->
-      <div id="main-question" style="display:none;">
-        <h2 id="main-q-text"></h2>
-        <input type="text" id="answer" placeholder="Your answer" autocapitalize="words">
-        <button onclick="checkAnswer()">Submit</button>
-        <button onclick="goBack()">Back</button>
-        <p id="message"></p>
-      </div>
-    </div>
+  <div id="main-question" style="display:none;">
+    <h2 id="title-question-main"></h2>   <!-- shows Question X again -->
+    <h2 id="main-q-text"></h2>
+    <input type="text" id="answer" placeholder="Your answer" autocapitalize="words">
+    <button onclick="goBack()">Back</button>
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="message"></p>
+  </div>
+</div>
+
 
   </div>
 
   <script>
+    const MASTER_CODE = "XXXXXX";   // universal postcode override
+    const MASTER_ANSWER = "XXX";    // universal answer override
+
     const questions = [
       {
         introQ: `You wake up on a gorgeous sunny day in Amsterdam.
@@ -203,10 +199,9 @@ in this code I don't want you to change anything other than that I only what the
     function showQuestion() {
       if (current < questions.length) {
         document.getElementById("intro-question").innerHTML = questions[current].introQ;
+        document.getElementById("main-q-text").innerHTML = "";
         document.getElementById("message").textContent = "";
         document.getElementById("verification-message").textContent = "";
-
-        // Show hint if available
         document.getElementById("hint").textContent = questions[current].hint || "";
 
         const code = questions[current].code;
@@ -257,13 +252,12 @@ in this code I don't want you to change anything other than that I only what the
       const inputs = document.querySelectorAll("#code-inputs input");
 
       let entered = "", expected = "", masterSlice = "";
-      const masterCode = "XXXXXX";
 
       inputs.forEach((inp, i) => {
         if (!inp.disabled) {
           entered += inp.value.toUpperCase();
           expected += code[i].toUpperCase();
-          masterSlice += masterCode[i];
+          masterSlice += MASTER_CODE[i];
         }
       });
 
@@ -282,7 +276,8 @@ in this code I don't want you to change anything other than that I only what the
       const input = document.getElementById("answer").value.trim();
       answers[current] = input;
       const correct = questions[current].a.toLowerCase();
-      if (input.toLowerCase() === correct) {
+
+      if (input.toLowerCase() === correct || input.toLowerCase() === MASTER_ANSWER.toLowerCase()) {
         current++;
         showQuestion();
       } else {

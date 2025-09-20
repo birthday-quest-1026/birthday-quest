@@ -65,7 +65,7 @@
   <div id="game">
     <div id="intro">
       <h1>🔐 Birthday Escape Room</h1>
-      <h1>TO BE DELETED. VERSION: 01:39</h1>
+      <h1>TO BE DELETED. VERSION: 01:47</h1>
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
@@ -120,7 +120,7 @@
     const FINAL_TITLE = "The End";
     const ODDS_KEY = "oddsByQuestion";
 
-    let oddsByQuestion = loadJSON(ODDS_KEY, {});
+    let oddsByQuestion = {};
     let playerPL = 0;
 
     const questions = [
@@ -284,7 +284,7 @@
         return;
       }
       document.getElementById("number-warning").style.display = "none";
-      if (odds !== null) { oddsByQuestion[current] = odds; saveJSON(ODDS_KEY, oddsByQuestion); }
+      if (odds !== null) { oddsByQuestion[current] = odds; }
 
       const code = questions[current].code;
       const inputs = document.querySelectorAll("#code-inputs input");

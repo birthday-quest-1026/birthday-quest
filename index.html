@@ -1,25 +1,58 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
-    html { -webkit-text-size-adjust: 100%; }
+    :root {
+      --header-height-desktop: 88px;
+      --header-height-mobile: 96px;
+    }
+
     body {
       font-family: 'Special Elite', monospace;
-      font-size: clamp(16px, 4vw, 18px);
-      line-height: 1.6;
       padding: 20px;
+      padding-top: var(--header-height-desktop);
+    }
+
+    #sticky-title {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: none;
+      padding: 10px 14px;
+      box-sizing: border-box;
+      background: transparent;
+    }
+
+    #sticky-title .title-box {
       margin: 0 auto;
       max-width: 700px;
-      color: #000;
+      border-radius: 14px;
+      background: rgb(0, 66, 3);
+      color: rgb(255, 253, 208);
+      padding: 14px 18px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.5px;
     }
-    *, *::before, *::after { box-sizing: border-box; font: inherit; color: inherit; }
-    h1, h2, h3, p { margin: 0 0 15px; }
 
-    #game { max-width: 600px; margin: auto; text-align: center; }
+    #sticky-title .title-box #title-question {
+      display: block;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    #game {
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
+    }
 
     .code-box {
       display: flex;
@@ -28,14 +61,18 @@
       margin: 10px 0;
       flex-wrap: wrap;
     }
+
     .code-box input {
       width: clamp(35px, 12vw, 45px);
       height: clamp(40px, 12vw, 50px);
       line-height: 1.2;
       text-align: center;
+      font-size: clamp(16px, 4vw, 22px);
       text-transform: uppercase;
-      padding: 0;
+      font-family: 'Special Elite', monospace;
+      box-sizing: border-box;
     }
+
     .code-box input:disabled {
       color: black;
       opacity: 1;
@@ -46,41 +83,90 @@
       margin-top: 10px;
       padding: 8px;
       width: 100%;
+      font-size: clamp(14px, 3vw, 18px);
+      font-family: 'Special Elite', monospace;
       text-transform: capitalize;
-      border: 1px solid #bbb;
-      border-radius: 6px;
     }
-    input::placeholder { opacity: 0.6; }
 
     button {
       margin-top: 10px;
       padding: 8px 15px;
-      border-radius: 10px;
-      border: none;
-      background: #eee;
+      font-size: clamp(14px, 3vw, 18px);
+      font-family: 'Special Elite', monospace;
       cursor: pointer;
     }
 
-    .hidden { display: none; }
-    .hint { margin-top: 8px; font-style: italic; color: #444; }
+    .hidden {
+      display: none;
+    }
 
-    #intro-question, #main-q-text {
+    .hint {
+      margin-top: 8px;
+      font-size: clamp(12px, 3vw, 16px);
+      font-style: italic;
+      color: #444;
+    }
+
+    #intro-question,
+    #main-q-text {
+      line-height: 1.6;
       text-align: justify;
       text-justify: inter-word;
+      margin-bottom: 15px;
     }
-    #intro-question br, #main-q-text br {
+
+    #intro-question br,
+    #main-q-text br {
       display: block;
       margin-bottom: 75px;
       content: "";
     }
 
     @media (max-width: 600px) {
-      body { padding: 16px; }
-      #game { max-width: 100%; }
+      body {
+        padding: 32px 20px 20px 20px;
+        padding-top: var(--header-height-mobile);
+      }
+
+      #game {
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: 7vw;
+      }
+
+      h2,
+      h3 {
+        font-size: 5vw;
+      }
+
+      p {
+        font-size: 4.4vw;
+      }
+
+      #intro-question {
+        font-size: 5.6vw;
+      }
+
+      #main-q-text {
+        font-size: 6.2vw;
+      }
+
+      #sticky-title .title-box #title-question {
+        font-size: 6.4vw;
+      }
     }
   </style>
 </head>
+
 <body>
+  <div id="sticky-title">
+    <div class="title-box">
+      <span id="title-question"></span>
+    </div>
+  </div>
+
   <div id="game">
     <div id="intro">
       <h1>🔐 Birthday Escape Room</h1>
@@ -96,7 +182,6 @@
     </div>
 
     <div id="question-stage" class="hidden">
-      <h2 id="title-question"></h2>
       <h2 id="intro-question"></h2>
 
       <div id="verification">
@@ -157,6 +242,7 @@
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
       document.getElementById("question-stage").classList.remove("hidden");
+      document.getElementById("sticky-title").style.display = "block";
       showQuestion();
     }
 
@@ -175,12 +261,15 @@
         for (let i = 0; i < 6; i++) {
           const input = document.createElement("input");
           input.maxLength = 1;
+
           if (i <= 3) input.setAttribute("inputmode", "numeric");
           else input.setAttribute("inputmode", "text");
+
           if (i === 0 || i === 1 || i === 4) {
             input.value = code[i];
             input.disabled = true;
           }
+
           input.addEventListener("input", function () {
             if (this.value.length === 1) {
               let next = this.nextElementSibling;
@@ -188,6 +277,7 @@
               if (next) next.focus();
             }
           });
+
           input.addEventListener("keydown", function (e) {
             if (e.key === "Backspace" && this.value === "") {
               let prev = this.previousElementSibling;
@@ -195,11 +285,13 @@
               if (prev) prev.focus();
             }
           });
+
           container.appendChild(input);
         }
 
         document.getElementById("verification").style.display = "block";
         document.getElementById("main-question").style.display = "none";
+
         document.getElementById("answer").value = answers[current] || "";
       } else {
         document.getElementById("game").innerHTML = "<h2>🎉 You Escaped!</h2>";
@@ -209,7 +301,9 @@
     function checkVerification() {
       const code = questions[current].code;
       const inputs = document.querySelectorAll("#code-inputs input");
+
       let entered = "", expected = "", masterSlice = "";
+
       inputs.forEach((inp, i) => {
         if (!inp.disabled) {
           entered += inp.value.toUpperCase();
@@ -217,10 +311,10 @@
           masterSlice += MASTER_CODE[i];
         }
       });
+
       if (entered === expected || entered === masterSlice) {
         document.getElementById("verification").style.display = "none";
         document.getElementById("main-question").style.display = "block";
-        document.getElementById("title-question-main").textContent = questions[current].titleQ;
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";
         document.getElementById("answer").focus();
@@ -233,6 +327,7 @@
       const input = document.getElementById("answer").value.trim();
       answers[current] = input;
       const correct = questions[current].a.toLowerCase();
+
       if (input.toLowerCase() === correct || input.toLowerCase() === MASTER_ANSWER.toLowerCase()) {
         current++;
         showQuestion();
@@ -257,4 +352,5 @@
     });
   </script>
 </body>
+
 </html>

@@ -201,6 +201,7 @@
 
     function showQuestion() {
       if (current < questions.length) {
+        document.getElementById("title-question").textContent = questions[current].titleQ;
         document.getElementById("intro-question").innerHTML = questions[current].introQ;
         document.getElementById("main-q-text").innerHTML = "";
         document.getElementById("message").textContent = "";
@@ -267,6 +268,7 @@
       if (entered === expected || entered === masterSlice) {
         document.getElementById("verification").style.display = "none";
         document.getElementById("main-question").style.display = "block";
+        document.getElementById("title-question-main").textContent = questions[current].titleQ;
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";
         document.getElementById("answer").focus();

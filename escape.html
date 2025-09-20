@@ -10,6 +10,7 @@
     :root {
       --header-height-desktop: 88px;
       --header-height-mobile: 96px;
+      --footer-h: 58px;
     }
 
     html {
@@ -20,11 +21,11 @@
       font-family: 'Special Elite', monospace;
       font-size: 18px;
       line-height: 1.6;
-      padding: 20px;
-      padding-top: var(--header-height-desktop);
       margin: 0;
       color: #000;
-      /* background: rgb(255, 253, 208); */
+      padding: 20px;
+      padding-top: var(--header-height-desktop);
+      padding-bottom: calc(var(--footer-h) + 12px);
     }
 
     *,
@@ -35,6 +36,7 @@
       color: inherit;
     }
 
+    /* Sticky page title */
     #sticky-title {
       position: fixed;
       top: 0;
@@ -68,6 +70,7 @@
       text-align: center;
     }
 
+    /* Odds prompt bubble */
     #number-section {
       margin: 18px 0 8px;
     }
@@ -112,11 +115,7 @@
       line-height: 1.4;
     }
 
-    #number-hint {
-      font-size: 16px;
-      color: #666;
-    }
-
+    /* Postcode inputs */
     .code-box {
       display: flex;
       justify-content: center;
@@ -171,6 +170,12 @@
       display: none;
     }
 
+    /* force-hide the P/L footer on the intro page */
+    #pl-footer.hidden {
+      display: none !important;
+    }
+
+
     .hint {
       margin-top: 8px;
       font-style: italic;
@@ -191,9 +196,59 @@
       content: "";
     }
 
+    :root {
+      --header-height-desktop: 88px;
+      --header-height-mobile: 96px;
+      --footer-h: 58px;
+
+      /* P/L footer colors */
+      --pl-pos: rgb(0, 66, 37);
+      /* positive  */
+      --pl-zero: rgb(74, 65, 42);
+      /* zero / neutral (your current green) */
+      --pl-neg: rgb(109, 3, 2);
+      /* negative  */
+    }
+
+    /* Frozen P/L footer */
+    #pl-footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--footer-h);
+      background: var(--pl-zero);
+      transition: background-color 200ms ease;
+      color: rgb(255, 253, 208);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 16px;
+      z-index: 1100;
+      box-shadow: 0 -6px 18px rgba(0, 0, 0, .15);
+      font-size: 18px;
+    }
+
+    #pl-footer.pl-positive {
+      background: var(--pl-pos);
+    }
+
+    #pl-footer.pl-negative {
+      background: var(--pl-neg);
+    }
+
+
+    #pl-footer .pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .2);
+    }
+
     @media (max-width:600px) {
       body {
-        padding: 32px 20px 20px;
+        padding: 32px 20px calc(var(--footer-h) + 16px) 20px;
         padding-top: var(--header-height-mobile);
       }
 
@@ -205,20 +260,22 @@
 </head>
 
 <body>
+  <!-- sticky header -->
   <div id="sticky-title">
     <div class="title-box"><span id="title-question"></span></div>
   </div>
 
+  <!-- main app -->
   <div id="game">
     <div id="intro">
       <h1>🔐 Birthday Escape Room</h1>
+      <h1>TO BE DELETED. VERSION: 00:39</h1>
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
-        23:12 TO BE REMOVED <br>
         1. Enter the correct postcodes to unlock each stage.<br>
-        2. Answer the questions carefully.<br>
-        3. You may go back if needed.<br>
+        2. Choose your odds each round and verify.<br>
+        3. Correct code: you win €1. Wrong code: you lose your chosen odds (€X).<br>
         4. Use logic, creativity, and persistence!
       </p>
       <button onclick="startGame()">Start the Game</button>
@@ -227,16 +284,14 @@
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
 
-      <!-- Confidence number (intro-only) -->
+      <!-- Odds (intro-only) -->
       <div id="number-section">
         <div id="number-instruction" class="bubble"></div>
         <div class="number-box">
-          <!-- Use text + inputmode=decimal for iOS decimal keypad; step=any if browsers treat as number -->
           <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*"
-            placeholder="Mennyi az annyi?" autocomplete="off" />
+            placeholder="Enter your odds" autocomplete="off" />
         </div>
-        <div id="number-warning" class="hint" style="display:none;color:#b00;">Please enter valid odds (positive number).
-        </div>
+        <div id="number-warning" class="hint" style="display:none;color:#b00;">Na mivan okosnak hiszed magad? 🤡).</div>
       </div>
 
       <div id="verification">
@@ -257,17 +312,27 @@
     </div>
   </div>
 
+  <!-- frozen P/L footer -->
+  <div id="pl-footer" class="hidden">
+    <span>Current P/L:</span>
+    <span id="pl-value" class="pill">€0.00</span>
+  </div>
+
   <script>
     const MASTER_CODE = "XXXXXX";
     const MASTER_ANSWER = "XXX";
-    const NUM_NOTE = `🎲 🎲 Gambling time!! 🎲🎲 <br>
-    How confident are you that the answer you will give is correct? <br>
+    const NUM_NOTE = `🎲 🎲 Gambling time!! 🎲🎲
+    How confident are you that the answer you will give is correct?
     The house offers a bet size of €1, choose your odds.`;
     const FINAL_TITLE = "The End";
 
+    /* localStorage keys */
+    const ODDS_KEY = "oddsByQuestion";
 
-    const LS_KEY = "confidenceByQuestion";          // localStorage key
-    let confidenceByQuestion = loadConfidenceMap(); // {index: value}
+    /* restore state */
+    let oddsByQuestion = loadJSON(ODDS_KEY, {});      // { [qIndex]: odds }
+    let playerPL = 0;   // always start fresh
+    // running P/L €
 
     const questions = [
       {
@@ -296,39 +361,63 @@
         a: "Boerejongens",
         code: "1017XK",
         hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma."
-      }
+      },
+      {
+        titleQ: "Checkpoint 3",
+        introQ: `Gratulálunk! Ön közbeszerzést nyert!
+        Páyázatában vállalta, háztartásának sok évre való öngyújtóval való felszerelését.
+        Hol eszközölné vásárlását?`,
+        mainQ: "[Placeholder follow-up Q4]",
+        a: "Hartman Cigars",
+        code: "1017PC"
+      },
     ];
 
     let current = 0;
     let answers = Array(questions.length).fill("");
 
-    function loadConfidenceMap() {
-      try {
-        const raw = localStorage.getItem(LS_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch { return {}; }
-    }
-    function saveConfidenceMap() {
-      try { localStorage.setItem(LS_KEY, JSON.stringify(confidenceByQuestion)); } catch { }
-    }
+    /* helpers */
+    function loadJSON(key, fallback) { try { const x = localStorage.getItem(key); return x ? JSON.parse(x) : fallback; } catch { return fallback; } }
+    function saveJSON(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch { } }
+    function loadNumber(key, fallback) { const x = localStorage.getItem(key); const n = parseFloat(x); return isNaN(n) ? fallback : n; }
+    function saveNumber(key, val) { try { localStorage.setItem(key, String(val)); } catch { } }
+
     function parseOdds(str) {
       if (!str) return null;
       const num = parseFloat(str.replace(',', '.'));
-      if (isNaN(num) || num <= 0) return null;  // allow any positive odds
+      if (isNaN(num) || num <= 0) return null;    // any positive odds allowed
       return num;
     }
 
-    function averageConfidence() {
-      const vals = Object.values(confidenceByQuestion).map(Number).filter(v => !isNaN(v));
-      if (!vals.length) return null;
-      const sum = vals.reduce((a, b) => a + b, 0);
-      return sum / vals.length;
+    function formatMoney(n) {
+      const abs = Math.abs(n).toFixed(2);
+      if (n > 0) return "+€" + abs;
+      if (n < 0) return "−€" + abs;   // nice minus sign
+      return "€" + abs;                // zero → no plus
     }
+
+    function refreshPL() {
+      const el = document.getElementById("pl-value");
+      const footer = document.getElementById("pl-footer");
+
+      // update amount text
+      el.textContent = formatMoney(playerPL);
+
+      // update footer color class
+      footer.classList.remove("pl-positive", "pl-negative");
+      if (playerPL > 0) footer.classList.add("pl-positive");
+      else if (playerPL < 0) footer.classList.add("pl-negative");
+      // when playerPL === 0 keep the base (neutral) color
+    }
+
+
 
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
       document.getElementById("question-stage").classList.remove("hidden");
       document.getElementById("sticky-title").style.display = "block";
+      document.getElementById("pl-footer").classList.remove("hidden");
+      refreshPL();
       showQuestion();
     }
 
@@ -341,37 +430,30 @@
         document.getElementById("verification-message").textContent = "";
         document.getElementById("hint").textContent = questions[current].hint || "";
 
-        // Intro confidence UI (visible only in intro)
-        document.getElementById("number-instruction").innerHTML = NUM_NOTE;
+        // odds prompt (intro view only)
+        document.getElementById("number-instruction").innerHTML = NUM_NOTE.replaceAll("\n", "<br>");
         document.getElementById("number-section").style.display = "block";
         document.getElementById("number-warning").style.display = "none";
-        const prev = confidenceByQuestion[current];
-        document.getElementById("number-input").value = (prev ?? "").toString();
+        document.getElementById("number-input").value = (oddsByQuestion[current] ?? "").toString();
 
-        // Build postcode inputs
+        // build postcode inputs
         const code = questions[current].code;
         const container = document.getElementById("code-inputs");
         container.innerHTML = "";
         for (let i = 0; i < 6; i++) {
           const input = document.createElement("input");
           input.maxLength = 1;
-          if (i <= 3) input.setAttribute("inputmode", "numeric");
-          else input.setAttribute("inputmode", "text");
-          if (i === 0 || i === 1 || i === 4) {
-            input.value = code[i];
-            input.disabled = true;
-          }
+          if (i <= 3) input.setAttribute("inputmode", "numeric"); else input.setAttribute("inputmode", "text");
+          if (i === 0 || i === 1 || i === 4) { input.value = code[i]; input.disabled = true; }
           input.addEventListener("input", function () {
             if (this.value.length === 1) {
-              let next = this.nextElementSibling;
-              while (next && next.disabled) next = next.nextElementSibling;
+              let next = this.nextElementSibling; while (next && next.disabled) next = next.nextElementSibling;
               if (next) next.focus();
             }
           });
           input.addEventListener("keydown", function (e) {
             if (e.key === "Backspace" && this.value === "") {
-              let prev = this.previousElementSibling;
-              while (prev && prev.disabled) prev = prev.previousElementSibling;
+              let prev = this.previousElementSibling; while (prev && prev.disabled) prev = prev.previousElementSibling;
               if (prev) prev.focus();
             }
           });
@@ -382,43 +464,23 @@
         document.getElementById("main-question").style.display = "none";
         document.getElementById("answer").value = answers[current] || "";
       } else {
-        // Finished: set a brand-new checkpoint title
         document.getElementById("title-question").textContent = FINAL_TITLE;
-
-        // Compute and show average confidence
-        const avg = averageConfidence();
-        const avgText = (avg === null)
-          ? "No confidence numbers were entered."
-          : `Average confidence: ${avg.toFixed(2)} / 10`;
-
-        // Show the end screen (keep sticky header; replace question area only)
-        document.getElementById("question-stage").innerHTML =
-          `<h2>🎉 You Escaped!</h2><p>${avgText}</p>`;
+        document.getElementById("question-stage").innerHTML = `<h2>🎉 You Escaped!</h2><p>Final P/L shown below.</p>`;
       }
     }
 
     function checkVerification() {
-      // save the intro confidence (if valid) just before proceeding to main question
+      // 1) validate/store odds
       const raw = document.getElementById("number-input").value.trim();
-      const num = parseOdds(raw);
-      if (raw !== "" && num === null) {
+      const odds = parseOdds(raw);
+      if (raw !== "" && odds === null) {
         document.getElementById("number-warning").style.display = "block";
-        return; // block until valid or cleared
-      } else {
-        document.getElementById("number-warning").style.display = "none";
-        if (num !== null) {
-          confidenceByQuestion[current] = num; // save for this question index
-          saveConfidenceMap();
-        } else {
-          // if user cleared input, remove stored value for this question
-          if (confidenceByQuestion.hasOwnProperty(current)) {
-            delete confidenceByQuestion[current];
-            saveConfidenceMap();
-          }
-        }
+        return;
       }
+      document.getElementById("number-warning").style.display = "none";
+      if (odds !== null) { oddsByQuestion[current] = odds; saveJSON(ODDS_KEY, oddsByQuestion); }
 
-      // postcode verification
+      // 2) postcode verification
       const code = questions[current].code;
       const inputs = document.querySelectorAll("#code-inputs input");
       let entered = "", expected = "", masterSlice = "";
@@ -432,14 +494,24 @@
       });
 
       if (entered === expected || entered === masterSlice) {
+        // WIN: +€1
+        playerPL += 1;
+        refreshPL();
+
+        // proceed to main question
         document.getElementById("verification").style.display = "none";
-        document.getElementById("number-section").style.display = "none"; // hide in main section
+        document.getElementById("number-section").style.display = "none";
         document.getElementById("main-question").style.display = "block";
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";
         document.getElementById("answer").focus();
       } else {
-        document.getElementById("verification-message").textContent = "❌ Wrong code, try again!";
+        // LOSS: −€X (odds). If odds missing, treat as 0 loss.
+        const loss = odds ?? 0;
+        playerPL -= loss;
+        refreshPL();
+        document.getElementById("verification-message").textContent =
+          loss > 0 ? `❌ Wrong code. You lose €${loss.toFixed(2)} this round.` : "❌ Wrong code. Enter odds to risk an amount.";
       }
     }
 
@@ -456,14 +528,10 @@
       }
     }
 
-    function goBack() {
-      if (current > 0) current--;
-      else current = 0;
-      showQuestion();
-    }
+    function goBack() { if (current > 0) current--; else current = 0; showQuestion(); }
 
-    document.addEventListener("keyup", function (event) {
-      if (event.key === "Enter") {
+    document.addEventListener("keyup", function (e) {
+      if (e.key === "Enter") {
         const verifyVisible = document.getElementById("verification").style.display !== "none";
         const mainVisible = document.getElementById("main-question").style.display !== "none";
         if (verifyVisible) checkVerification();

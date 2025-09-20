@@ -11,12 +11,11 @@
       --header-height-desktop: 88px;
       --header-height-mobile: 96px;
       --footer-h: 58px;
+      --pl-pos: rgb(0, 66, 37);
+      --pl-zero: rgb(74, 65, 42);
+      --pl-neg: rgb(109, 3, 2);
     }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-    }
-
+    html { -webkit-text-size-adjust: 100%; }
     body {
       font-family: 'Special Elite', monospace;
       font-size: 18px;
@@ -27,249 +26,46 @@
       padding-top: var(--header-height-desktop);
       padding-bottom: calc(var(--footer-h) + 12px);
     }
-
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      font: inherit;
-      color: inherit;
-    }
-
-    /* Sticky page title */
-    #sticky-title {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      display: none;
-      padding: 10px 14px;
-      background: transparent;
-    }
-
-    #sticky-title .title-box {
-      margin: 0 auto;
-      max-width: 700px;
-      border-radius: 14px;
-      background: rgb(0, 66, 37);
-      color: rgb(255, 253, 208);
-      padding: 14px 18px;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
-      letter-spacing: .5px;
-    }
-
-    #sticky-title .title-box #title-question {
-      display: block;
-    }
-
-    #game {
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
-    }
-
-    /* Odds prompt bubble */
-    #number-section {
-      margin: 18px 0 8px;
-    }
-
-    .bubble {
-      display: inline-block;
-      max-width: 100%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      background: #f2f7ff;
-      border: 1px solid #cfe1ff;
-      text-align: center;
-      position: relative;
-    }
-
-    .bubble:after {
-      content: "";
-      position: absolute;
-      left: 24px;
-      bottom: -10px;
-      border-width: 10px 10px 0 10px;
-      border-style: solid;
-      border-color: #f2f7ff transparent transparent transparent;
-      filter: drop-shadow(0 -1px 0 #cfe1ff);
-    }
-
-    .number-box {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      align-items: center;
-    }
-
-    #number-input {
-      width: 200px;
-      padding: 8px 10px;
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 18px;
-      line-height: 1.4;
-    }
-
-    /* Postcode inputs */
-    .code-box {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin: 10px 0;
-      flex-wrap: wrap;
-    }
-
-    .code-box input {
-      width: clamp(35px, 12vw, 45px);
-      height: clamp(40px, 12vw, 50px);
-      line-height: 1.2;
-      text-align: center;
-      text-transform: uppercase;
-      padding: 0;
-    }
-
-    .code-box input:disabled {
-      color: black;
-      opacity: 1;
-      -webkit-text-fill-color: black;
-    }
-
-    input[type="text"],
-    textarea,
-    select {
-      margin-top: 10px;
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-      text-transform: capitalize;
-      font-size: 18px;
-      line-height: 1.4;
-    }
-
-    input::placeholder {
-      opacity: .6;
-      font-size: inherit;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 8px 15px;
-      border-radius: 10px;
-      border: none;
-      background: #eee;
-      cursor: pointer;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    /* force-hide the P/L footer on the intro page */
-    #pl-footer.hidden {
-      display: none !important;
-    }
-
-
-    .hint {
-      margin-top: 8px;
-      font-style: italic;
-      color: #444;
-    }
-
-    #intro-question,
-    #main-q-text {
-      text-align: justify;
-      text-justify: inter-word;
-      margin-bottom: 15px;
-    }
-
-    #intro-question br,
-    #main-q-text br {
-      display: block;
-      margin-bottom: 75px;
-      content: "";
-    }
-
-    :root {
-      --header-height-desktop: 88px;
-      --header-height-mobile: 96px;
-      --footer-h: 58px;
-
-      /* P/L footer colors */
-      --pl-pos: rgb(0, 66, 37);
-      /* positive  */
-      --pl-zero: rgb(74, 65, 42);
-      /* zero / neutral (your current green) */
-      --pl-neg: rgb(109, 3, 2);
-      /* negative  */
-    }
-
-    /* Frozen P/L footer */
-    #pl-footer {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: var(--footer-h);
-      background: var(--pl-zero);
-      transition: background-color 200ms ease;
-      color: rgb(255, 253, 208);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      padding: 0 16px;
-      z-index: 1100;
-      box-shadow: 0 -6px 18px rgba(0, 0, 0, .15);
-      font-size: 18px;
-    }
-
-    #pl-footer.pl-positive {
-      background: var(--pl-pos);
-    }
-
-    #pl-footer.pl-negative {
-      background: var(--pl-neg);
-    }
-
-
-    #pl-footer .pill {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .1);
-      border: 1px solid rgba(255, 255, 255, .2);
-    }
-
+    *,*::before,*::after { box-sizing: border-box; font: inherit; color: inherit; }
+    #sticky-title { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: none; padding: 10px 14px; background: transparent; }
+    #sticky-title .title-box { margin: 0 auto; max-width: 700px; border-radius: 14px; background: rgb(0, 66, 37); color: rgb(255, 253, 208); padding: 14px 18px; text-align: center; box-shadow: 0 6px 18px rgba(0,0,0,.25); letter-spacing: .5px; }
+    #game { max-width: 600px; margin: auto; text-align: center; }
+    #number-section { margin: 18px 0 8px; }
+    .bubble { display: inline-block; max-width: 100%; padding: 10px 14px; border-radius: 16px; background: #f2f7ff; border: 1px solid #cfe1ff; text-align: center; position: relative; }
+    .bubble:after { content: ""; position: absolute; left: 24px; bottom: -10px; border-width: 10px 10px 0 10px; border-style: solid; border-color: #f2f7ff transparent transparent transparent; filter: drop-shadow(0 -1px 0 #cfe1ff); }
+    .number-box { margin-top: 10px; display: flex; justify-content: center; gap: 10px; align-items: center; }
+    #number-input { width: 200px; padding: 8px 10px; border: 1px solid #bbb; border-radius: 8px; text-align: center; font-size: 18px; line-height: 1.4; }
+    .code-box { display: flex; justify-content: center; gap: 5px; margin: 10px 0; flex-wrap: wrap; }
+    .code-box input { width: clamp(35px, 12vw, 45px); height: clamp(40px, 12vw, 50px); line-height: 1.2; text-align: center; text-transform: uppercase; padding: 0; }
+    .code-box input:disabled { color: black; opacity: 1; -webkit-text-fill-color: black; }
+    input[type="text"], textarea, select { margin-top: 10px; padding: 8px; width: 100%; border: 1px solid #bbb; border-radius: 6px; text-transform: capitalize; font-size: 18px; line-height: 1.4; }
+    input::placeholder { opacity: .6; font-size: inherit; }
+    button { margin-top: 10px; padding: 8px 15px; border-radius: 10px; border: none; background: #eee; cursor: pointer; }
+    .hidden { display: none; }
+    #pl-footer.hidden { display: none !important; }
+    .hint { margin-top: 8px; font-style: italic; color: #444; }
+    #intro-question, #main-q-text { text-align: justify; text-justify: inter-word; margin-bottom: 15px; }
+    #intro-question br, #main-q-text br { display: block; margin-bottom: 75px; content: ""; }
+    #pl-footer { position: fixed; left: 0; right: 0; bottom: 0; height: var(--footer-h); background: var(--pl-zero); transition: background-color 200ms ease; color: rgb(255, 253, 208); display: flex; align-items: center; justify-content: center; gap: 14px; padding: 0 16px; z-index: 1100; box-shadow: 0 -6px 18px rgba(0,0,0,.15); font-size: 18px; }
+    #pl-footer.pl-positive { background: var(--pl-pos); }
+    #pl-footer.pl-negative { background: var(--pl-neg); }
+    #pl-footer .pill { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); }
     @media (max-width:600px) {
-      body {
-        padding: 32px 20px calc(var(--footer-h) + 16px) 20px;
-        padding-top: var(--header-height-mobile);
-      }
-
-      #game {
-        max-width: 100%;
-      }
+      body { padding: 32px 20px calc(var(--footer-h) + 16px) 20px; padding-top: var(--header-height-mobile); }
+      #game { max-width: 100%; }
     }
   </style>
 </head>
 
 <body>
-  <!-- sticky header -->
   <div id="sticky-title">
     <div class="title-box"><span id="title-question"></span></div>
   </div>
 
-  <!-- main app -->
   <div id="game">
     <div id="intro">
       <h1>🔐 Birthday Escape Room</h1>
-      <h1>TO BE DELETED. VERSION: 00:39</h1>
+      <h1>TO BE DELETED. VERSION: 01:39</h1>
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
@@ -284,20 +80,18 @@
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
 
-      <!-- Odds (intro-only) -->
       <div id="number-section">
         <div id="number-instruction" class="bubble"></div>
         <div class="number-box">
-          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*"
-            placeholder="Enter your odds" autocomplete="off" />
+          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="Enter your odds" autocomplete="off" />
         </div>
         <div id="number-warning" class="hint" style="display:none;color:#b00;">Na mivan okosnak hiszed magad? 🤡).</div>
       </div>
 
-      <div id="verification">
+      <div id="verification" class="hidden">
         <p>Enter the postcode:</p>
         <div class="code-box" id="code-inputs"></div>
-        <button onclick="checkVerification()">Verify</button>
+        <button id="verify-btn" onclick="checkVerification()">Verify</button>
         <p id="verification-message"></p>
         <p id="hint" class="hint"></p>
       </div>
@@ -312,7 +106,6 @@
     </div>
   </div>
 
-  <!-- frozen P/L footer -->
   <div id="pl-footer" class="hidden">
     <span>Current P/L:</span>
     <span id="pl-value" class="pill">€0.00</span>
@@ -325,14 +118,10 @@
     How confident are you that the answer you will give is correct?
     The house offers a bet size of €1, choose your odds.`;
     const FINAL_TITLE = "The End";
-
-    /* localStorage keys */
     const ODDS_KEY = "oddsByQuestion";
 
-    /* restore state */
-    let oddsByQuestion = loadJSON(ODDS_KEY, {});      // { [qIndex]: odds }
-    let playerPL = 0;   // always start fresh
-    // running P/L €
+    let oddsByQuestion = loadJSON(ODDS_KEY, {});
+    let playerPL = 0;
 
     const questions = [
       {
@@ -340,6 +129,7 @@
         introQ: `You wake up on a gorgeous sunny day in Amsterdam.
         After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
         To remedy that you shall choose a place to brunch. Where would you head?`,
+        // answer: The Greek Embassy
         mainQ: "[Placeholder follow-up Q1]",
         a: "The Greek Embassy",
         code: "1091EJ"
@@ -350,6 +140,7 @@
         It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
         On your upcoming trip which hotel would you lodge at?`,
+        // answer: Amstel Hotel
         mainQ: "[Placeholder follow-up Q2]",
         a: "Amstel Hotel",
         code: "1018GX"
@@ -358,59 +149,64 @@
         titleQ: "Checkpoint 2",
         introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
         mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
+        // answer: Utrechtsestraat
         a: "Boerejongens",
         code: "1017XK",
-        hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma."
+        hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma."
       },
       {
         titleQ: "Checkpoint 3",
-        introQ: `Gratulálunk! Ön közbeszerzést nyert!
-        Páyázatában vállalta, háztartásának sok évre való öngyújtóval való felszerelését.
-        Hol eszközölné vásárlását?`,
+        introQ: `Gratulálunk, Ön közbeszerzést nyert! <p>
+        Pályázatában kötelezettséget vállalt a háztartás több évre szóló öngyújtó-ellátásának biztosítására.
+        Hol eszközölné beszerzését?`,
+        // answer: Hartman Cigars
         mainQ: "[Placeholder follow-up Q4]",
         a: "Hartman Cigars",
         code: "1017PC"
+      },
+      {
+        titleQ: "Checkpoint 4",
+        introQ: `A bolttól elindulván egyszerre csak meghallod a természet hívását. Honnan jöhet?`,
+        // answer: When Nature Calls
+        mainQ: "Milyen márka kapható az üzlettel szembeni boltban?",
+        a: "NIO",
+        code: "1017EJ"
+      },
+      {
+        titleQ: "Checkpoint 5",
+        introQ: `After a wise decision of taking a rain check on those magic mushrooms you are still craving some miracle.
+        Where does your journey continue?`,
+        // answer: Heiligeweg
+        mainQ: "[Placeholder follow-up Q6]",
+        a: "NIO",
+        code: "1012WP",
+        hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma."
+      },
+      {
+        titleQ: "Checkpoint 6",
+        introQ: `Next stop is your favorite book store`,
+        // answer: Waterstones
+        mainQ: "A bolthoz érvén mindkettőnknek felcsillan a szeme. Neked a bolt miatt, nekem viszont valami más miatt. Mit látok?",
+        a: "Chatime",
+        code: "1012XE"
       },
     ];
 
     let current = 0;
     let answers = Array(questions.length).fill("");
 
-    /* helpers */
     function loadJSON(key, fallback) { try { const x = localStorage.getItem(key); return x ? JSON.parse(x) : fallback; } catch { return fallback; } }
     function saveJSON(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch { } }
-    function loadNumber(key, fallback) { const x = localStorage.getItem(key); const n = parseFloat(x); return isNaN(n) ? fallback : n; }
-    function saveNumber(key, val) { try { localStorage.setItem(key, String(val)); } catch { } }
-
-    function parseOdds(str) {
-      if (!str) return null;
-      const num = parseFloat(str.replace(',', '.'));
-      if (isNaN(num) || num <= 0) return null;    // any positive odds allowed
-      return num;
-    }
-
-    function formatMoney(n) {
-      const abs = Math.abs(n).toFixed(2);
-      if (n > 0) return "+€" + abs;
-      if (n < 0) return "−€" + abs;   // nice minus sign
-      return "€" + abs;                // zero → no plus
-    }
-
+    function parseOdds(str) { if (!str) return null; const num = parseFloat(str.replace(',', '.')); if (isNaN(num) || num <= 0) return null; return num; }
+    function formatMoney(n) { const abs = Math.abs(n).toFixed(2); if (n > 0) return "+€" + abs; if (n < 0) return "−€" + abs; return "€" + abs; }
     function refreshPL() {
       const el = document.getElementById("pl-value");
       const footer = document.getElementById("pl-footer");
-
-      // update amount text
       el.textContent = formatMoney(playerPL);
-
-      // update footer color class
-      footer.classList.remove("pl-positive", "pl-negative");
+      footer.classList.remove("pl-positive","pl-negative");
       if (playerPL > 0) footer.classList.add("pl-positive");
       else if (playerPL < 0) footer.classList.add("pl-negative");
-      // when playerPL === 0 keep the base (neutral) color
     }
-
-
 
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
@@ -419,6 +215,14 @@
       document.getElementById("pl-footer").classList.remove("hidden");
       refreshPL();
       showQuestion();
+    }
+
+    function updateVerificationVisibility() {
+      const raw = document.getElementById("number-input").value.trim();
+      const odds = parseOdds(raw);
+      const ver = document.getElementById("verification");
+      if (odds !== null) ver.classList.remove("hidden");
+      else ver.classList.add("hidden");
     }
 
     function showQuestion() {
@@ -430,13 +234,13 @@
         document.getElementById("verification-message").textContent = "";
         document.getElementById("hint").textContent = questions[current].hint || "";
 
-        // odds prompt (intro view only)
         document.getElementById("number-instruction").innerHTML = NUM_NOTE.replaceAll("\n", "<br>");
         document.getElementById("number-section").style.display = "block";
         document.getElementById("number-warning").style.display = "none";
-        document.getElementById("number-input").value = (oddsByQuestion[current] ?? "").toString();
+        const numInput = document.getElementById("number-input");
+        numInput.value = (oddsByQuestion[current] ?? "").toString();
+        numInput.oninput = updateVerificationVisibility;
 
-        // build postcode inputs
         const code = questions[current].code;
         const container = document.getElementById("code-inputs");
         container.innerHTML = "";
@@ -460,9 +264,12 @@
           container.appendChild(input);
         }
 
-        document.getElementById("verification").style.display = "block";
+        const ver = document.getElementById("verification");
+        ver.style.display = "";
+        ver.classList.add("hidden");
         document.getElementById("main-question").style.display = "none";
         document.getElementById("answer").value = answers[current] || "";
+        updateVerificationVisibility();
       } else {
         document.getElementById("title-question").textContent = FINAL_TITLE;
         document.getElementById("question-stage").innerHTML = `<h2>🎉 You Escaped!</h2><p>Final P/L shown below.</p>`;
@@ -470,7 +277,6 @@
     }
 
     function checkVerification() {
-      // 1) validate/store odds
       const raw = document.getElementById("number-input").value.trim();
       const odds = parseOdds(raw);
       if (raw !== "" && odds === null) {
@@ -480,11 +286,9 @@
       document.getElementById("number-warning").style.display = "none";
       if (odds !== null) { oddsByQuestion[current] = odds; saveJSON(ODDS_KEY, oddsByQuestion); }
 
-      // 2) postcode verification
       const code = questions[current].code;
       const inputs = document.querySelectorAll("#code-inputs input");
       let entered = "", expected = "", masterSlice = "";
-
       inputs.forEach((inp, i) => {
         if (!inp.disabled) {
           entered += inp.value.toUpperCase();
@@ -494,19 +298,15 @@
       });
 
       if (entered === expected || entered === masterSlice) {
-        // WIN: +€1
         playerPL += 1;
         refreshPL();
-
-        // proceed to main question
-        document.getElementById("verification").style.display = "none";
+        document.getElementById("verification").classList.add("hidden");
         document.getElementById("number-section").style.display = "none";
         document.getElementById("main-question").style.display = "block";
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";
         document.getElementById("answer").focus();
       } else {
-        // LOSS: −€X (odds). If odds missing, treat as 0 loss.
         const loss = odds ?? 0;
         playerPL -= loss;
         refreshPL();
@@ -519,7 +319,6 @@
       const input = document.getElementById("answer").value.trim();
       answers[current] = input;
       const correct = questions[current].a.toLowerCase();
-
       if (input.toLowerCase() === correct || input.toLowerCase() === MASTER_ANSWER.toLowerCase()) {
         current++;
         showQuestion();
@@ -532,7 +331,8 @@
 
     document.addEventListener("keyup", function (e) {
       if (e.key === "Enter") {
-        const verifyVisible = document.getElementById("verification").style.display !== "none";
+        const ver = document.getElementById("verification");
+        const verifyVisible = !ver.classList.contains("hidden");
         const mainVisible = document.getElementById("main-question").style.display !== "none";
         if (verifyVisible) checkVerification();
         else if (mainVisible) checkAnswer();

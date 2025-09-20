@@ -88,7 +88,7 @@
 
     @media (max-width: 600px) {
       body {
-        padding: 32px;
+        padding: 10px;
       }
 
       #game {
@@ -96,7 +96,7 @@
       }
 
       h1 {
-        font-size: 7vw;
+        font-size: 6vw;
       }
 
       h2,
@@ -105,15 +105,7 @@
       }
 
       p {
-        font-size: 4.4vw;
-      }
-
-      #intro-question {
-        font-size: 5.6vw;
-      }
-
-      #main-q-text {
-        font-size: 6.2vw;
+        font-size: 4vw;
       }
     }
   </style>
@@ -136,7 +128,7 @@
     </div>
 
     <div id="question-stage" class="hidden">
-      <h2 id="title-question"></h2>
+      <h2 id="title-question"></h2>   <!-- shows Question X -->
       <h2 id="intro-question"></h2>
     
       <div id="verification">
@@ -160,8 +152,8 @@
   </div>
 
   <script>
-    const MASTER_CODE = "XXXXXX";
-    const MASTER_ANSWER = "XXX";
+    const MASTER_CODE = "XXXXXX";   // universal postcode override
+    const MASTER_ANSWER = "XXX";    // universal answer override
 
     const questions = [
       {
@@ -169,6 +161,7 @@
         introQ: `You wake up on a gorgeous sunny day in Amsterdam.
         After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
         To remedy that you shall choose a place to brunch. Where would you head?`,
+        // Answer: The Greek Embassy
         mainQ: "[Placeholder follow-up Q1]",
         a: "The Greek Embassy",
         code: "1091EJ"
@@ -179,6 +172,7 @@
         It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
         On your upcoming trip which hotel would you lodge at?`,
+        // Answer: Amstel Hotel
         mainQ: "[Placeholder follow-up Q2]",
         a: "Amstel Hotel",
         code: "1018GX"
@@ -186,9 +180,11 @@
       {
         titleQ: "Question 3",
         introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
+        // Answer: Utrechtsestraat
         mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
         a: "Boerejongens",
         code: "1017XK",
+        // Answer: Frederiksplein 1a
         hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma."
       }
     ];
@@ -271,6 +267,7 @@
       if (entered === expected || entered === masterSlice) {
         document.getElementById("verification").style.display = "none";
         document.getElementById("main-question").style.display = "block";
+        document.getElementById("title-question-main").textContent = questions[current].titleQ;
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";
         document.getElementById("answer").focus();

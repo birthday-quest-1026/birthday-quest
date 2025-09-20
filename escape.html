@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
@@ -12,10 +12,27 @@
       --header-height-mobile: 96px;
     }
 
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
       font-family: 'Special Elite', monospace;
+      font-size: 18px;
+      line-height: 1.6;
       padding: 20px;
       padding-top: var(--header-height-desktop);
+      margin: 0;
+      color: #000;
+      /* background: rgb(255, 253, 208); */
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      font: inherit;
+      color: inherit;
     }
 
     #sticky-title {
@@ -26,7 +43,6 @@
       z-index: 1000;
       display: none;
       padding: 10px 14px;
-      box-sizing: border-box;
       background: transparent;
     }
 
@@ -34,24 +50,71 @@
       margin: 0 auto;
       max-width: 700px;
       border-radius: 14px;
-      background: rgb(0, 66, 3);
+      background: rgb(0, 66, 37);
       color: rgb(255, 253, 208);
       padding: 14px 18px;
       text-align: center;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-      letter-spacing: 0.5px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+      letter-spacing: .5px;
     }
 
     #sticky-title .title-box #title-question {
       display: block;
-      font-size: 24px;
-      line-height: 1.2;
     }
 
     #game {
       max-width: 600px;
       margin: auto;
       text-align: center;
+    }
+
+    #number-section {
+      margin: 18px 0 8px;
+    }
+
+    .bubble {
+      display: inline-block;
+      max-width: 100%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: #f2f7ff;
+      border: 1px solid #cfe1ff;
+      text-align: center;
+      position: relative;
+    }
+
+    .bubble:after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      bottom: -10px;
+      border-width: 10px 10px 0 10px;
+      border-style: solid;
+      border-color: #f2f7ff transparent transparent transparent;
+      filter: drop-shadow(0 -1px 0 #cfe1ff);
+    }
+
+    .number-box {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #number-input {
+      width: 200px;
+      padding: 8px 10px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    #number-hint {
+      font-size: 16px;
+      color: #666;
     }
 
     .code-box {
@@ -67,10 +130,8 @@
       height: clamp(40px, 12vw, 50px);
       line-height: 1.2;
       text-align: center;
-      font-size: clamp(16px, 4vw, 22px);
       text-transform: uppercase;
-      font-family: 'Special Elite', monospace;
-      box-sizing: border-box;
+      padding: 0;
     }
 
     .code-box input:disabled {
@@ -79,20 +140,30 @@
       -webkit-text-fill-color: black;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    textarea,
+    select {
       margin-top: 10px;
       padding: 8px;
       width: 100%;
-      font-size: clamp(14px, 3vw, 18px);
-      font-family: 'Special Elite', monospace;
+      border: 1px solid #bbb;
+      border-radius: 6px;
       text-transform: capitalize;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    input::placeholder {
+      opacity: .6;
+      font-size: inherit;
     }
 
     button {
       margin-top: 10px;
       padding: 8px 15px;
-      font-size: clamp(14px, 3vw, 18px);
-      font-family: 'Special Elite', monospace;
+      border-radius: 10px;
+      border: none;
+      background: #eee;
       cursor: pointer;
     }
 
@@ -102,14 +173,12 @@
 
     .hint {
       margin-top: 8px;
-      font-size: clamp(12px, 3vw, 16px);
       font-style: italic;
       color: #444;
     }
 
     #intro-question,
     #main-q-text {
-      line-height: 1.6;
       text-align: justify;
       text-justify: inter-word;
       margin-bottom: 15px;
@@ -122,39 +191,14 @@
       content: "";
     }
 
-    @media (max-width: 600px) {
+    @media (max-width:600px) {
       body {
-        padding: 32px 20px 20px 20px;
+        padding: 32px 20px 20px;
         padding-top: var(--header-height-mobile);
       }
 
       #game {
         max-width: 100%;
-      }
-
-      h1 {
-        font-size: 7vw;
-      }
-
-      h2,
-      h3 {
-        font-size: 5vw;
-      }
-
-      p {
-        font-size: 4.4vw;
-      }
-
-      #intro-question {
-        font-size: 5.6vw;
-      }
-
-      #main-q-text {
-        font-size: 6.2vw;
-      }
-
-      #sticky-title .title-box #title-question {
-        font-size: 6.4vw;
       }
     }
   </style>
@@ -162,9 +206,7 @@
 
 <body>
   <div id="sticky-title">
-    <div class="title-box">
-      <span id="title-question"></span>
-    </div>
+    <div class="title-box"><span id="title-question"></span></div>
   </div>
 
   <div id="game">
@@ -173,6 +215,7 @@
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
+        23:12 TO BE REMOVED <br>
         1. Enter the correct postcodes to unlock each stage.<br>
         2. Answer the questions carefully.<br>
         3. You may go back if needed.<br>
@@ -183,6 +226,18 @@
 
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
+
+      <!-- Confidence number (intro-only) -->
+      <div id="number-section">
+        <div id="number-instruction" class="bubble"></div>
+        <div class="number-box">
+          <!-- Use text + inputmode=decimal for iOS decimal keypad; step=any if browsers treat as number -->
+          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*"
+            placeholder="Mennyi az annyi?" autocomplete="off" />
+        </div>
+        <div id="number-warning" class="hint" style="display:none;color:#b00;">Please enter valid odds (positive number).
+        </div>
+      </div>
 
       <div id="verification">
         <p>Enter the postcode:</p>
@@ -205,10 +260,18 @@
   <script>
     const MASTER_CODE = "XXXXXX";
     const MASTER_ANSWER = "XXX";
+    const NUM_NOTE = `🎲 🎲 Gambling time!! 🎲🎲 <br>
+    How confident are you that the answer you will give is correct? <br>
+    The house offers a bet size of €1, choose your odds.`;
+    const FINAL_TITLE = "The End";
+
+
+    const LS_KEY = "confidenceByQuestion";          // localStorage key
+    let confidenceByQuestion = loadConfidenceMap(); // {index: value}
 
     const questions = [
       {
-        titleQ: "Question 1",
+        titleQ: "Spawn Point",
         introQ: `You wake up on a gorgeous sunny day in Amsterdam.
         After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
         To remedy that you shall choose a place to brunch. Where would you head?`,
@@ -217,7 +280,7 @@
         code: "1091EJ"
       },
       {
-        titleQ: "Question 2",
+        titleQ: "Checkpoint 1",
         introQ: `Pantha Rhei has done exceptionally well this year.
         It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
@@ -227,7 +290,7 @@
         code: "1018GX"
       },
       {
-        titleQ: "Question 3",
+        titleQ: "Checkpoint 2",
         introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
         mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
         a: "Boerejongens",
@@ -238,6 +301,29 @@
 
     let current = 0;
     let answers = Array(questions.length).fill("");
+
+    function loadConfidenceMap() {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch { return {}; }
+    }
+    function saveConfidenceMap() {
+      try { localStorage.setItem(LS_KEY, JSON.stringify(confidenceByQuestion)); } catch { }
+    }
+    function parseOdds(str) {
+      if (!str) return null;
+      const num = parseFloat(str.replace(',', '.'));
+      if (isNaN(num) || num <= 0) return null;  // allow any positive odds
+      return num;
+    }
+
+    function averageConfidence() {
+      const vals = Object.values(confidenceByQuestion).map(Number).filter(v => !isNaN(v));
+      if (!vals.length) return null;
+      const sum = vals.reduce((a, b) => a + b, 0);
+      return sum / vals.length;
+    }
 
     function startGame() {
       document.getElementById("intro").classList.add("hidden");
@@ -255,21 +341,26 @@
         document.getElementById("verification-message").textContent = "";
         document.getElementById("hint").textContent = questions[current].hint || "";
 
+        // Intro confidence UI (visible only in intro)
+        document.getElementById("number-instruction").innerHTML = NUM_NOTE;
+        document.getElementById("number-section").style.display = "block";
+        document.getElementById("number-warning").style.display = "none";
+        const prev = confidenceByQuestion[current];
+        document.getElementById("number-input").value = (prev ?? "").toString();
+
+        // Build postcode inputs
         const code = questions[current].code;
         const container = document.getElementById("code-inputs");
         container.innerHTML = "";
         for (let i = 0; i < 6; i++) {
           const input = document.createElement("input");
           input.maxLength = 1;
-
           if (i <= 3) input.setAttribute("inputmode", "numeric");
           else input.setAttribute("inputmode", "text");
-
           if (i === 0 || i === 1 || i === 4) {
             input.value = code[i];
             input.disabled = true;
           }
-
           input.addEventListener("input", function () {
             if (this.value.length === 1) {
               let next = this.nextElementSibling;
@@ -277,7 +368,6 @@
               if (next) next.focus();
             }
           });
-
           input.addEventListener("keydown", function (e) {
             if (e.key === "Backspace" && this.value === "") {
               let prev = this.previousElementSibling;
@@ -285,23 +375,52 @@
               if (prev) prev.focus();
             }
           });
-
           container.appendChild(input);
         }
 
         document.getElementById("verification").style.display = "block";
         document.getElementById("main-question").style.display = "none";
-
         document.getElementById("answer").value = answers[current] || "";
       } else {
-        document.getElementById("game").innerHTML = "<h2>🎉 You Escaped!</h2>";
+        // Finished: set a brand-new checkpoint title
+        document.getElementById("title-question").textContent = FINAL_TITLE;
+
+        // Compute and show average confidence
+        const avg = averageConfidence();
+        const avgText = (avg === null)
+          ? "No confidence numbers were entered."
+          : `Average confidence: ${avg.toFixed(2)} / 10`;
+
+        // Show the end screen (keep sticky header; replace question area only)
+        document.getElementById("question-stage").innerHTML =
+          `<h2>🎉 You Escaped!</h2><p>${avgText}</p>`;
       }
     }
 
     function checkVerification() {
+      // save the intro confidence (if valid) just before proceeding to main question
+      const raw = document.getElementById("number-input").value.trim();
+      const num = parseOdds(raw);
+      if (raw !== "" && num === null) {
+        document.getElementById("number-warning").style.display = "block";
+        return; // block until valid or cleared
+      } else {
+        document.getElementById("number-warning").style.display = "none";
+        if (num !== null) {
+          confidenceByQuestion[current] = num; // save for this question index
+          saveConfidenceMap();
+        } else {
+          // if user cleared input, remove stored value for this question
+          if (confidenceByQuestion.hasOwnProperty(current)) {
+            delete confidenceByQuestion[current];
+            saveConfidenceMap();
+          }
+        }
+      }
+
+      // postcode verification
       const code = questions[current].code;
       const inputs = document.querySelectorAll("#code-inputs input");
-
       let entered = "", expected = "", masterSlice = "";
 
       inputs.forEach((inp, i) => {
@@ -314,6 +433,7 @@
 
       if (entered === expected || entered === masterSlice) {
         document.getElementById("verification").style.display = "none";
+        document.getElementById("number-section").style.display = "none"; // hide in main section
         document.getElementById("main-question").style.display = "block";
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";

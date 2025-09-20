@@ -6,165 +6,61 @@
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --header-height-desktop: 88px;
-      --header-height-mobile: 96px;
-    }
-
+    :root { --header-height-desktop: 88px; --header-height-mobile: 96px; }
     html { -webkit-text-size-adjust: 100%; }
-
     body {
-      font-family: 'Special Elite', monospace;
-      font-size: 18px;
-      line-height: 1.6;
-      padding: 20px;
-      padding-top: var(--header-height-desktop);
-      margin: 0;
-      color: #000;
+      font-family: 'Special Elite', monospace; font-size: 18px; line-height: 1.6;
+      padding: 20px; padding-top: var(--header-height-desktop); margin: 0; color: #000;
+    }
+    *,*::before,*::after{ box-sizing:border-box; font:inherit; color:inherit; }
+
+    #sticky-title{ position:fixed; top:0; left:0; right:0; z-index:1000; display:none; padding:10px 14px; background:transparent; }
+    #sticky-title .title-box{
+      margin:0 auto; max-width:700px; border-radius:14px; background:rgb(0,66,37);
+      color:rgb(255,253,208); padding:14px 18px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,.25); letter-spacing:.5px;
+    }
+    #sticky-title .title-box #title-question{ display:block; }
+
+    #game{ max-width:600px; margin:auto; text-align:center; }
+
+    #number-section{ margin:18px 0 8px; }
+    .bubble{
+      display:inline-block; max-width:100%; padding:10px 14px; border-radius:16px;
+      background:#f2f7ff; border:1px solid #cfe1ff; text-align:left; position:relative;
+    }
+    .bubble:after{
+      content:""; position:absolute; left:24px; bottom:-10px; border-width:10px 10px 0 10px; border-style:solid;
+      border-color:#f2f7ff transparent transparent transparent; filter:drop-shadow(0 -1px 0 #cfe1ff);
+    }
+    .number-box{ margin-top:10px; display:flex; justify-content:center; }
+    #number-input{
+      width:180px; padding:8px 10px; border:1px solid #bbb; border-radius:8px; text-align:center; font-size:18px; line-height:1.4;
     }
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-      font: inherit;
-      color: inherit;
+    .code-box{ display:flex; justify-content:center; gap:5px; margin:10px 0; flex-wrap:wrap; }
+    .code-box input{ width:clamp(35px,12vw,45px); height:clamp(40px,12vw,50px); line-height:1.2; text-align:center; text-transform:uppercase; padding:0; }
+    .code-box input:disabled{ color:black; opacity:1; -webkit-text-fill-color:black; }
+
+    input[type="text"], textarea, select{
+      margin-top:10px; padding:8px; width:100%; border:1px solid #bbb; border-radius:6px; text-transform:capitalize; font-size:18px; line-height:1.4;
     }
+    input::placeholder{ opacity:.6; font-size:inherit; }
 
-    #sticky-title {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      display: none;
-      padding: 10px 14px;
-      background: transparent;
-    }
+    button{ margin-top:10px; padding:8px 15px; border-radius:10px; border:none; background:#eee; cursor:pointer; }
 
-    #sticky-title .title-box {
-      margin: 0 auto;
-      max-width: 700px;
-      border-radius: 14px;
-      background: rgb(0, 66, 37);
-      color: rgb(255, 253, 208);
-      padding: 14px 18px;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-      letter-spacing: 0.5px;
-    }
+    .hidden{ display:none; }
+    .hint{ margin-top:8px; font-style:italic; color:#444; }
 
-    #sticky-title .title-box #title-question { display: block; }
+    #intro-question,#main-q-text{ text-align:justify; text-justify:inter-word; margin-bottom:15px; }
+    #intro-question br,#main-q-text br{ display:block; margin-bottom:75px; content:""; }
 
-    #game { max-width: 600px; margin: auto; text-align: center; }
-
-    /* --- NUMBER SECTION (new) --- */
-    #number-section { margin: 18px 0 8px; }
-    .bubble {
-      display: inline-block;
-      max-width: 100%;
-      padding: 10px 14px;
-      border-radius: 16px;
-      background: #f2f7ff;
-      border: 1px solid #cfe1ff;
-      text-align: left;
-      position: relative;
-    }
-    .bubble:after {
-      content: "";
-      position: absolute;
-      left: 24px;
-      bottom: -10px;
-      border-width: 10px 10px 0 10px;
-      border-style: solid;
-      border-color: #f2f7ff transparent transparent transparent;
-      filter: drop-shadow(0 -1px 0 #cfe1ff);
-    }
-    .number-box {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-    }
-    #number-input {
-      width: 180px;
-      padding: 8px 10px;
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      text-align: center;
-      /* iOS no-zoom: keep ≥16px */
-      font-size: 18px;
-      line-height: 1.4;
-    }
-
-    .code-box {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin: 10px 0;
-      flex-wrap: wrap;
-    }
-
-    .code-box input {
-      width: clamp(35px, 12vw, 45px);
-      height: clamp(40px, 12vw, 50px);
-      line-height: 1.2;
-      text-align: center;
-      text-transform: uppercase;
-      padding: 0;
-    }
-
-    .code-box input:disabled {
-      color: black;
-      opacity: 1;
-      -webkit-text-fill-color: black;
-    }
-
-    input[type="text"], textarea, select {
-      margin-top: 10px;
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-      text-transform: capitalize;
-      font-size: 18px;       /* iOS no-zoom */
-      line-height: 1.4;
-    }
-
-    input::placeholder { opacity: 0.6; font-size: inherit; }
-
-    button {
-      margin-top: 10px;
-      padding: 8px 15px;
-      border-radius: 10px;
-      border: none;
-      background: #eee;
-      cursor: pointer;
-    }
-
-    .hidden { display: none; }
-
-    .hint { margin-top: 8px; font-style: italic; color: #444; }
-
-    #intro-question, #main-q-text {
-      text-align: justify;
-      text-justify: inter-word;
-      margin-bottom: 15px;
-    }
-
-    #intro-question br, #main-q-text br {
-      display: block;
-      margin-bottom: 75px;
-      content: "";
-    }
-
-    @media (max-width: 600px) {
-      body { padding: 32px 20px 20px 20px; padding-top: var(--header-height-mobile); }
-      #game { max-width: 100%; }
-    }
+    @media (max-width:600px){ body{ padding:32px 20px 20px; padding-top:var(--header-height-mobile); } #game{ max-width:100%; } }
   </style>
 </head>
 
 <body>
   <div id="sticky-title">
-    <div class="title-box">
-      <span id="title-question"></span>
-    </div>
+    <div class="title-box"><span id="title-question"></span></div>
   </div>
 
   <div id="game">
@@ -185,20 +81,10 @@
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
 
-      <!-- NEW: Number field + instruction bubble -->
       <div id="number-section">
-        <div id="number-instruction" class="bubble">
-          <!-- per-question text goes here from JS -->
-        </div>
+        <div id="number-instruction" class="bubble"></div>
         <div class="number-box">
-          <input
-            id="number-input"
-            type="tel"
-            inputmode="numeric"
-            pattern="[0-9]*"
-            placeholder="Enter number"
-            autocomplete="off"
-          />
+          <input id="number-input" type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="Enter number" autocomplete="off"/>
         </div>
       </div>
 
@@ -223,6 +109,7 @@
   <script>
     const MASTER_CODE = "XXXXXX";
     const MASTER_ANSWER = "XXX";
+    const NUM_NOTE = "Type the special number for this step (digits only).";
 
     const questions = [
       {
@@ -232,8 +119,7 @@
         To remedy that you shall choose a place to brunch. Where would you head?`,
         mainQ: "[Placeholder follow-up Q1]",
         a: "The Greek Embassy",
-        code: "1091EJ",
-        numNote: "Type the special number for this step (digits only)."
+        code: "1091EJ"
       },
       {
         titleQ: "Checkpoint 1",
@@ -243,8 +129,7 @@
         On your upcoming trip which hotel would you lodge at?`,
         mainQ: "[Placeholder follow-up Q2]",
         a: "Amstel Hotel",
-        code: "1018GX",
-        numNote: "Enter the required number for this checkpoint."
+        code: "1018GX"
       },
       {
         titleQ: "Checkpoint 2",
@@ -252,8 +137,7 @@
         mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
         a: "Boerejongens",
         code: "1017XK",
-        hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma.",
-        numNote: "Írd be a szükséges számot (csak számjegyek)."
+        hint: "💡 A Te szemszögedből nézve az utca elején levő épület irányítószáma."
       }
     ];
 
@@ -276,12 +160,10 @@
         document.getElementById("verification-message").textContent = "";
         document.getElementById("hint").textContent = questions[current].hint || "";
 
-        // Set number bubble text and clear previous entry
-        document.getElementById("number-instruction").textContent =
-          questions[current].numNote || "Enter the number for this step.";
+        document.getElementById("number-instruction").textContent = NUM_NOTE;
         document.getElementById("number-input").value = "";
+        document.getElementById("number-section").style.display = "block";
 
-        // Build postcode inputs
         const code = questions[current].code;
         const container = document.getElementById("code-inputs");
         container.innerHTML = "";
@@ -324,7 +206,6 @@
       const inputs = document.querySelectorAll("#code-inputs input");
 
       let entered = "", expected = "", masterSlice = "";
-
       inputs.forEach((inp, i) => {
         if (!inp.disabled) {
           entered += inp.value.toUpperCase();
@@ -335,6 +216,7 @@
 
       if (entered === expected || entered === masterSlice) {
         document.getElementById("verification").style.display = "none";
+        document.getElementById("number-section").style.display = "none";
         document.getElementById("main-question").style.display = "block";
         document.getElementById("main-q-text").innerHTML = questions[current].mainQ;
         document.getElementById("answer").value = answers[current] || "";

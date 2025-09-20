@@ -79,7 +79,7 @@
       border-radius: 16px;
       background: #f2f7ff;
       border: 1px solid #cfe1ff;
-      text-align: left;
+      text-align: center;
       position: relative;
     }
 
@@ -215,7 +215,7 @@
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
-        23:04 TO BE REMOVED <br>
+        23:12 TO BE REMOVED <br>
         1. Enter the correct postcodes to unlock each stage.<br>
         2. Answer the questions carefully.<br>
         3. You may go back if needed.<br>
@@ -341,7 +341,7 @@
         document.getElementById("hint").textContent = questions[current].hint || "";
 
         // Intro confidence UI (visible only in intro)
-        document.getElementById("number-instruction").textHTML = NUM_NOTE;
+        document.getElementById("number-instruction").innerHTML = NUM_NOTE;
         document.getElementById("number-section").style.display = "block";
         document.getElementById("number-warning").style.display = "none";
         const prev = confidenceByQuestion[current];

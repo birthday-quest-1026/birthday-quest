@@ -1,61 +1,205 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <style>
-    :root { --header-height-desktop: 88px; --header-height-mobile: 96px; }
-    html { -webkit-text-size-adjust: 100%; }
+    :root {
+      --header-height-desktop: 88px;
+      --header-height-mobile: 96px;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
-      font-family: 'Special Elite', monospace; font-size: 18px; line-height: 1.6;
-      padding: 20px; padding-top: var(--header-height-desktop); margin: 0; color: #000;
+      font-family: 'Special Elite', monospace;
+      font-size: 18px;
+      line-height: 1.6;
+      padding: 20px;
+      padding-top: var(--header-height-desktop);
+      margin: 0;
+      color: #000;
     }
-    *,*::before,*::after{ box-sizing:border-box; font:inherit; color:inherit; }
 
-    #sticky-title{ position:fixed; top:0; left:0; right:0; z-index:1000; display:none; padding:10px 14px; background:transparent; }
-    #sticky-title .title-box{
-      margin:0 auto; max-width:700px; border-radius:14px; background:rgb(0,66,37);
-      color:rgb(255,253,208); padding:14px 18px; text-align:center; box-shadow:0 6px 18px rgba(0,0,0,.25); letter-spacing:.5px;
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      font: inherit;
+      color: inherit;
     }
-    #sticky-title .title-box #title-question{ display:block; }
 
-    #game{ max-width:600px; margin:auto; text-align:center; }
-
-    #number-section{ margin:18px 0 8px; }
-    .bubble{
-      display:inline-block; max-width:100%; padding:10px 14px; border-radius:16px;
-      background:#f2f7ff; border:1px solid #cfe1ff; text-align:left; position:relative;
+    #sticky-title {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: none;
+      padding: 10px 14px;
+      background: transparent;
     }
-    .bubble:after{
-      content:""; position:absolute; left:24px; bottom:-10px; border-width:10px 10px 0 10px; border-style:solid;
-      border-color:#f2f7ff transparent transparent transparent; filter:drop-shadow(0 -1px 0 #cfe1ff);
+
+    #sticky-title .title-box {
+      margin: 0 auto;
+      max-width: 700px;
+      border-radius: 14px;
+      background: rgb(0, 66, 37);
+      color: rgb(255, 253, 208);
+      padding: 14px 18px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+      letter-spacing: .5px;
     }
-    .number-box{ margin-top:10px; display:flex; justify-content:center; gap:10px; align-items:center; }
-    #number-input{
-      width:200px; padding:8px 10px; border:1px solid #bbb; border-radius:8px; text-align:center; font-size:18px; line-height:1.4;
+
+    #sticky-title .title-box #title-question {
+      display: block;
     }
-    #number-hint { font-size: 16px; color:#666; }
 
-    .code-box{ display:flex; justify-content:center; gap:5px; margin:10px 0; flex-wrap:wrap; }
-    .code-box input{ width:clamp(35px,12vw,45px); height:clamp(40px,12vw,50px); line-height:1.2; text-align:center; text-transform:uppercase; padding:0; }
-    .code-box input:disabled{ color:black; opacity:1; -webkit-text-fill-color:black; }
-
-    input[type="text"], textarea, select{
-      margin-top:10px; padding:8px; width:100%; border:1px solid #bbb; border-radius:6px; text-transform:capitalize; font-size:18px; line-height:1.4;
+    #game {
+      max-width: 600px;
+      margin: auto;
+      text-align: center;
     }
-    input::placeholder{ opacity:.6; font-size:inherit; }
 
-    button{ margin-top:10px; padding:8px 15px; border-radius:10px; border:none; background:#eee; cursor:pointer; }
+    #number-section {
+      margin: 18px 0 8px;
+    }
 
-    .hidden{ display:none; }
-    .hint{ margin-top:8px; font-style:italic; color:#444; }
+    .bubble {
+      display: inline-block;
+      max-width: 100%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      background: #f2f7ff;
+      border: 1px solid #cfe1ff;
+      text-align: left;
+      position: relative;
+    }
 
-    #intro-question,#main-q-text{ text-align:justify; text-justify:inter-word; margin-bottom:15px; }
-    #intro-question br,#main-q-text br{ display:block; margin-bottom:75px; content:""; }
+    .bubble:after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      bottom: -10px;
+      border-width: 10px 10px 0 10px;
+      border-style: solid;
+      border-color: #f2f7ff transparent transparent transparent;
+      filter: drop-shadow(0 -1px 0 #cfe1ff);
+    }
 
-    @media (max-width:600px){ body{ padding:32px 20px 20px; padding-top:var(--header-height-mobile); } #game{ max-width:100%; } }
+    .number-box {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      align-items: center;
+    }
+
+    #number-input {
+      width: 200px;
+      padding: 8px 10px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    #number-hint {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .code-box {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .code-box input {
+      width: clamp(35px, 12vw, 45px);
+      height: clamp(40px, 12vw, 50px);
+      line-height: 1.2;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 0;
+    }
+
+    .code-box input:disabled {
+      color: black;
+      opacity: 1;
+      -webkit-text-fill-color: black;
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      margin-top: 10px;
+      padding: 8px;
+      width: 100%;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      text-transform: capitalize;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+
+    input::placeholder {
+      opacity: .6;
+      font-size: inherit;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border-radius: 10px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-style: italic;
+      color: #444;
+    }
+
+    #intro-question,
+    #main-q-text {
+      text-align: justify;
+      text-justify: inter-word;
+      margin-bottom: 15px;
+    }
+
+    #intro-question br,
+    #main-q-text br {
+      display: block;
+      margin-bottom: 75px;
+      content: "";
+    }
+
+    @media (max-width:600px) {
+      body {
+        padding: 32px 20px 20px;
+        padding-top: var(--header-height-mobile);
+      }
+
+      #game {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
@@ -87,10 +231,12 @@
         <div id="number-instruction" class="bubble"></div>
         <div class="number-box">
           <!-- Use text + inputmode=decimal for iOS decimal keypad; step=any if browsers treat as number -->
-          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="e.g., 7.5" autocomplete="off"/>
+          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="e.g., 7.5"
+            autocomplete="off" />
           <span id="number-hint">(1–10, decimals allowed)</span>
         </div>
-        <div id="number-warning" class="hint" style="display:none;color:#b00;">Please enter a number between 1 and 10.</div>
+        <div id="number-warning" class="hint" style="display:none;color:#b00;">Please enter a number between 1 and 10.
+        </div>
       </div>
 
       <div id="verification">
@@ -115,6 +261,8 @@
     const MASTER_CODE = "XXXXXX";
     const MASTER_ANSWER = "XXX";
     const NUM_NOTE = "How sure are you that your answer will be correct? Indicate below on a scale from 1 to 10.";
+    const FINAL_TITLE = "Final Checkpoint";
+
 
     const LS_KEY = "confidenceByQuestion";          // localStorage key
     let confidenceByQuestion = loadConfidenceMap(); // {index: value}
@@ -152,25 +300,25 @@
     let current = 0;
     let answers = Array(questions.length).fill("");
 
-    function loadConfidenceMap(){
+    function loadConfidenceMap() {
       try {
         const raw = localStorage.getItem(LS_KEY);
         return raw ? JSON.parse(raw) : {};
       } catch { return {}; }
     }
-    function saveConfidenceMap(){
-      try { localStorage.setItem(LS_KEY, JSON.stringify(confidenceByQuestion)); } catch {}
+    function saveConfidenceMap() {
+      try { localStorage.setItem(LS_KEY, JSON.stringify(confidenceByQuestion)); } catch { }
     }
-    function parseConfidence(str){
+    function parseConfidence(str) {
       if (!str) return null;
       const num = parseFloat(str.replace(',', '.'));
       if (isNaN(num) || num < 1 || num > 10) return null;
       return num;
     }
-    function averageConfidence(){
+    function averageConfidence() {
       const vals = Object.values(confidenceByQuestion).map(Number).filter(v => !isNaN(v));
       if (!vals.length) return null;
-      const sum = vals.reduce((a,b)=>a+b,0);
+      const sum = vals.reduce((a, b) => a + b, 0);
       return sum / vals.length;
     }
 
@@ -231,10 +379,18 @@
         document.getElementById("main-question").style.display = "none";
         document.getElementById("answer").value = answers[current] || "";
       } else {
-        // Game finished — compute average and show
+        // Finished: set a brand-new checkpoint title
+        document.getElementById("title-question").textContent = FINAL_TITLE;
+
+        // Compute and show average confidence
         const avg = averageConfidence();
-        const avgText = (avg === null) ? "No confidence numbers were entered." : `Average confidence: ${avg.toFixed(2)} / 10`;
-        document.getElementById("game").innerHTML = `<h2>🎉 You Escaped!</h2><p>${avgText}</p>`;
+        const avgText = (avg === null)
+          ? "No confidence numbers were entered."
+          : `Average confidence: ${avg.toFixed(2)} / 10`;
+
+        // Show the end screen (keep sticky header; replace question area only)
+        document.getElementById("question-stage").innerHTML =
+          `<h2>🎉 You Escaped!</h2><p>${avgText}</p>`;
       }
     }
 
@@ -313,4 +469,5 @@
     });
   </script>
 </body>
+
 </html>

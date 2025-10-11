@@ -16,9 +16,7 @@
       --pl-neg: rgb(109, 3, 2)
     }
 
-    html {
-      -webkit-text-size-adjust: 100%
-    }
+    html { -webkit-text-size-adjust: 100% }
 
     body {
       font-family: 'Special Elite', monospace;
@@ -31,250 +29,88 @@
       padding-bottom: calc(var(--footer-h) + 12px)
     }
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      font: inherit;
-      color: inherit
-    }
+    *, *::before, *::after { box-sizing: border-box; font: inherit; color: inherit }
 
     #sticky-title {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      display: none;
-      padding: 10px 14px;
-      background: transparent
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: none; padding: 10px 14px; background: transparent
     }
 
     #sticky-title .title-box {
-      margin: 0 auto;
-      max-width: 700px;
-      border-radius: 14px;
-      background: rgb(0, 66, 37);
-      color: rgb(255, 253, 208);
-      padding: 14px 18px;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
-      letter-spacing: .5px
+      margin: 0 auto; max-width: 700px; border-radius: 14px;
+      background: rgb(0, 66, 37); color: rgb(255, 253, 208);
+      padding: 14px 18px; text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25); letter-spacing: .5px
     }
 
-    #game {
-      max-width: 600px;
-      margin: auto;
-      text-align: center
-    }
-
-    #number-section {
-      margin: 18px 0 8px
-    }
+    #game { max-width: 600px; margin: auto; text-align: center }
+    #number-section { margin: 18px 0 8px }
 
     .bubble {
-      display: inline-block;
-      max-width: 100%;
-      padding: 16px 20px;
-      border-radius: 16px;
-      background: #f2f7ff;
-      border: 1px solid #cfe1ff;
-      text-align: center;
-      position: relative
+      display: inline-block; max-width: 100%;
+      padding: 16px 20px; border-radius: 16px;
+      background: #f2f7ff; border: 1px solid #cfe1ff;
+      text-align: center; position: relative
     }
-
     .bubble:after {
-      content: "";
-      position: absolute;
-      left: 24px;
-      bottom: -10px;
-      border-width: 10px 10px 0 10px;
-      border-style: solid;
+      content: ""; position: absolute; left: 24px; bottom: -10px;
+      border-width: 10px 10px 0 10px; border-style: solid;
       border-color: #f2f7ff transparent transparent transparent
     }
 
-    #num-title {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 8px
+    #num-title { font-size: 20px; font-weight: 700; margin-bottom: 8px }
+
+    #number-instruction .info-btn{
+      display: inline-block; margin-top: 8px; padding: 6px 14px;
+      border-radius: 999px; background: #eef0ff; border: 1px solid #c9d0ff;
+      font-size: 14px; cursor: pointer
     }
+    #number-instruction .info-btn:focus{ outline: none }
+    #number-instruction .info-btn:focus-visible{ outline: 2px solid #c9d0ff }
 
-    #number-instruction .info-btn {
-      display: inline-block;
-      margin-top: 8px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      background: #eef0ff;
-      border: 1px solid #c9d0ff;
-      font-size: 14px;
-      cursor: pointer
+    #number-instruction .info-pop{
+      margin: 14px auto 0; padding: 14px 18px; border-radius: 12px;
+      background: #fff; border: 1px solid #cfe1ff; font-size: 16px;
+      line-height: 1.55; text-align: center; display: inline-block;
+      width: min(520px, 90%); box-shadow: 0 3px 8px rgba(0,0,0,.08)
     }
+    #number-instruction .info-pop.hidden{ display: none !important }
 
-    #number-instruction .info-btn:focus {
-      outline: none
+    .number-box{ margin-top: 10px; display: flex; justify-content: center; gap: 10px; align-items: center }
+    #number-input{ width: 200px; padding: 8px 10px; border: 1px solid #bbb; border-radius: 8px; text-align: center; font-size: 18px; line-height: 1.4 }
+
+    .code-box{ display: flex; justify-content: center; gap: 5px; margin: 10px 0; flex-wrap: wrap }
+    .code-box input{ width: clamp(35px,12vw,45px); height: clamp(40px,12vw,50px); line-height: 1.2; text-align: center; text-transform: uppercase; padding: 0 }
+    .code-box input:disabled{ color: black; opacity: 1; -webkit-text-fill-color: black }
+
+    input[type="text"], textarea, select{
+      margin-top: 10px; padding: 8px; width: 100%;
+      border: 1px solid #bbb; border-radius: 6px; text-transform: capitalize;
+      font-size: 18px; line-height: 1.4
     }
+    input::placeholder{ opacity: .6; font-size: inherit }
+    button{ margin-top: 10px; padding: 8px 15px; border-radius: 10px; border: none; background: #eee; cursor: pointer }
 
-    #number-instruction .info-btn:focus-visible {
-      outline: 2px solid #c9d0ff
+    .hidden{ display: none !important }
+    #pl-footer.hidden{ display: none !important }
+
+    .hint{ margin-top: 8px; font-style: italic; color: #444 }
+    #intro-question,#main-q-text{ text-align: justify; text-justify: inter-word; margin-bottom: 15px }
+    #intro-question br,#main-q-text br{ display: block; margin-bottom: 75px; content: "" }
+
+    #pl-footer{
+      position: fixed; left: 0; right: 0; bottom: 0; height: var(--footer-h);
+      background: var(--pl-zero); transition: background-color 200ms ease; color: rgb(255,253,208);
+      display: flex; align-items: center; justify-content: center; gap: 14px; padding: 0 16px; z-index: 1100;
+      box-shadow: 0 -6px 18px rgba(0,0,0,.15); font-size: 18px
     }
+    #pl-footer.pl-positive{ background: var(--pl-pos) }
+    #pl-footer.pl-negative{ background: var(--pl-neg) }
+    #pl-footer .pill{ padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2) }
 
-    #number-instruction .info-pop {
-      margin: 14px auto 0;
-      padding: 14px 18px;
-      border-radius: 12px;
-      background: #fff;
-      border: 1px solid #cfe1ff;
-      font-size: 16px;
-      line-height: 1.55;
-      text-align: center;
-      display: inline-block;
-      width: min(520px, 90%);
-      box-shadow: 0 3px 8px rgba(0, 0, 0, .08)
-    }
-
-    #number-instruction .info-pop.hidden {
-      display: none !important
-    }
-
-    .number-box {
-      margin-top: 10px;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      align-items: center
-    }
-
-    #number-input {
-      width: 200px;
-      padding: 8px 10px;
-      border: 1px solid #bbb;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 18px;
-      line-height: 1.4
-    }
-
-    .code-box {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-      margin: 10px 0;
-      flex-wrap: wrap
-    }
-
-    .code-box input {
-      width: clamp(35px, 12vw, 45px);
-      height: clamp(40px, 12vw, 50px);
-      line-height: 1.2;
-      text-align: center;
-      text-transform: uppercase;
-      padding: 0
-    }
-
-    .code-box input:disabled {
-      color: black;
-      opacity: 1;
-      -webkit-text-fill-color: black
-    }
-
-    input[type="text"],
-    textarea,
-    select {
-      margin-top: 10px;
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-      text-transform: capitalize;
-      font-size: 18px;
-      line-height: 1.4
-    }
-
-    input::placeholder {
-      opacity: .6;
-      font-size: inherit
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 8px 15px;
-      border-radius: 10px;
-      border: none;
-      background: #eee;
-      cursor: pointer
-    }
-
-    .hidden {
-      display: none !important
-    }
-
-    #pl-footer.hidden {
-      display: none !important
-    }
-
-    .hint {
-      margin-top: 8px;
-      font-style: italic;
-      color: #444
-    }
-
-    #intro-question,
-    #main-q-text {
-      text-align: justify;
-      text-justify: inter-word;
-      margin-bottom: 15px
-    }
-
-    #intro-question br,
-    #main-q-text br {
-      display: block;
-      margin-bottom: 75px;
-      content: ""
-    }
-
-    #pl-footer {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: var(--footer-h);
-      background: var(--pl-zero);
-      transition: background-color 200ms ease;
-      color: rgb(255, 253, 208);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      padding: 0 16px;
-      z-index: 1100;
-      box-shadow: 0 -6px 18px rgba(0, 0, 0, .15);
-      font-size: 18px
-    }
-
-    #pl-footer.pl-positive {
-      background: var(--pl-pos)
-    }
-
-    #pl-footer.pl-negative {
-      background: var(--pl-neg)
-    }
-
-    #pl-footer .pill {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, .1);
-      border: 1px solid rgba(255, 255, 255, .2)
-    }
-
-    @media (max-width:600px) {
-      body {
-        padding: 32px 20px calc(var(--footer-h) + 16px) 20px;
-        padding-top: var(--header-height-mobile)
-      }
-
-      #game {
-        max-width: 100%
-      }
+    @media (max-width:600px){
+      body{ padding: 32px 20px calc(var(--footer-h) + 16px) 20px; padding-top: var(--header-height-mobile) }
+      #game{ max-width: 100% }
     }
   </style>
 </head>
@@ -286,7 +122,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED XXXX 19:51 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 20:32 🔐 Birthday Escape Room</h1>
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
@@ -339,7 +175,9 @@
   </div>
 
   <script>
-    const MASTER_CODE = "XXXXXX";
+    /* CHANGED: allow two master codes */
+    const MASTER_CODES = ["XXXXXX", "0000XX"];
+
     const MASTER_ANSWER = "XXX";
     const NUM_TITLE = "🎲🎲 Gambling time! 🎲🎲";
     const INFO_TEXT = `How confident are you that the answer you will give is correct?<br>
@@ -363,190 +201,181 @@
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
         On your upcoming trip which hotel would you lodge at?`, mainQ: "ANSWER NOT UPDATED TO BE EDITED - Kinek a szobra található a hotel bejárata előtt?",
         a: "Amstel Hotel", code: "1018GX"},
-
       { titleQ: "Checkpoint 2", introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
-      mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
-      a: "Boerejongens", code: "1017XK", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma." },
-
+        mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
+        a: "Boerejongens", code: "1017XK", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma." },
       { titleQ: "Checkpoint 3", introQ: `Újdonsült titkosmikkentyűd azt kéri tőled, hogy menj a második legközelebbi térre, hogy elfogyaszd. (A legközelebbi nyilvánvalóan kiesik).`,
-      mainQ: `Ezen a ponton valószínűleg Arnoldnak már pisilnie kell, miután elvégzi dolgát megtetszik a csatorna látványa.
-      Ideális esetben ezelőtt a házszám előtt fogtok leülni elfogyasztani Bismarckot.`, a: "59", code: "1017JD" },
-
+        mainQ: `Ezen a ponton valószínűleg Arnoldnak már pisilnie kell, miután elvégzi dolgát megtetszik a csatorna látványa.
+        Ideális esetben ezelőtt a házszám előtt fogtok leülni elfogyasztani Bismarckot.`, a: "59", code: "1017JD" },
       { titleQ: "Checkpoint 4", introQ: `Keresd meg a Vijzelstraat és Reguliersgracht között található (nagy valószínűséggel őrült) porcelános néni üzletét`,
-      mainQ: `Hogy hívják az üzletet?`, a: "Golden Bend", code: "1017CC" },
-
+        mainQ: `Hogy hívják az üzletet?`, a: "Golden Bend", code: "1017CC" },
       { titleQ: "Checkpoint 5", introQ: `Következő checkpointod (tulajdonképp) a VOC egyik (volt) irodaépülete.`,
-      mainQ: `Kezd el felfele haladni a lépcsőházban. Ki van Mercurius és Jupiter között?`, a: "F.S. Van Nierop", code: "1017CB" },
-
+        mainQ: `Kezd el felfele haladni a lépcsőházban. Ki van Mercurius és Jupiter között?`, a: "F.S. Van Nierop", code: "1017CB" },
       { titleQ: "Checkpoint 6", introQ: `Gratulálunk, Ön közbeszerzést nyert! <p>
         Pályázatában kötelezettséget vállalt a háztartás több évre szóló öngyújtó-ellátásának biztosítására.
         Hol eszközölné beszerzését?`, mainQ: "[Placeholder follow-up Q4]", a: "Hartman Cigars", code: "1017PC"},
-
       { titleQ: "Checkpoint 7", introQ: `A bolttól elindulván egyszerre csak meghallod a természet hívását. Honnan jöhet?`,
-      mainQ: "Milyen márka kapható az üzlettel szembeni boltban?", a: "NIO", code: "1017EJ" },
-
+        mainQ: "Milyen márka kapható az üzlettel szembeni boltban?", a: "NIO", code: "1017EJ" },
       { titleQ: "Checkpoint 8", introQ: `After a wise decision of taking a rain check on those magic mushrooms you are still craving some miracle.
         Where would an Amsterdammer from a bygone era go to view some miracle?
         Where does your journey continue?`, mainQ: `You want to test your brand new lighter. But not anyhow. In style.
         Like a movie star. Which coffeeshop in the close vicinity is featured in a movie?`, a: "Dampkring", code: "1012WP",
         hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma."},
-
       { titleQ: "Checkpoint 9", introQ: `Before you would put your new lighter to the test and fulfill your sensual/spiritual desire, you first want to fulfill some intellectual desires.
-      Next stop is your favorite book store`, mainQ: `A bolthoz érvén mindkettőnknek felcsillan a szeme.
-      Neked a könyvesbolt miatt, nekem viszont valami más miatt. Mit látok?`, a: "Chatime", code: "1012XE" },
-      
+        Next stop is your favorite book store`, mainQ: `A bolthoz érvén mindkettőnknek felcsillan a szeme.
+        Neked a könyvesbolt miatt, nekem viszont valami más miatt. Mit látok?`, a: "Chatime", code: "1012XE" },
       { titleQ: "Checkpoint 10", introQ: `Mily szerencse, hogy Dampringes szerzeményedet nem fogyasztottad még el, következő megálló Amszterdam legjobb coffeeshopja.`,
-      mainQ: `ANSWER NOT UPDATED TO BE EDITED - Válaszd ki a menün az X-ik sativa prerolled. Mi a neve?`, a: "", code: "1012PL" },
-      // { titleQ: "Checkpoint 10", introQ: ``, mainQ: ``, a: "", code: "1012XE" },
+        mainQ: `ANSWER NOT UPDATED TO BE EDITED - Válaszd ki a menün az X-ik sativa prerolled. Mi a neve?`, a: "", code: "1012PL" }
     ];
 
     let current = 0;
     let answers = Array(questions.length).fill("");
 
-    function parseOdds(str) { if (!str) return null; const n = parseFloat(str.replace(',', '.')); if (isNaN(n) || n <= 0) return null; return n }
-    function formatMoney(n) { const abs = Math.abs(n).toFixed(2); if (n > 0) return "+€" + abs; if (n < 0) return "−€" + abs; return "€" + abs }
-    function refreshPL() { const el = document.getElementById("pl-value"); const f = document.getElementById("pl-footer"); el.textContent = formatMoney(playerPL); f.classList.remove("pl-positive", "pl-negative"); if (playerPL > 0) f.classList.add("pl-positive"); else if (playerPL < 0) f.classList.add("pl-negative") }
+    function parseOdds(str){ if(!str) return null; const n=parseFloat(str.replace(',','.')); if(isNaN(n)||n<=0) return null; return n }
+    function formatMoney(n){ const abs=Math.abs(n).toFixed(2); if(n>0) return "+€"+abs; if(n<0) return "−€"+abs; return "€"+abs }
+    function refreshPL(){ const el=document.getElementById("pl-value"); const f=document.getElementById("pl-footer"); el.textContent=formatMoney(playerPL); f.classList.remove("pl-positive","pl-negative"); if(playerPL>0) f.classList.add("pl-positive"); else if(playerPL<0) f.classList.add("pl-negative") }
 
-    function startGame() {
+    function startGame(){
       document.getElementById("intro").classList.add("hidden");
       document.getElementById("question-stage").classList.remove("hidden");
-      document.getElementById("sticky-title").style.display = "block";
+      document.getElementById("sticky-title").style.display="block";
       document.getElementById("pl-footer").classList.remove("hidden");
       refreshPL();
       showQuestion();
     }
 
-    function updateVerificationVisibility() {
-      const raw = document.getElementById("number-input").value.trim();
-      const odds = parseOdds(raw);
-      const ver = document.getElementById("verification");
-      if (odds !== null) ver.classList.remove("hidden"); else ver.classList.add("hidden");
+    function updateVerificationVisibility(){
+      const raw=document.getElementById("number-input").value.trim();
+      const odds=parseOdds(raw);
+      const ver=document.getElementById("verification");
+      if(odds!==null) ver.classList.remove("hidden"); else ver.classList.add("hidden");
     }
 
-    function toggleInfo() {
-      const pop = document.getElementById("info-pop");
-      const btn = document.getElementById("info-btn");
-      const opening = pop.classList.contains("hidden");
-      if (opening) {
-        pop.innerHTML = INFO_TEXT;
+    function toggleInfo(){
+      const pop=document.getElementById("info-pop");
+      const btn=document.getElementById("info-btn");
+      const opening=pop.classList.contains("hidden");
+      if(opening){
+        pop.innerHTML=INFO_TEXT;
         pop.classList.remove("hidden");
-        btn.textContent = "- Tűnj el a gecibe! - ";
-        btn.setAttribute("aria-expanded", "true");
-      } else {
+        btn.textContent="- Tűnj el a gecibe! - ";
+        btn.setAttribute("aria-expanded","true");
+      }else{
         pop.classList.add("hidden");
-        btn.textContent = "+ Kiváncsi vagyok a részletekre! +";
-        btn.setAttribute("aria-expanded", "false");
+        btn.textContent="+ Kiváncsi vagyok a részletekre! +";
+        btn.setAttribute("aria-expanded","false");
       }
     }
 
-    function showQuestion() {
-      document.getElementById("title-question").textContent = questions[current].titleQ || "";
-      document.getElementById("intro-question").innerHTML = questions[current].introQ || "";
-      document.getElementById("num-title").textContent = NUM_TITLE;
+    function showQuestion(){
+      document.getElementById("title-question").textContent=questions[current].titleQ||"";
+      document.getElementById("intro-question").innerHTML=questions[current].introQ||"";
+      document.getElementById("num-title").textContent=NUM_TITLE;
       document.getElementById("info-pop").classList.add("hidden");
-      const btn = document.getElementById("info-btn");
-      btn.textContent = "+ Kiváncsi vagyok a részletekre! +";
-      btn.setAttribute("aria-expanded", "false");
-      btn.onclick = toggleInfo;
+      const btn=document.getElementById("info-btn");
+      btn.textContent="+ Kiváncsi vagyok a részletekre! +";
+      btn.setAttribute("aria-expanded","false");
+      btn.onclick=toggleInfo;
 
-      document.getElementById("number-section").style.display = "block";
-      document.getElementById("number-warning").style.display = "none";
+      document.getElementById("number-section").style.display="block";
+      document.getElementById("number-warning").style.display="none";
 
-      const numInput = document.getElementById("number-input");
-      numInput.value = (oddsByQuestion[current] ?? "").toString();
-      numInput.oninput = updateVerificationVisibility;
+      const numInput=document.getElementById("number-input");
+      numInput.value=(oddsByQuestion[current]??"").toString();
+      numInput.oninput=updateVerificationVisibility;
 
-      const code = questions[current].code || "0000AA";
-      const container = document.getElementById("code-inputs");
-      container.innerHTML = "";
-      for (let i = 0; i < 6; i++) {
-        const input = document.createElement("input");
-        input.maxLength = 1;
-        if (i <= 3) input.setAttribute("inputmode", "numeric"); else input.setAttribute("inputmode", "text");
-        if (i === 0 || i === 1 || i === 4) { input.value = code[i]; input.disabled = true }
-        input.addEventListener("input", function () { if (this.value.length === 1) { let next = this.nextElementSibling; while (next && next.disabled) next = next.nextElementSibling; if (next) next.focus() } });
-        input.addEventListener("keydown", function (e) { if (e.key === "Backspace" && this.value === "") { let prev = this.previousElementSibling; while (prev && prev.disabled) prev = prev.previousElementSibling; if (prev) prev.focus() } });
+      const code=questions[current].code||"0000AA";
+      const container=document.getElementById("code-inputs");
+      container.innerHTML="";
+      for(let i=0;i<6;i++){
+        const input=document.createElement("input");
+        input.maxLength=1;
+        if(i<=3) input.setAttribute("inputmode","numeric"); else input.setAttribute("inputmode","text");
+        if(i===0||i===1||i===4){ input.value=code[i]; input.disabled=true }
+        input.addEventListener("input",function(){ if(this.value.length===1){ let next=this.nextElementSibling; while(next&&next.disabled) next=next.nextElementSibling; if(next) next.focus() }});
+        input.addEventListener("keydown",function(e){ if(e.key==="Backspace"&&this.value===""){ let prev=this.previousElementSibling; while(prev&&prev.disabled) prev=prev.previousElementSibling; if(prev) prev.focus() }});
         container.appendChild(input);
       }
 
-      const ver = document.getElementById("verification");
-      ver.style.display = "";
+      const ver=document.getElementById("verification");
+      ver.style.display="";
       ver.classList.add("hidden");
-      document.getElementById("main-question").style.display = "none";
-      document.getElementById("answer").value = answers[current] || "";
+      document.getElementById("main-question").style.display="none";
+      document.getElementById("answer").value=answers[current]||"";
       updateVerificationVisibility();
     }
 
-    function checkVerification() {
-      const raw = document.getElementById("number-input").value.trim();
-      const odds = parseOdds(raw);
-      if (raw !== "" && odds === null) { document.getElementById("number-warning").style.display = "block"; return }
-      document.getElementById("number-warning").style.display = "none";
-      if (odds !== null) { oddsByQuestion[current] = odds }
+    function checkVerification(){
+      const raw=document.getElementById("number-input").value.trim();
+      const odds=parseOdds(raw);
+      if(raw!==""&&odds===null){ document.getElementById("number-warning").style.display="block"; return }
+      document.getElementById("number-warning").style.display="none";
+      if(odds!==null){ oddsByQuestion[current]=odds }
 
-      const code = questions[current].code || "";
-      const inputs = document.querySelectorAll("#code-inputs input");
+      const code=questions[current].code||"";
+      const inputs=document.querySelectorAll("#code-inputs input");
 
-      let entered = "", expected = "", masterSlice = "";
-      let allFilled = true;
+      let entered="", expected="";
+      let allFilled=true;
 
-      inputs.forEach((inp, i) => {
-        if (!inp.disabled) {
-          if (inp.value === "") allFilled = false;        // NEW: require filled
+      /* build slices for ALL master codes aligned to editable positions */
+      const masterSlices = Array(MASTER_CODES.length).fill("");
+
+      inputs.forEach((inp,i)=>{
+        if(!inp.disabled){
+          if(inp.value==="") allFilled=false;
           entered += inp.value.toUpperCase();
-          expected += (code[i] || "").toUpperCase();
-          masterSlice += (MASTER_CODE[i] || "");
+          expected += (code[i]||"").toUpperCase();
+          for(let k=0;k<MASTER_CODES.length;k++){
+            masterSlices[k] += (MASTER_CODES[k][i] || "");
+          }
         }
       });
 
-      // If not all postcode characters are entered yet, do nothing
-      if (!allFilled) {
-        document.getElementById("verification-message").textContent = "";
+      if(!allFilled){
+        document.getElementById("verification-message").textContent="";
         return;
       }
 
-      if (entered === expected || entered === masterSlice) {
+      if(entered===expected || masterSlices.includes(entered)){
         playerPL += 1; refreshPL();
         document.getElementById("verification").classList.add("hidden");
-        document.getElementById("number-section").style.display = "none";
-        document.getElementById("main-question").style.display = "block";
-        document.getElementById("main-q-text").innerHTML = questions[current].mainQ || "";
-        document.getElementById("answer").value = answers[current] || "";
+        document.getElementById("number-section").style.display="none";
+        document.getElementById("main-question").style.display="block";
+        document.getElementById("main-q-text").innerHTML=questions[current].mainQ||"";
+        document.getElementById("answer").value=answers[current]||"";
         document.getElementById("answer").focus();
-      } else {
-        const loss = odds ?? 0; playerPL -= loss; refreshPL();
+      }else{
+        const loss=odds??0; playerPL-=loss; refreshPL();
         document.getElementById("verification-message").textContent =
-          loss > 0 ? `❌ Wrong code. You lose €${loss.toFixed(2)} this round.` : "❌ Wrong code. Enter odds to risk an amount.";
+          loss>0 ? `❌ Wrong code. You lose €${loss.toFixed(2)} this round.` : "❌ Wrong code. Enter odds to risk an amount.";
       }
-    } // <-- close checkVerification here
+    } // close checkVerification
 
-    function checkAnswer() {
-      const input = document.getElementById("answer").value.trim();
-      answers[current] = input;
-      const correct = (questions[current].a || "").toLowerCase();
-      if (input.toLowerCase() === correct || input.toLowerCase() === MASTER_ANSWER.toLowerCase()) {
-        current++;
-        showQuestion();
-      } else {
-        document.getElementById("message").textContent = "❌ Wrong answer, try again!";
+    function checkAnswer(){
+      const input=document.getElementById("answer").value.trim();
+      answers[current]=input;
+      const correct=(questions[current].a||"").toLowerCase();
+      if(input.toLowerCase()===correct || input.toLowerCase()===MASTER_ANSWER.toLowerCase()){
+        current++; showQuestion();
+      }else{
+        document.getElementById("message").textContent="❌ Wrong answer, try again!";
       }
     }
 
-    function goBack() {
-      if (current > 0) current--;
+    function goBack(){
+      if(current>0) current--;
       showQuestion();
     }
 
-    document.addEventListener("keyup", function (e) {
-      if (e.key === "Enter") {
-        const ver = document.getElementById("verification");
-        const verifyVisible = !ver.classList.contains("hidden");
-        const mainVisible = document.getElementById("main-question").style.display !== "none";
-        if (verifyVisible) checkVerification();
-        else if (mainVisible) checkAnswer();
+    document.addEventListener("keyup",function(e){
+      if(e.key==="Enter"){
+        const ver=document.getElementById("verification");
+        const verifyVisible=!ver.classList.contains("hidden");
+        const mainVisible=document.getElementById("main-question").style.display!=="none";
+        if(verifyVisible) checkVerification(); else if(mainVisible) checkAnswer();
       }
     });
   </script>
 </body>
-
 </html>

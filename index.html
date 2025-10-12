@@ -19,56 +19,314 @@
       --pl-neg: rgb(109, 3, 2)
     }
 
-    html { -webkit-text-size-adjust: 100% }
-    body { font-family: 'Special Elite', monospace; font-size: 18px; line-height: 1.6; margin: 0; color: #000; padding: 20px; padding-top: var(--header-height-desktop); padding-bottom: calc(var(--footer-h) + 12px) }
-    *, *::before, *::after { box-sizing: border-box; font: inherit; color: inherit }
+    html {
+      -webkit-text-size-adjust: 100%
+    }
 
-    #sticky-title { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: none; padding: 10px 14px; background: transparent }
-    #sticky-title .title-box { margin: 0 auto; max-width: 700px; border-radius: 14px; background: rgb(0, 66, 37); color: rgb(255, 253, 208); padding: 14px 18px; text-align: center; box-shadow: 0 6px 18px rgba(0, 0, 0, .25); letter-spacing: .5px }
+    body {
+      font-family: 'Special Elite', monospace;
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0;
+      color: #000;
+      padding: 20px;
+      padding-top: var(--header-height-desktop);
+      padding-bottom: calc(var(--footer-h) + 12px)
+    }
 
-    #game { max-width: 600px; margin: auto; text-align: center }
-    #number-section { margin: 18px 0 8px }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      font: inherit;
+      color: inherit
+    }
 
-    .bubble { display: inline-block; max-width: 100%; padding: 16px 20px; border-radius: 16px; background: #f2f7ff; border: 1px solid #cfe1ff; text-align: center; position: relative }
-    .bubble:after { content: ""; position: absolute; left: 24px; bottom: -10px; border-width: 10px 10px 0 10px; border-style: solid; border-color: #f2f7ff transparent transparent transparent }
+    #sticky-title {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: none;
+      padding: 10px 14px;
+      background: transparent
+    }
 
-    #num-title { font-size: 20px; font-weight: 700; margin-bottom: 8px }
-    #number-instruction .info-btn { display: inline-block; margin-top: 8px; padding: 6px 14px; border-radius: 999px; background: #eef0ff; border: 1px solid #c9d0ff; font-size: 14px; cursor: pointer }
-    #number-instruction .info-btn:focus { outline: none }
-    #number-instruction .info-btn:focus-visible { outline: 2px solid #c9d0ff }
-    #number-instruction .info-pop { margin: 14px auto 0; padding: 14px 18px; border-radius: 12px; background: #fff; border: 1px solid #cfe1ff; font-size: 16px; line-height: 1.55; text-align: center; display: inline-block; width: min(520px, 90%); box-shadow: 0 3px 8px rgba(0,0,0,.08) }
-    #number-instruction .info-pop.hidden { display: none !important }
+    #sticky-title .title-box {
+      margin: 0 auto;
+      max-width: 700px;
+      border-radius: 14px;
+      background: rgb(0, 66, 37);
+      color: rgb(255, 253, 208);
+      padding: 14px 18px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+      letter-spacing: .5px
+    }
 
-    .number-box { margin-top: 10px; display: flex; justify-content: center; gap: 10px; align-items: center }
-    #number-input { width: 200px; padding: 8px 10px; border: 1px solid #bbb; border-radius: 8px; text-align: center; font-size: 18px; line-height: 1.4 }
+    #game {
+      max-width: 600px;
+      margin: auto;
+      text-align: center
+    }
 
-    .code-box { display: flex; justify-content: center; gap: 5px; margin: 10px 0; flex-wrap: wrap }
-    .code-box input { width: clamp(35px, 12vw, 45px); height: clamp(40px, 12vw, 50px); line-height: 1.2; text-align: center; text-transform: uppercase; padding: 0 }
-    .code-box input:disabled { color: black; opacity: 1; -webkit-text-fill-color: black }
+    #number-section {
+      margin: 18px 0 8px
+    }
 
-    input[type="text"], textarea, select { margin-top: 10px; padding: 8px; width: 100%; border: 1px solid #bbb; border-radius: 6px; text-transform: capitalize; font-size: 18px; line-height: 1.4 }
-    input::placeholder { opacity: .6; font-size: inherit }
-    button { margin-top: 10px; padding: 8px 15px; border-radius: 10px; border: none; background: #eee; cursor: pointer }
+    .bubble {
+      display: inline-block;
+      max-width: 100%;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: #f2f7ff;
+      border: 1px solid #cfe1ff;
+      text-align: center;
+      position: relative
+    }
 
-    .hidden { display: none !important }
-    #pl-footer.hidden { display: none !important }
-    .hint { margin-top: 8px; font-style: italic; color: #444 }
+    .bubble:after {
+      content: "";
+      position: absolute;
+      left: 24px;
+      bottom: -10px;
+      border-width: 10px 10px 0 10px;
+      border-style: solid;
+      border-color: #f2f7ff transparent transparent transparent
+    }
 
-    #intro-question, #main-q-text { text-align: justify; text-justify: inter-word; margin-bottom: 15px }
-    #intro-question br, #main-q-text br { display: block; margin-bottom: 75px; content: "" }
+    #num-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px
+    }
 
-    #pl-footer { position: fixed; left: 0; right: 0; bottom: 0; height: var(--footer-h); background: var(--pl-zero); transition: background-color 200ms ease; color: rgb(255, 253, 208); display: flex; align-items: center; justify-content: center; gap: 14px; padding: 0 16px; z-index: 1100; box-shadow: 0 -6px 18px rgba(0,0,0,.15); font-size: 18px }
-    #pl-footer.pl-positive { background: var(--pl-pos) }
-    #pl-footer.pl-negative { background: var(--pl-neg) }
-    #pl-footer .pill { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2) }
+    #number-instruction .info-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #eef0ff;
+      border: 1px solid #c9d0ff;
+      font-size: 14px;
+      cursor: pointer
+    }
 
-    #map { width: 100%; height: 340px; border-radius: 14px; overflow: hidden; margin: 10px 0 4px }
-    #map-status { font-size: 14px; color: #555; margin-bottom: 8px }
+    #number-instruction .info-btn:focus {
+      outline: none
+    }
+
+    #number-instruction .info-btn:focus-visible {
+      outline: 2px solid #c9d0ff
+    }
+
+    #number-instruction .info-pop {
+      margin: 14px auto 0;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #cfe1ff;
+      font-size: 16px;
+      line-height: 1.55;
+      text-align: center;
+      display: inline-block;
+      width: min(520px, 90%);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .08)
+    }
+
+    #number-instruction .info-pop.hidden {
+      display: none !important
+    }
+
+    .number-box {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      align-items: center
+    }
+
+    #number-input {
+      width: 200px;
+      padding: 8px 10px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.4
+    }
+
+    .code-box {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin: 10px 0;
+      flex-wrap: wrap
+    }
+
+    .code-box input {
+      width: clamp(35px, 12vw, 45px);
+      height: clamp(40px, 12vw, 50px);
+      line-height: 1.2;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 0
+    }
+
+    .code-box input:disabled {
+      color: black;
+      opacity: 1;
+      -webkit-text-fill-color: black
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      margin-top: 10px;
+      padding: 8px;
+      width: 100%;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      text-transform: capitalize;
+      font-size: 18px;
+      line-height: 1.4
+    }
+
+    input::placeholder {
+      opacity: .6;
+      font-size: inherit
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border-radius: 10px;
+      border: none;
+      background: #eee;
+      cursor: pointer
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    #pl-footer.hidden {
+      display: none !important
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-style: italic;
+      color: #444
+    }
+
+    #intro-question,
+    #main-q-text {
+      text-align: justify;
+      text-justify: inter-word;
+      margin-bottom: 15px
+    }
+
+    #intro-question br,
+    #main-q-text br {
+      display: block;
+      margin-bottom: 75px;
+      content: ""
+    }
+
+    #pl-footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--footer-h);
+      background: var(--pl-zero);
+      transition: background-color 200ms ease;
+      color: rgb(255, 253, 208);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 16px;
+      z-index: 1100;
+      box-shadow: 0 -6px 18px rgba(0, 0, 0, .15);
+      font-size: 18px
+    }
+
+    #pl-footer.pl-positive {
+      background: var(--pl-pos)
+    }
+
+    #pl-footer.pl-negative {
+      background: var(--pl-neg)
+    }
+
+    #pl-footer .pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .2)
+    }
+
+    #map {
+      width: 100%;
+      height: 340px;
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 10px 0 4px
+    }
+
+    #map-status {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 8px
+    }
 
     @media (max-width:600px) {
-      body { padding: 32px 20px calc(var(--footer-h) + 16px) 20px; padding-top: var(--header-height-mobile) }
-      #game { max-width: 100% }
-      #map { height: 300px }
+      body {
+        padding: 32px 20px calc(var(--footer-h) + 16px) 20px;
+        padding-top: var(--header-height-mobile);
+        font-size: 16px;
+        /* ↓ base size on phones */
+      }
+
+      #game {
+        max-width: 100%;
+      }
+
+      /* Slightly smaller title bar */
+      #sticky-title .title-box {
+        font-size: 18px;
+        padding: 10px 14px;
+      }
+
+      /* Inputs/buttons a touch smaller */
+      #num-title {
+        font-size: 18px;
+      }
+
+      button,
+      input[type="text"],
+      textarea,
+      select {
+        font-size: 16px;
+      }
+
+      #number-input {
+        width: 170px;
+      }
+
+      /* Code inputs a bit smaller but still tappable */
+      .code-box input {
+        width: clamp(32px, 11vw, 40px);
+        height: clamp(36px, 11vw, 46px);
+      }
+
+      /* Map a bit shorter to fit better on small screens */
+      #map {
+        height: 260px;
+      }
     }
   </style>
 </head>
@@ -80,7 +338,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 17:38 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 17:45 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
       <p>Instructions:<br>1. Enter the correct postcodes to unlock each stage.<br>2. Choose your odds each round and
         verify.<br>3. Correct code: you win €1. Wrong code: you lose your chosen odds (€X).</p>
@@ -195,9 +453,9 @@
     let current = 0
     let answers = Array(questions.length).fill("")
 
-    function parseOdds(str){ if (!str) return null; const n = parseFloat(str.replace(',', '.')); if (isNaN(n) || n <= 0) return null; return n }
-    function formatMoney(n){ const abs = Math.abs(n).toFixed(2); if (n > 0) return "+€" + abs; if (n < 0) return "−€" + abs; return "€" + abs }
-    function refreshPL(){ const el = document.getElementById("pl-value"); const f = document.getElementById("pl-footer"); el.textContent = formatMoney(playerPL); f.classList.remove("pl-positive", "pl-negative"); if (playerPL > 0) f.classList.add("pl-positive"); else if (playerPL < 0) f.classList.add("pl-negative") }
+    function parseOdds(str) { if (!str) return null; const n = parseFloat(str.replace(',', '.')); if (isNaN(n) || n <= 0) return null; return n }
+    function formatMoney(n) { const abs = Math.abs(n).toFixed(2); if (n > 0) return "+€" + abs; if (n < 0) return "−€" + abs; return "€" + abs }
+    function refreshPL() { const el = document.getElementById("pl-value"); const f = document.getElementById("pl-footer"); el.textContent = formatMoney(playerPL); f.classList.remove("pl-positive", "pl-negative"); if (playerPL > 0) f.classList.add("pl-positive"); else if (playerPL < 0) f.classList.add("pl-negative") }
 
     let map, tiles, pathLayer, marker, targetMarker
 
@@ -237,15 +495,15 @@
       map.setView(c, 14);
     }
 
-    function lerp(a,b,t){return a+(b-a)*t}
-    function lerpLatLng(a,b,t){return [lerp(a[0],b[0],t), lerp(a[1],b[1],t)]}
+    function lerp(a, b, t) { return a + (b - a) * t }
+    function lerpLatLng(a, b, t) { return [lerp(a[0], b[0], t), lerp(a[1], b[1], t)] }
 
-    function animateLeg(from,to,durationMs){
+    function animateLeg(from, to, durationMs) {
       const startTime = performance.now()
-      pathLayer.setLatLngs([from,to])
+      pathLayer.setLatLngs([from, to])
       targetMarker.setLatLng(to)
-      map.fitBounds(L.latLngBounds([from,to]).pad(0.25))
-      return new Promise(resolve=>{function f(now){const t=Math.min(1,(now-startTime)/durationMs);const e=t<.5?2*t*t:-1+(4-2*t)*t;const p=lerpLatLng(from,to,e);marker.setLatLng(p);if(t<1)requestAnimationFrame(f);else resolve()}requestAnimationFrame(f)})
+      map.fitBounds(L.latLngBounds([from, to]).pad(0.25))
+      return new Promise(resolve => { function f(now) { const t = Math.min(1, (now - startTime) / durationMs); const e = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; const p = lerpLatLng(from, to, e); marker.setLatLng(p); if (t < 1) requestAnimationFrame(f); else resolve() } requestAnimationFrame(f) })
     }
 
     function startGame() {
@@ -372,7 +630,7 @@
       } else { document.getElementById("message").textContent = "❌ Wrong answer, try again!" }
     }
 
-    function goBack(){ if (current > 0) current--; showQuestion() }
+    function goBack() { if (current > 0) current--; showQuestion() }
 
     function endGame() {
       const attempts = betLog.length
@@ -429,7 +687,7 @@
       }
     })
 
-    function drawBetChart(bets){
+    function drawBetChart(bets) {
       const canvas = document.getElementById("bet-chart")
       if (!canvas) return
       const ctx = canvas.getContext("2d")

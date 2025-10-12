@@ -285,7 +285,7 @@
 
     /* --- Additions for intro bubble + skyline (do not change anything else) --- */
     #intro {
-      padding-bottom: 300px
+      padding-bottom: 350px
     }
 
     #intro-instruction .info-btn {
@@ -330,12 +330,12 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 240px;
+      height: 300px;
       pointer-events: none;
       background-image: url('silhouette2.png');
       background-repeat: repeat-x;
       background-position: center calc(100% + 60px);
-      background-size: contain;
+      background-size: auto 100%;
       opacity: .9;
       z-index: 0;
     }
@@ -405,13 +405,18 @@
 
     /* Keep end page content above the bottom silhouette */
     #end-screen {
-      padding-bottom: 300px;
+      padding-bottom: 350px;
     }
 
     /* If you enlarged it on phones, mirror that here too */
     @media (max-width: 600px) {
+      #skyline {
+        height: 420px;
+      }
+
+      #intro,
       #end-screen {
-        padding-bottom: 380px;
+        padding-bottom: 500px;
       }
     }
   </style>
@@ -424,7 +429,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 22:07 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 22:13 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
 
       <!-- Intro instructions changed to a tap-to-open bubble -->

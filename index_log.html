@@ -1,92 +1,121 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --header-height-desktop:88px;
-      --header-height-mobile:96px;
-      --footer-h:58px;
-      --pl-pos:rgb(0,66,37);
-      --pl-zero:rgb(74,65,42);
-      --pl-neg:rgb(109,3,2)
+    :root {
+      --header-height-desktop: 88px;
+      --header-height-mobile: 96px;
+      --footer-h: 58px;
+      --pl-pos: rgb(0, 66, 37);
+      --pl-zero: rgb(74, 65, 42);
+      --pl-neg: rgb(109, 3, 2)
     }
-    html{-webkit-text-size-adjust:100%}
-    body{
-      font-family:'Special Elite',monospace;
-      font-size:18px;
-      line-height:1.6;
-      margin:0;
-      color:#000;
-      padding:20px;
-      padding-top:var(--header-height-desktop);
-      padding-bottom:calc(var(--footer-h) + 12px)
+
+    html { -webkit-text-size-adjust: 100% }
+
+    body {
+      font-family: 'Special Elite', monospace;
+      font-size: 18px;
+      line-height: 1.6;
+      margin: 0;
+      color: #000;
+      padding: 20px;
+      padding-top: var(--header-height-desktop);
+      padding-bottom: calc(var(--footer-h) + 12px)
     }
-    *,*::before,*::after{box-sizing:border-box;font:inherit;color:inherit}
-    #sticky-title{position:fixed;top:0;left:0;right:0;z-index:1000;display:none;padding:10px 14px;background:transparent}
-    #sticky-title .title-box{margin:0 auto;max-width:700px;border-radius:14px;background:rgb(0,66,37);color:rgb(255,253,208);padding:14px 18px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,.25);letter-spacing:.5px}
-    #game{max-width:600px;margin:auto;text-align:center}
-    #number-section{margin:18px 0 8px}
-    .bubble{display:inline-block;max-width:100%;padding:10px 14px;border-radius:16px;background:#f2f7ff;border:1px solid #cfe1ff;text-align:left;position:relative}
-    .bubble:after{content:"";position:absolute;left:24px;bottom:-10px;border-width:10px 10px 0 10px;border-style:solid;border-color:#f2f7ff transparent transparent transparent;filter:drop-shadow(0 -1px 0 #cfe1ff)}
-    .number-box{margin-top:10px;display:flex;justify-content:center;gap:10px;align-items:center}
-    #number-input{width:200px;padding:8px 10px;border:1px solid #bbb;border-radius:8px;text-align:center;font-size:18px;line-height:1.4}
-    .code-box{display:flex;justify-content:center;gap:5px;margin:10px 0;flex-wrap:wrap}
-    .code-box input{width:clamp(35px,12vw,45px);height:clamp(40px,12vw,50px);line-height:1.2;text-align:center;text-transform:uppercase;padding:0}
-    .code-box input:disabled{color:black;opacity:1;-webkit-text-fill-color:black}
-    input[type="text"],textarea,select{margin-top:10px;padding:8px;width:100%;border:1px solid #bbb;border-radius:6px;text-transform:capitalize;font-size:18px;line-height:1.4}
-    input::placeholder{opacity:.6;font-size:inherit}
-    button{margin-top:10px;padding:8px 15px;border-radius:10px;border:none;background:#eee;cursor:pointer}
-    .hidden{display:none}
-    #pl-footer.hidden{display:none!important}
-    .hint{margin-top:8px;font-style:italic;color:#444}
-    #intro-question,#main-q-text{text-align:justify;text-justify:inter-word;margin-bottom:15px}
-    #intro-question br,#main-q-text br{display:block;margin-bottom:75px;content:""}
-    #pl-footer{position:fixed;left:0;right:0;bottom:0;height:var(--footer-h);background:var(--pl-zero);transition:background-color 200ms ease;color:rgb(255,253,208);display:flex;align-items:center;justify-content:center;gap:14px;padding:0 16px;z-index:1100;box-shadow:0 -6px 18px rgba(0,0,0,.15);font-size:18px}
-    #pl-footer.pl-positive{background:var(--pl-pos)}
-    #pl-footer.pl-negative{background:var(--pl-neg)}
-    #pl-footer .pill{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}
-    #number-instruction {
-  text-align: center;
-}
 
-#num-title {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
+    *, *::before, *::after { box-sizing: border-box; font: inherit; color: inherit }
 
-#number-instruction .info-btn {
-  display: inline-block;
-  margin-top: 6px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: #eef0ff;
-  border: 1px solid #c9d0ff;
-  font-size: 14px;
-  cursor: pointer;
-}
+    #sticky-title {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: none; padding: 10px 14px; background: transparent
+    }
 
-#number-instruction .info-pop {
-  margin-top: 12px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px dashed #cfe1ff;
-  font-size: 16px;
-  line-height: 1.45;
-  text-align: left;
-  display: inline-block;
-}
+    #sticky-title .title-box {
+      margin: 0 auto; max-width: 700px; border-radius: 14px;
+      background: rgb(0, 66, 37); color: rgb(255, 253, 208);
+      padding: 14px 18px; text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25); letter-spacing: .5px
+    }
+
+    #game { max-width: 600px; margin: auto; text-align: center }
+    #number-section { margin: 18px 0 8px }
+
+    .bubble {
+      display: inline-block; max-width: 100%;
+      padding: 16px 20px; border-radius: 16px;
+      background: #f2f7ff; border: 1px solid #cfe1ff;
+      text-align: center; position: relative
+    }
+    .bubble:after {
+      content: ""; position: absolute; left: 24px; bottom: -10px;
+      border-width: 10px 10px 0 10px; border-style: solid;
+      border-color: #f2f7ff transparent transparent transparent
+    }
+
+    #num-title { font-size: 20px; font-weight: 700; margin-bottom: 8px }
+
+    #number-instruction .info-btn{
+      display: inline-block; margin-top: 8px; padding: 6px 14px;
+      border-radius: 999px; background: #eef0ff; border: 1px solid #c9d0ff;
+      font-size: 14px; cursor: pointer
+    }
+    #number-instruction .info-btn:focus{ outline: none }
+    #number-instruction .info-btn:focus-visible{ outline: 2px solid #c9d0ff }
+
+    #number-instruction .info-pop{
+      margin: 14px auto 0; padding: 14px 18px; border-radius: 12px;
+      background: #fff; border: 1px solid #cfe1ff; font-size: 16px;
+      line-height: 1.55; text-align: center; display: inline-block;
+      width: min(520px, 90%); box-shadow: 0 3px 8px rgba(0,0,0,.08)
+    }
+    #number-instruction .info-pop.hidden{ display: none !important }
+
+    .number-box{ margin-top: 10px; display: flex; justify-content: center; gap: 10px; align-items: center }
+    #number-input{ width: 200px; padding: 8px 10px; border: 1px solid #bbb; border-radius: 8px; text-align: center; font-size: 18px; line-height: 1.4 }
+
+    .code-box{ display: flex; justify-content: center; gap: 5px; margin: 10px 0; flex-wrap: wrap }
+    .code-box input{ width: clamp(35px,12vw,45px); height: clamp(40px,12vw,50px); line-height: 1.2; text-align: center; text-transform: uppercase; padding: 0 }
+    .code-box input:disabled{ color: black; opacity: 1; -webkit-text-fill-color: black }
+
+    input[type="text"], textarea, select{
+      margin-top: 10px; padding: 8px; width: 100%;
+      border: 1px solid #bbb; border-radius: 6px; text-transform: capitalize;
+      font-size: 18px; line-height: 1.4
+    }
+    input::placeholder{ opacity: .6; font-size: inherit }
+    button{ margin-top: 10px; padding: 8px 15px; border-radius: 10px; border: none; background: #eee; cursor: pointer }
+
+    .hidden{ display: none !important }
+    #pl-footer.hidden{ display: none !important }
+
+    .hint{ margin-top: 8px; font-style: italic; color: #444 }
+    #intro-question,#main-q-text{ text-align: justify; text-justify: inter-word; margin-bottom: 15px }
+    #intro-question br,#main-q-text br{ display: block; margin-bottom: 75px; content: "" }
+
+    #pl-footer{
+      position: fixed; left: 0; right: 0; bottom: 0; height: var(--footer-h);
+      background: var(--pl-zero); transition: background-color 200ms ease; color: rgb(255,253,208);
+      display: flex; align-items: center; justify-content: center; gap: 14px; padding: 0 16px; z-index: 1100;
+      box-shadow: 0 -6px 18px rgba(0,0,0,.15); font-size: 18px
+    }
+    #pl-footer.pl-positive{ background: var(--pl-pos) }
+    #pl-footer.pl-negative{ background: var(--pl-neg) }
+    #pl-footer .pill{ padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2) }
+
     @media (max-width:600px){
-      body{padding:32px 20px calc(var(--footer-h) + 16px) 20px;padding-top:var(--header-height-mobile)}
-      #game{max-width:100%}
+      body{ padding: 32px 20px calc(var(--footer-h) + 16px) 20px; padding-top: var(--header-height-mobile) }
+      #game{ max-width: 100% }
     }
   </style>
 </head>
+
 <body>
   <div id="sticky-title">
     <div class="title-box"><span id="title-question"></span></div>
@@ -94,8 +123,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>🔐 Birthday Escape Room</h1>
-      <h1>❌ TO BE DELETED. VERSION: 01:47 ❌</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 20:32 🔐 Birthday Escape Room</h1>
       <h3>Can you solve all the puzzles and escape?</h3>
       <p>
         Rules:<br>
@@ -112,12 +140,14 @@
 
       <div id="number-section">
         <div id="number-instruction" class="bubble">
-          <div id="num-title">🎲 Gambling time!</div>
-          <button id="info-btn" class="info-btn">More info</button>
+          <div id="num-title">🎲🎲 Gambling time! 🎲🎲</div>
+          <button id="info-btn" class="info-btn" type="button" aria-expanded="false">More info</button>
           <div id="info-pop" class="info-pop hidden"></div>
         </div>
+
         <div class="number-box">
-          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="Enter your odds" autocomplete="off" />
+          <input id="number-input" type="text" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*"
+            placeholder="Enter your odds" autocomplete="off" />
         </div>
         <div id="number-warning" class="hint" style="display:none;color:#b00;">Na mivan okosnak hiszed magad? 🤡).</div>
       </div>
@@ -146,57 +176,68 @@
   </div>
 
   <script>
-    const MASTER_CODE="XXXXXX";
-    const MASTER_ANSWER="XXX";
-    const NUM_TITLE="🎲 Gambling time!";
-    const INFO_TEXT="How confident are you that the answer you will give is correct?<br>The house offers a bet size of €1. Choose your odds (e.g., 1.5 or 2).<br>Enter odds, then type the postcode to verify.<br>Correct code: +€1. Wrong code: you lose your chosen odds. Leaving odds empty risks €0.";
-    const FINAL_TITLE="The End";
-    const ODDS_KEY="oddsByQuestion";
+    /* CHANGED: allow two master codes */
+    const MASTER_CODES = ["XXXXXX", "0000XX"];
 
-    let oddsByQuestion={};
-    let playerPL=0;
+    const MASTER_ANSWER = "XXX";
+    const NUM_TITLE = "🎲🎲 Gambling time! 🎲🎲";
+    const INFO_TEXT = `How confident are you that the answer you will give is correct?<br>
+    The house offers a bet size of €1, choose your odds.<br>
+    Enter odds, then type the postcode to verify.<br>Correct code: +€1. Wrong code: you lose your chosen odds.`;
+    const FINAL_TITLE = "The End";
+
+    let oddsByQuestion = {};
+    let playerPL = 0;
 
     const questions = [
-      {
-        titleQ: "Spawn Point", introQ: `You wake up on a gorgeous sunny day in Amsterdam.
+      { titleQ: "Spawn Point", introQ: `You wake up on a gorgeous sunny day in Amsterdam.
         After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p>
-        To remedy that you shall choose a place to brunch. Where would you head?`, mainQ: "[Placeholder follow-up Q1]", a: "The Greek Embassy", code: "1091EJ"
-      },
-      {
-        titleQ: "Checkpoint 1", introQ: `Pantha Rhei has done exceptionally well this year.
+        To remedy that you shall choose a place to brunch. Where would you head?`,
+        mainQ: "Mi a menün található 4. ételnek a neve?", a: "Spetsofai Pie", code: "1091EJ" },
+      { titleQ: "Checkpoint 1", introQ: `Pantha Rhei has done exceptionally well this year.
         It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p>
         All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam.
-        On your upcoming trip which hotel would you lodge at?`, mainQ: "[Placeholder follow-up Q2]", a: "Amstel Hotel", code: "1018GX"
-      },
-      { titleQ: "Checkpoint 2", introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`, mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`, a: "Boerejongens", code: "1017XK", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma." },
-
-      { titleQ: "Checkpoint 3", introQ: `Újdonsült titkosmikkentyűd azt kéri tőled, hogy menj a második legközelebbi térre, hogy elfogyaszd. (A legközelebbi nyilvánvalóan kiesik).`, mainQ: `Ezen a ponton valószínűleg Arnoldnak már pisilnie kell, miután elvégzi dolgát megtetszik a csatorna látványa. Ideális esetben ezelőtt a házszám előtt fogtok leülni elfogyasztani Bismarckot.`, a: "59", code: "1017JD" },
-      { titleQ: "Checkpoint 4", introQ: `Keresd meg a Vijzelstraat és Reguliersgracht között található (nagy valószínűséggel őrült) porcelános néni üzletét`, mainQ: `Hogy hívják az üzletet?`, a: "Golden Bend", code: "1017CC" },
-      { titleQ: "Checkpoint 5", introQ: `Következő checkpointod (tulajdonképp) a VOC egyik (volt) irodaépülete.`, mainQ: `Kezd el felfele haladni a lépcsőházban. Ki van Mercurius és Jupiter között?`, a: "F.S. Van Nierop", code: "1017CB" },
-
-      {
-        titleQ: "Checkpoint 3", introQ: `Gratulálunk, Ön közbeszerzést nyert! <p>
+        On your upcoming trip which hotel would you lodge at?`, mainQ: "ANSWER NOT UPDATED TO BE EDITED - Kinek a szobra található a hotel bejárata előtt?",
+        a: "Amstel Hotel", code: "1018GX"},
+      { titleQ: "Checkpoint 2", introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`,
+        mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`,
+        a: "Boerejongens", code: "1017XK", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma." },
+      { titleQ: "Checkpoint 3", introQ: `Újdonsült titkosmikkentyűd azt kéri tőled, hogy menj a második legközelebbi térre, hogy elfogyaszd. (A legközelebbi nyilvánvalóan kiesik).`,
+        mainQ: `Ezen a ponton valószínűleg Arnoldnak már pisilnie kell, miután elvégzi dolgát megtetszik a csatorna látványa.
+        Ideális esetben ezelőtt a gyönyörű ház előtt fogtok leülni elfogyasztani Bismarckot. Mi a házszám?`, a: "59", code: "1017JD" },
+      { titleQ: "Checkpoint 4", introQ: `Keresd meg a Vijzelstraat és Reguliersgracht között található (nagy valószínűséggel őrült) porcelános néni üzletét`,
+        mainQ: `Hogy hívják az üzletet?`, a: "Golden Bend", code: "1017CC" },
+      { titleQ: "Checkpoint 5", introQ: `Következő checkpointod (tulajdonképp) a VOC egyik (volt) irodaépülete.`,
+        mainQ: `Kezd el felfele haladni a lépcsőházban. Ki van Mercurius és Jupiter között?`, a: "F.S. Van Nierop", code: "1017CB" },
+      { titleQ: "Checkpoint 6", introQ: `Gratulálunk, Ön közbeszerzést nyert! <p>
         Pályázatában kötelezettséget vállalt a háztartás több évre szóló öngyújtó-ellátásának biztosítására.
-        Hol eszközölné beszerzését?`, mainQ: "[Placeholder follow-up Q4]", a: "Hartman Cigars", code: "1017PC"
-      },
-      { titleQ: "Checkpoint 4", introQ: `A bolttól elindulván egyszerre csak meghallod a természet hívását. Honnan jöhet?`, mainQ: "Milyen márka kapható az üzlettel szembeni boltban?", a: "NIO", code: "1017EJ" },
-      {
-        titleQ: "Checkpoint 5", introQ: `After a wise decision of taking a rain check on those magic mushrooms you are still craving some miracle. Where would an Amsterdammer from a bygone era go to view some miracle?
-        Where does your journey continue?`, mainQ: "Yo want to test your brand new lighter. But not anyhow. In style. Like a movie star. Which coffeeshop in the close vicinity is featured in a movie?", a: "Dampkring", code: "1012WP", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma."
-      },
-      { titleQ: "Checkpoint 6", introQ: `Before you would put your new lighter to the test and fulfill your sensual/spiritual desire, you first want to fulfill some intellectual desires. Next stop is your favorite book store`, mainQ: "A bolthoz érvén mindkettőnknek felcsillan a szeme. Neked a könyvesbolt miatt, nekem viszont valami más miatt. Mit látok?", a: "Chatime", code: "1012XE" },
-      { titleQ: "Checkpoint 7", introQ: `Next stop is your favorite book store`, mainQ: "A bolthoz érvén mindkettőnknek felcsillan a szeme. Neked a bolt miatt, nekem viszont valami más miatt. Mit látok?", a: "Chatime", code: "1012XE" },
-      // {titleQ:"Checkpoint 8",introQ:`Next stop is your favorite book store`,mainQ:"A bolthoz érvén mindkettőnknek felcsillan a szeme. Neked a bolt miatt, nekem viszont valami más miatt. Mit látok?",a:"Chatime",code:"1012XE"}
+        Hol eszközölné beszerzését?`, mainQ: "[Placeholder follow-up Q4]", a: "Hartman Cigars", code: "1017PC"},
+      { titleQ: "Checkpoint 7", introQ: `A bolttól elindulván egyszerre csak meghallod a természet hívását. Honnan jöhet?`,
+        mainQ: "Milyen márka kapható az üzlettel szembeni boltban?", a: "NIO", code: "1017EJ" },
+      { titleQ: "Checkpoint 8", introQ: `After a wise decision of taking a rain check on those magic mushrooms you are still craving some miracle.
+        Where would an Amsterdammer from a bygone era go to view some miracle?
+        Where does your journey continue?`, mainQ: `You want to test your brand new lighter. But not anyhow. In style.
+        Like a movie star. Which coffeeshop in the close vicinity is featured in a movie?`, a: "Dampkring", code: "1012WP",
+        hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma."},
+      { titleQ: "Checkpoint 9", introQ: `Before you would put your new lighter to the test and fulfill your sensual/spiritual desire, you first want to fulfill some intellectual desires.
+        Next stop is your favorite book store`, mainQ: `A bolthoz érvén mindkettőnknek felcsillan a szeme.
+        Neked a könyvesbolt miatt, nekem viszont valami más miatt. Mit látok?`, a: "Chatime", code: "1012XE" },
+      { titleQ: "Checkpoint 10", introQ: `Your next stop is the brand new UvA library`, mainQ: `Complete the phrase: But do read, __ ______ __ ____ __ ____.`, a: "it doesn't say what it says", code: "1012CP",
+      hint: "💡 Please enter the postcode of the nicest hospitality establishment in the immediate vicinity."},
+      { titleQ: "Checkpoint 11", introQ: `Következő megálló Amszterdam legjobb coffeeshopja.`,
+        mainQ: `ANSWER NOT UPDATED TO BE EDITED - Válaszd ki a menün az X-ik sativa prerolled. Mi a neve?`, a: "", code: "1012PL" },
+      { titleQ: "Checkpoint 12", introQ: `Kezdesz megéhezni? Látogass el egy helyre, ahol közel-keleti ízvilágú remekműveket tudsz enni.`, mainQ: `<div style="text-align:center;font-family:'UnifrakturCook',serif;font-style:italic;font-size:22px;margin-bottom:18px;">
+      Homo Sapiens Non Urinat In Ventum </div>
+      Hány oszlop kell e bölcsesség támasztására?`, a: "7", code: "1016AS" }
+      // { titleQ: "Checkpoint 10", introQ: ``, mainQ: ``, a: "", code: "1012PL" }
     ];
 
-    let current=0;
-    let answers=Array(questions.length).fill("");
+    let current = 0;
+    let answers = Array(questions.length).fill("");
 
-    function loadJSON(key,fallback){try{const x=localStorage.getItem(key);return x?JSON.parse(x):fallback}catch{return fallback}}
-    function saveJSON(key,val){try{localStorage.setItem(key,JSON.stringify(val))}catch{}}
-    function parseOdds(str){if(!str)return null;const num=parseFloat(str.replace(',','.'));if(isNaN(num)||num<=0)return null;return num}
-    function formatMoney(n){const abs=Math.abs(n).toFixed(2);if(n>0)return "+€"+abs;if(n<0)return "−€"+abs;return "€"+abs}
-    function refreshPL(){const el=document.getElementById("pl-value");const footer=document.getElementById("pl-footer");el.textContent=formatMoney(playerPL);footer.classList.remove("pl-positive","pl-negative");if(playerPL>0)footer.classList.add("pl-positive");else if(playerPL<0)footer.classList.add("pl-negative")}
+    function parseOdds(str){ if(!str) return null; const n=parseFloat(str.replace(',','.')); if(isNaN(n)||n<=0) return null; return n }
+    function formatMoney(n){ const abs=Math.abs(n).toFixed(2); if(n>0) return "+€"+abs; if(n<0) return "−€"+abs; return "€"+abs }
+    function refreshPL(){ const el=document.getElementById("pl-value"); const f=document.getElementById("pl-footer"); el.textContent=formatMoney(playerPL); f.classList.remove("pl-positive","pl-negative"); if(playerPL>0) f.classList.add("pl-positive"); else if(playerPL<0) f.classList.add("pl-negative") }
 
     function startGame(){
       document.getElementById("intro").classList.add("hidden");
@@ -204,107 +245,139 @@
       document.getElementById("sticky-title").style.display="block";
       document.getElementById("pl-footer").classList.remove("hidden");
       refreshPL();
-      showQuestion()
+      showQuestion();
     }
 
     function updateVerificationVisibility(){
       const raw=document.getElementById("number-input").value.trim();
       const odds=parseOdds(raw);
       const ver=document.getElementById("verification");
-      if(odds!==null)ver.classList.remove("hidden");else ver.classList.add("hidden")
+      if(odds!==null) ver.classList.remove("hidden"); else ver.classList.add("hidden");
     }
 
     function toggleInfo(){
       const pop=document.getElementById("info-pop");
-      if(pop.classList.contains("hidden")){pop.innerHTML=INFO_TEXT;pop.classList.remove("hidden")}else{pop.classList.add("hidden")}
+      const btn=document.getElementById("info-btn");
+      const opening=pop.classList.contains("hidden");
+      if(opening){
+        pop.innerHTML=INFO_TEXT;
+        pop.classList.remove("hidden");
+        btn.textContent="- Tűnj el a gecibe! - ";
+        btn.setAttribute("aria-expanded","true");
+      }else{
+        pop.classList.add("hidden");
+        btn.textContent="+ Kiváncsi vagyok a részletekre! +";
+        btn.setAttribute("aria-expanded","false");
+      }
     }
 
     function showQuestion(){
-      if(current<questions.length){
-        document.getElementById("title-question").textContent=questions[current].titleQ;
-        document.getElementById("intro-question").innerHTML=questions[current].introQ;
-        document.getElementById("main-q-text").innerHTML="";
-        document.getElementById("message").textContent="";
-        document.getElementById("verification-message").textContent="";
-        document.getElementById("hint").textContent=questions[current].hint||"";
-        document.getElementById("num-title").textContent=NUM_TITLE;
-        document.getElementById("info-pop").classList.add("hidden");
-        document.getElementById("info-btn").onclick=toggleInfo;
-        document.getElementById("number-section").style.display="block";
-        document.getElementById("number-warning").style.display="none";
-        const numInput=document.getElementById("number-input");
-        numInput.value=(oddsByQuestion[current]??"").toString();
-        numInput.oninput=updateVerificationVisibility;
+      document.getElementById("title-question").textContent=questions[current].titleQ||"";
+      document.getElementById("intro-question").innerHTML=questions[current].introQ||"";
+      document.getElementById("num-title").textContent=NUM_TITLE;
+      document.getElementById("info-pop").classList.add("hidden");
+      const btn=document.getElementById("info-btn");
+      btn.textContent="+ Kiváncsi vagyok a részletekre! +";
+      btn.setAttribute("aria-expanded","false");
+      btn.onclick=toggleInfo;
 
-        const code=questions[current].code;
-        const container=document.getElementById("code-inputs");
-        container.innerHTML="";
-        for(let i=0;i<6;i++){
-          const input=document.createElement("input");
-          input.maxLength=1;
-          if(i<=3)input.setAttribute("inputmode","numeric");else input.setAttribute("inputmode","text");
-          if(i===0||i===1||i===4){input.value=code[i];input.disabled=true}
-          input.addEventListener("input",function(){if(this.value.length===1){let next=this.nextElementSibling;while(next&&next.disabled)next=next.nextElementSibling;if(next)next.focus()}});
-          input.addEventListener("keydown",function(e){if(e.key==="Backspace"&&this.value===""){let prev=this.previousElementSibling;while(prev&&prev.disabled)prev=prev.previousElementSibling;if(prev)prev.focus()}});
-          container.appendChild(input)
-        }
+      document.getElementById("number-section").style.display="block";
+      document.getElementById("number-warning").style.display="none";
 
-        const ver=document.getElementById("verification");
-        ver.style.display="";
-        ver.classList.add("hidden");
-        document.getElementById("main-question").style.display="none";
-        document.getElementById("answer").value=answers[current]||"";
-        updateVerificationVisibility()
-      }else{
-        document.getElementById("title-question").textContent=FINAL_TITLE;
-        document.getElementById("question-stage").innerHTML=`<h2>🎉 You Escaped!</h2><p>Final P/L shown below.</p>`
+      const numInput=document.getElementById("number-input");
+      numInput.value=(oddsByQuestion[current]??"").toString();
+      numInput.oninput=updateVerificationVisibility;
+
+      const code=questions[current].code||"0000AA";
+      const container=document.getElementById("code-inputs");
+      container.innerHTML="";
+      for(let i=0;i<6;i++){
+        const input=document.createElement("input");
+        input.maxLength=1;
+        if(i<=3) input.setAttribute("inputmode","numeric"); else input.setAttribute("inputmode","text");
+        if(i===0||i===1||i===4){ input.value=code[i]; input.disabled=true }
+        input.addEventListener("input",function(){ if(this.value.length===1){ let next=this.nextElementSibling; while(next&&next.disabled) next=next.nextElementSibling; if(next) next.focus() }});
+        input.addEventListener("keydown",function(e){ if(e.key==="Backspace"&&this.value===""){ let prev=this.previousElementSibling; while(prev&&prev.disabled) prev=prev.previousElementSibling; if(prev) prev.focus() }});
+        container.appendChild(input);
       }
+
+      const ver=document.getElementById("verification");
+      ver.style.display="";
+      ver.classList.add("hidden");
+      document.getElementById("main-question").style.display="none";
+      document.getElementById("answer").value=answers[current]||"";
+      updateVerificationVisibility();
     }
 
     function checkVerification(){
       const raw=document.getElementById("number-input").value.trim();
       const odds=parseOdds(raw);
-      if(raw!==""&&odds===null){document.getElementById("number-warning").style.display="block";return}
+      if(raw!==""&&odds===null){ document.getElementById("number-warning").style.display="block"; return }
       document.getElementById("number-warning").style.display="none";
-      if(odds!==null){oddsByQuestion[current]=odds}
+      if(odds!==null){ oddsByQuestion[current]=odds }
 
-      const code=questions[current].code;
+      const code=questions[current].code||"";
       const inputs=document.querySelectorAll("#code-inputs input");
-      let entered="",expected="",masterSlice="";
-      inputs.forEach((inp,i)=>{if(!inp.disabled){entered+=inp.value.toUpperCase();expected+=code[i].toUpperCase();masterSlice+=MASTER_CODE[i]}});
 
-      if(entered===expected||entered===masterSlice){
-        playerPL+=1;
-        refreshPL();
+      let entered="", expected="";
+      let allFilled=true;
+
+      /* build slices for ALL master codes aligned to editable positions */
+      const masterSlices = Array(MASTER_CODES.length).fill("");
+
+      inputs.forEach((inp,i)=>{
+        if(!inp.disabled){
+          if(inp.value==="") allFilled=false;
+          entered += inp.value.toUpperCase();
+          expected += (code[i]||"").toUpperCase();
+          for(let k=0;k<MASTER_CODES.length;k++){
+            masterSlices[k] += (MASTER_CODES[k][i] || "");
+          }
+        }
+      });
+
+      if(!allFilled){
+        document.getElementById("verification-message").textContent="";
+        return;
+      }
+
+      if(entered===expected || masterSlices.includes(entered)){
+        playerPL += 1; refreshPL();
         document.getElementById("verification").classList.add("hidden");
         document.getElementById("number-section").style.display="none";
         document.getElementById("main-question").style.display="block";
-        document.getElementById("main-q-text").innerHTML=questions[current].mainQ;
+        document.getElementById("main-q-text").innerHTML=questions[current].mainQ||"";
         document.getElementById("answer").value=answers[current]||"";
-        document.getElementById("answer").focus()
+        document.getElementById("answer").focus();
       }else{
-        const loss=odds??0;
-        playerPL-=loss;
-        refreshPL();
-        document.getElementById("verification-message").textContent=loss>0?`❌ Wrong code. You lose €${loss.toFixed(2)} this round.`:"❌ Wrong code. Enter odds to risk an amount."
+        const loss=odds??0; playerPL-=loss; refreshPL();
+        document.getElementById("verification-message").textContent =
+          loss>0 ? `❌ Wrong code. You lose €${loss.toFixed(2)} this round.` : "❌ Wrong code. Enter odds to risk an amount.";
       }
-    }
+    } // close checkVerification
 
     function checkAnswer(){
       const input=document.getElementById("answer").value.trim();
       answers[current]=input;
-      const correct=questions[current].a.toLowerCase();
-      if(input.toLowerCase()===correct||input.toLowerCase()===MASTER_ANSWER.toLowerCase()){current++;showQuestion()}else{document.getElementById("message").textContent="❌ Wrong answer, try again!"}
+      const correct=(questions[current].a||"").toLowerCase();
+      if(input.toLowerCase()===correct || input.toLowerCase()===MASTER_ANSWER.toLowerCase()){
+        current++; showQuestion();
+      }else{
+        document.getElementById("message").textContent="❌ Wrong answer, try again!";
+      }
     }
 
-    function goBack(){if(current>0)current--;else current=0;showQuestion()}
+    function goBack(){
+      if(current>0) current--;
+      showQuestion();
+    }
 
     document.addEventListener("keyup",function(e){
       if(e.key==="Enter"){
         const ver=document.getElementById("verification");
         const verifyVisible=!ver.classList.contains("hidden");
         const mainVisible=document.getElementById("main-question").style.display!=="none";
-        if(verifyVisible)checkVerification();else if(mainVisible)checkAnswer()
+        if(verifyVisible) checkVerification(); else if(mainVisible) checkAnswer();
       }
     });
   </script>

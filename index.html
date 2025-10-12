@@ -338,7 +338,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 18:03 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 18:09 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
       <p>Instructions:<br>1. Enter the correct postcodes to unlock each stage.<br>2. Choose your odds each round and
         verify.<br>3. Correct code: you win €1. Wrong code: you lose your chosen odds (€X).</p>
@@ -610,10 +610,10 @@
         const from = lastReachedIndex < 0 ? BASE_START : questions[lastReachedIndex].coords;
 
         if (to) {
-          stat.textContent = `Animating: ${lastReachedIndex < 0 ? 'Base' : questions[lastReachedIndex].titleQ} → ${questions[current].titleQ}`;
+          stat.textContent = `Utazás: ${lastReachedIndex < 0 ? 'Base' : questions[lastReachedIndex].titleQ} → ${questions[current].titleQ}`;
           animateLeg(from, to, 3500).then(() => {
             lastReachedIndex = current;
-            stat.textContent = `Arrived at ${questions[current].titleQ}`;
+            stat.textContent = `Rough Rider is at ${questions[current].titleQ}`;
           });
         }
         document.getElementById("verification").classList.add("hidden")

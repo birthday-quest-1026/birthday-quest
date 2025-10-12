@@ -283,6 +283,65 @@
       margin-bottom: 8px
     }
 
+    /* --- Additions for intro bubble + skyline (do not change anything else) --- */
+    #intro {
+      padding-bottom: 160px
+    }
+
+    #intro-instruction .info-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #eef0ff;
+      border: 1px solid #c9d0ff;
+      font-size: 14px;
+      cursor: pointer
+    }
+
+    #intro-instruction .info-btn:focus {
+      outline: none
+    }
+
+    #intro-instruction .info-btn:focus-visible {
+      outline: 2px solid #c9d0ff
+    }
+
+    #intro-instruction .info-pop {
+      margin: 14px auto 0;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #cfe1ff;
+      font-size: 16px;
+      line-height: 1.55;
+      text-align: center;
+      display: inline-block;
+      width: min(520px, 90%);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .08)
+    }
+
+    #intro-instruction .info-pop.hidden {
+      display: none !important
+    }
+
+    #skyline {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 140px;
+      pointer-events: none;
+      background-image: url('silhouette2.png');
+      background-repeat: repeat-x;
+      background-position: bottom center;
+      background-size: contain;
+      opacity: .9;
+      z-index: 0;
+    }
+
+    /* --- End additions --- */
+
     @media (max-width:600px) {
       body {
         padding: 32px 20px calc(var(--footer-h) + 16px) 20px;
@@ -328,6 +387,21 @@
         height: 260px;
       }
     }
+
+    /* Stack & center the intro bubble and Start button */
+    #intro-instruction {
+      display: block;
+      /* override .bubble's inline-block only here */
+      margin: 0 auto 16px;
+      /* center + space below */
+    }
+
+    #intro>button[onclick="startGame()"] {
+      display: block;
+      /* make it block so it sits under the bubble */
+      margin: 0 auto;
+      /* center horizontally */
+    }
   </style>
 </head>
 
@@ -340,8 +414,14 @@
     <div id="intro">
       <h1>TO BE REMOVED ❌❌❌❌ 18:09 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
-      <p>Instructions:<br>1. Enter the correct postcodes to unlock each stage.<br>2. Choose your odds each round and
-        verify.<br>3. Correct code: you win €1. Wrong code: you lose your chosen odds (€X).</p>
+
+      <!-- Intro instructions changed to a tap-to-open bubble -->
+      <div id="intro-instruction" class="bubble">
+        <div id="intro-num-title">Instructions</div>
+        <button id="intro-info-btn" class="info-btn" type="button" aria-expanded="false">+ Kiváncsi vagyok a részletekre! +</button>
+        <div id="intro-info-pop" class="info-pop hidden"></div>
+      </div>
+
       <button onclick="startGame()">Start the Game</button>
     </div>
 
@@ -412,6 +492,9 @@
     </div>
   </div>
 
+  <!-- Skyline image for the first page only -->
+  <div id="skyline" aria-hidden="true"></div>
+
   <div id="pl-footer" class="hidden">
     <span>Current P/L:</span>
     <span id="pl-value" class="pill">€0.00</span>
@@ -432,6 +515,12 @@
     let oddsByQuestion = {}
     let playerPL = 0
     let betLog = []
+
+    // --- Additions for intro bubble (do not change anything else) ---
+    const INTRO_INFO_HTML = `1. Enter the correct postcodes to unlock each stage.<br>
+    2. Answer the subsequent question to progress to the next stage.<br>
+    3. Ne légy buta.`
+    // --- End additions ---
 
     const questions = [
       { titleQ: "Spawn Point", introQ: `You wake up on a gorgeous sunny day in Amsterdam. After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p> To remedy that you shall choose a place to brunch. Where would you head to?`, mainQ: "Mi a menün található 4. ételnek a neve?", a: "Spetsofai Pie", code: "1091EJ", coords: [52.352937, 4.910438] },
@@ -478,7 +567,7 @@
       // custom icon
       const vanmoofIcon = L.icon({
         iconUrl: 'vanmoof.png',
-        iconSize: [90, 60],
+        iconSize: [100, 60],
         iconAnchor: [20, 20]
       });
 
@@ -507,6 +596,7 @@
     }
 
     function startGame() {
+      document.getElementById("skyline").style.display = "none"; // hide skyline after intro
       document.getElementById("intro").classList.add("hidden")
       document.getElementById("question-stage").classList.remove("hidden")
       document.getElementById("bonus-screen").classList.add("hidden")
@@ -530,9 +620,19 @@
       const pop = document.getElementById("info-pop")
       const btn = document.getElementById("info-btn")
       const opening = pop.classList.contains("hidden")
-      if (opening) { pop.innerHTML = INFO_TEXT; pop.classList.remove("hidden"); btn.textContent = "- Tűnj el a gecibe! - "; btn.setAttribute("aria-expanded", "true") }
+      if (opening) { pop.innerHTML = INFO_TEXT; pop.classList.remove("hidden"); btn.textContent = "- Tűnj el a gecibe! -"; btn.setAttribute("aria-expanded", "true") }
       else { pop.classList.add("hidden"); btn.textContent = "+ Kiváncsi vagyok a részletekre! +"; btn.setAttribute("aria-expanded", "false") }
     }
+
+    // --- Additions for intro bubble (do not change anything else) ---
+    function toggleIntroInfo() {
+      const pop = document.getElementById("intro-info-pop")
+      const btn = document.getElementById("intro-info-btn")
+      const opening = pop.classList.contains("hidden")
+      if (opening) { pop.innerHTML = INTRO_INFO_HTML; pop.classList.remove("hidden"); btn.textContent = "- Tűnj el a gecibe! -"; btn.setAttribute("aria-expanded", "true") }
+      else { pop.classList.add("hidden"); btn.textContent = "+ Kiváncsi vagyok a részletekre! +"; btn.setAttribute("aria-expanded", "false") }
+    }
+    // --- End additions ---
 
     function showQuestion() {
       document.getElementById("title-question").textContent = questions[current].titleQ || ""
@@ -722,6 +822,12 @@
       ctx.textAlign = "center"; ctx.textBaseline = "top"
       for (let i = 0; i < bets.length; i++) { const x = x0 + stepX * i; ctx.fillText(String(i + 1), x, y0 + 6) }
     }
+
+    // --- Initialize intro bubble and skyline visibility (do not change anything else) ---
+    document.getElementById("intro-info-pop").classList.add("hidden");
+    document.getElementById("intro-info-btn").onclick = toggleIntroInfo;
+    document.getElementById("skyline").style.display = "block";
+    // --- End init ---
   </script>
 </body>
 

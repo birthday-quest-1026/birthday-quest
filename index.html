@@ -338,7 +338,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 17:45 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 17:53 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
       <p>Instructions:<br>1. Enter the correct postcodes to unlock each stage.<br>2. Choose your odds each round and
         verify.<br>3. Correct code: you win €1. Wrong code: you lose your chosen odds (€X).</p>
@@ -569,12 +569,23 @@
       document.getElementById("message").textContent = ""
       document.getElementById("answer").oninput = function () { document.getElementById("message").textContent = "" }
       document.getElementById("verification-message").textContent = ""
-      const hintEl = document.getElementById("hint")
-      const qHint = questions[current].hint
-      if (qHint && qHint.trim() !== "") { hintEl.innerHTML = qHint; hintEl.style.display = "block" } else { hintEl.textContent = ""; hintEl.style.display = "none" }
-      ensureMap()
-      setMapToCurrent()
-      updateVerificationVisibility()
+      const hintEl = document.getElementById("hint");
+      const qHint = questions[current].hint;
+      if (qHint && qHint.trim() !== "") {
+        hintEl.innerHTML = qHint;
+        hintEl.style.display = "block";
+      } else {
+        hintEl.textContent = "";
+        hintEl.style.display = "none";
+      }
+      // move hint under "Enter the postcode:" and above the fields
+      document.getElementById("verification").insertBefore(hintEl, document.getElementById("code-inputs"));
+
+      ensureMap();
+      setMapToCurrent();
+      updateVerificationVisibility();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
     }
 
     function checkVerification() {

@@ -287,14 +287,13 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 14:25 🔐 Birthday Escape Room</h1>
-      <h3>Can you solve all the puzzles and escape?</h3>
+      <h1>TO BE REMOVED ❌❌❌❌ 14:57 🔐 Birthday Escape Room</h1>
+      <h3>Birthday Quest</h3>
       <p>
-        Rules:<br>
+        Instructions:<br>
         1. Enter the correct postcodes to unlock each stage.<br>
         2. Choose your odds each round and verify.<br>
-        3. Correct code: you win €1. Wrong code: you lose your chosen odds (€X).<br>
-        4. Use logic, creativity, and persistence!
+        3. Correct code: you win €1. Wrong code: you lose your chosen odds (€X).
       </p>
       <button onclick="startGame()">Start the Game</button>
     </div>
@@ -334,8 +333,12 @@
     <div id="end-screen" class="hidden">
       <h1 style="margin-bottom:12px;">🎉 Congratulations! 🎉</h1>
       <p>You have completed the game.</p>
+      <p id="end-score"></p>
+      <p id="end-pl"></p>
+      <p id="end-bets-total"></p>
+      <p id="end-bets" class="hint"></p>
+      <canvas id="bet-chart" width="560" height="240" style="max-width:100%;"></canvas>
     </div>
-
   </div>
 
   <div id="pl-footer" class="hidden">
@@ -356,6 +359,8 @@
 
     let oddsByQuestion = {};
     let playerPL = 0;
+    let betLog = []; // tracks each verification attempt: {q, odds, outcome}
+
 
     const questions = [
       {
@@ -392,7 +397,7 @@
       {
         titleQ: "Checkpoint 6", introQ: `Gratulálunk, Ön közbeszerzést nyert! <p>
         Pályázatában kötelezettséget vállalt a háztartás több évre szóló öngyújtó-ellátásának biztosítására.
-        Hol eszközölné beszerzését?`, mainQ: "[Placeholder follow-up Q4]", a: "Hartman Cigars", code: "1017PC"
+        Hol eszközölné beszerzését?`, mainQ: "Hány eurót hagytál a boltban?", a: "5", code: "1017PC"
       },
       {
         titleQ: "Checkpoint 7", introQ: `A bolttól elindulván egyszerre csak meghallod a természet hívását. Honnan jöhet?`,
@@ -560,6 +565,8 @@
 
       if (entered === expected || masterSlices.includes(entered)) {
         playerPL += 1; refreshPL();
+        const usedOdds = oddsByQuestion[current] ?? odds ?? 0;
+        betLog.push({ q: current + 1, odds: usedOdds, outcome: 1 });
         document.getElementById("verification").classList.add("hidden");
         document.getElementById("number-section").style.display = "none";
         document.getElementById("main-question").style.display = "block";
@@ -569,6 +576,7 @@
         document.getElementById("message").textContent = "";
       } else {
         const loss = odds ?? 0; playerPL -= loss; refreshPL();
+        betLog.push({ q: current + 1, odds: loss, outcome: -loss });
         document.getElementById("verification-message").textContent =
           loss > 0 ? `❌ Wrong code. You lose €${loss.toFixed(2)} this round.` : "❌ Wrong code. Enter odds to risk an amount.";
       }
@@ -593,12 +601,35 @@
     }
 
     function endGame() {
+      // summary numbers
+      const attempts = betLog.length;
+      const wins = betLog.filter(r => r.outcome > 0).length;
+
+      // bets array (only positive stakes)
+      const bets = betLog.map(r => r.odds).filter(n => n > 0);
+      const totalStake = bets.reduce((s, n) => s + n, 0);
+
+      // populate end-screen
+      document.getElementById("end-score").textContent =
+        `Overall score: ${wins} / ${attempts} correct`;
+      document.getElementById("end-pl").textContent =
+        `Final P/L: ${formatMoney(playerPL)}`;
+      document.getElementById("end-bets-total").textContent =
+        bets.length ? `Total staked: €${totalStake.toFixed(2)}` : "";
+      document.getElementById("end-bets").textContent =
+        bets.length ? `Your bet sizes: ${bets.map(n => "€" + n.toFixed(2)).join(", ")}` : "";
+
+      // draw chart of individual bet sizes
+      drawBetChart(bets);
+
+      // show end-screen
       document.getElementById("question-stage").classList.add("hidden");
       document.getElementById("end-screen").classList.remove("hidden");
       document.getElementById("sticky-title").style.display = "block";
       document.getElementById("title-question").textContent = FINAL_TITLE;
       document.getElementById("pl-footer").classList.add("hidden");
     }
+
 
 
     document.addEventListener("keyup", function (e) {
@@ -609,6 +640,85 @@
         if (verifyVisible) checkVerification(); else if (mainVisible) checkAnswer();
       }
     });
+    function drawBetChart(bets) {
+      const canvas = document.getElementById("bet-chart");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const W = canvas.width, H = canvas.height;
+
+      // clear
+      ctx.clearRect(0, 0, W, H);
+
+      // no data
+      if (!bets || bets.length === 0) {
+        ctx.font = "16px 'Special Elite', monospace";
+        ctx.fillStyle = "#444";
+        ctx.textAlign = "center";
+        ctx.fillText("No bets placed", W / 2, H / 2);
+        return;
+      }
+
+      // chart area
+      const pad = { left: 44, right: 8, top: 10, bottom: 28 };
+      const x0 = pad.left, y0 = H - pad.bottom;
+      const x1 = W - pad.right, y1 = pad.top;
+      const innerW = x1 - x0, innerH = y0 - y1;
+
+      const maxY = Math.max(1, Math.max(...bets) * 1.15);
+
+      // axes
+      ctx.strokeStyle = "#333";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(x0, y0); ctx.lineTo(x0, y1); // y-axis
+      ctx.moveTo(x0, y0); ctx.lineTo(x1, y0); // x-axis
+      ctx.stroke();
+
+      // y ticks/grid (4 lines)
+      ctx.font = "12px 'Special Elite', monospace";
+      ctx.fillStyle = "#333";
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      ctx.strokeStyle = "rgba(0,0,0,0.08)";
+      for (let i = 0; i <= 4; i++) {
+        const v = (maxY / 4) * i;
+        const y = y0 - (v / maxY) * innerH;
+        ctx.beginPath();
+        ctx.moveTo(x0, y); ctx.lineTo(x1, y);
+        ctx.stroke();
+        ctx.fillText("€" + v.toFixed(0), x0 - 6, y);
+      }
+
+      // line
+      const stepX = bets.length === 1 ? innerW : innerW / (bets.length - 1);
+      ctx.strokeStyle = "#222";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      bets.forEach((b, i) => {
+        const x = x0 + stepX * i;
+        const y = y0 - (b / maxY) * innerH;
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // points
+      ctx.fillStyle = "#222";
+      bets.forEach((b, i) => {
+        const x = x0 + stepX * i;
+        const y = y0 - (b / maxY) * innerH;
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // x labels (attempt #)
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      for (let i = 0; i < bets.length; i++) {
+        const x = x0 + stepX * i;
+        ctx.fillText(String(i + 1), x, y0 + 6);
+      }
+    }
   </script>
 </body>
 

@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <style>
     :root {
@@ -17,6 +18,12 @@
       --pl-pos: rgb(0, 66, 37);
       --pl-zero: rgb(74, 65, 42);
       --pl-neg: rgb(109, 3, 2)
+    }
+
+    .ancient {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1em;
+      letter-spacing: 0.05em;
     }
 
     html {
@@ -387,7 +394,9 @@
         height: 260px;
       }
 
-      #skyline { background-position: center calc(100% + 120px); }
+      #skyline {
+        background-position: center calc(100% + 120px);
+      }
     }
 
     /* Stack & center the intro bubble and Start button */
@@ -547,7 +556,7 @@
 
     const questions = [
       { titleQ: "Spawn Point", introQ: `You wake up on a gorgeous sunny day in Amsterdam. After putting on your sunglasses as you ascend to the upper floor you feel a puissante hunger striking you. <p> To remedy that you shall choose a place to brunch. Where would you head to?`, mainQ: "Mi a menün található 4. ételnek a neve?", a: "Spetsofai Pie", code: "1091EJ", coords: [52.352937, 4.910438] },
-      { titleQ: "Checkpoint 1", introQ: `Pantha Rhei&#8482 has done exceptionally well this year. It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p> All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam. On your upcoming trip which hotel would you lodge at?`, mainQ: "ANSWER NOT UPDATED TO BE EDITED - Kinek a szobra található a hotel bejárata előtt?", a: "Amstel Hotel", code: "1018GX", coords: [52.360062, 4.904937] },
+      { titleQ: "Checkpoint 1", introQ: `<span class="ancient">Pantha Rhei</span>&#8482 has done exceptionally well this year. It's AUM increased by 30.3% YoY and its returns were 51.7%, outperforming even legendary trader Nancy Pelosi. <p> All this didn't come cheap though, you deserve a peaceful leisure trip to Amsterdam. On your upcoming trip which hotel would you lodge at?`, mainQ: "ANSWER NOT UPDATED TO BE EDITED - Kinek a szobra található a hotel bejárata előtt?", a: "Amstel Hotel", code: "1018GX", coords: [52.360062, 4.904937] },
       { titleQ: "Checkpoint 2", introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`, mainQ: `Mielőtt az utca véget érne, egyszer csak megpillantasz valamit, amitől felcsillan a szemed. Mit látsz?`, a: "Boerejongens", code: "1017XK", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma.", coords: [52.361062, 4.899437] },
       { titleQ: "Checkpoint 3", introQ: `Újdonsült titkosmikkentyűd azt kéri tőled, hogy menj a második legközelebbi térre, hogy elfogyaszd. (A legközelebbi nyilvánvalóan kiesik).`, mainQ: `Ezen a ponton valószínűleg Arnoldnak már pisilnie kell, miután elvégzi dolgát megtetszik a csatorna látványa. Ideális esetben ezelőtt a gyönyörű ház előtt fogtok leülni elfogyasztani Bismarckot. Mi a házszám?`, a: "59", code: "1017JD", coords: [52.362188, 4.898312] },
       { titleQ: "Checkpoint 4", introQ: `Keresd meg a Vijzelstraat és Reguliersgracht között található (nagy valószínűséggel őrült) porcelános néni üzletét`, mainQ: `Hogy hívják az üzletet?`, a: "Golden Bend", code: "1017CC", coords: [52.364812, 4.893937] },

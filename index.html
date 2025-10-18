@@ -422,7 +422,6 @@
       }
     }
 
-    /* -------- PDF modal (zoomable) -------- */
     #pdf-modal {
       position: fixed;
       inset: 0;
@@ -542,9 +541,6 @@
       <h1 style="font-size: 32px;">Boldog születésnapot!</h1>
       <h3 style="font-size: 20px;">🕵️‍♂️🕵️‍♂️ Birthday Quest 🕵️‍♂️🕵️‍♂️</h3>
 
-      <!-- <h1 style="font-size: 32px;">TO BE REMOVED ❌❌❌❌ 17:45 🔐 Birthday Escape Room</h1>
-      <h3 style="font-size: 20px;">Birthday Quest</h3> -->
-
       <div id="intro-instruction" class="bubble">
         <div id="intro-num-title">Instructions</div>
         <button id="intro-info-btn" class="info-btn" type="button" aria-expanded="false">+ Kiváncsi vagyok a
@@ -621,6 +617,7 @@
       <h1 style="margin-bottom:12px;">🎉 Yeeey 🎉</h1>
       <p>Szép munka!</p>
       <p id="end-score"></p>
+      <p id="end-firsttry"></p>
       <p id="end-pl"></p>
       <p id="end-bets-total"></p>
       <p id="end-bets" class="hint"></p>
@@ -699,6 +696,8 @@
 
     let current = 0
     let answers = Array(questions.length).fill("")
+    let attemptsByQuestion = Array(questions.length).fill(0)
+    let firstTryCorrect = Array(questions.length).fill(null)
 
     function parseOdds(str) { if (!str) return null; const n = parseFloat(str.replace(',', '.')); if (isNaN(n) || n <= 0) return null; return n }
     function formatMoney(n) { const abs = Math.abs(n).toFixed(2); if (n > 0) return "+€" + abs; if (n < 0) return "−€" + abs; return "€" + abs }
@@ -754,7 +753,7 @@
     const STORAGE_KEY = 'escape_room_state_v1';
     function saveState() {
       try {
-        const state = { current, answers, oddsByQuestion, playerPL, betLog, lastReachedIndex, started: true };
+        const state = { current, answers, oddsByQuestion, playerPL, betLog, lastReachedIndex, started: true, attemptsByQuestion, firstTryCorrect };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       } catch (e) { }
     }
@@ -786,6 +785,8 @@
           playerPL = Number.isFinite(s.playerPL) ? s.playerPL : 0;
           betLog = Array.isArray(s.betLog) ? s.betLog : [];
           lastReachedIndex = Number.isInteger(s.lastReachedIndex) ? s.lastReachedIndex : -1;
+          attemptsByQuestion = Array.isArray(s.attemptsByQuestion) ? s.attemptsByQuestion : Array(questions.length).fill(0);
+          firstTryCorrect = Array.isArray(s.firstTryCorrect) ? s.firstTryCorrect : Array(questions.length).fill(null);
         } else {
           resetState();
         }
@@ -797,6 +798,8 @@
         playerPL = 0;
         betLog = [];
         lastReachedIndex = -1;
+        attemptsByQuestion = Array(questions.length).fill(0);
+        firstTryCorrect = Array(questions.length).fill(null);
       }
 
       ensureMap()
@@ -813,14 +816,16 @@
       playerPL = 0;
       betLog = [];
       lastReachedIndex = -1;
+      attemptsByQuestion = Array(questions.length).fill(0);
+      firstTryCorrect = Array(questions.length).fill(null);
 
-      document.getElementById("question-stage").classList.add("hidden");
-      document.getElementById("bonus-screen").classList.add("hidden");
-      document.getElementById("end-screen").classList.add("hidden");
-      document.getElementById("intro").classList.remove("hidden");
-      document.getElementById("sticky-title").style.display = "none";
-      document.getElementById("pl-footer").classList.add("hidden");
-      document.getElementById("skyline").style.display = "block";
+      document.getElementById("question-stage").classList.add("hidden")
+      document.getElementById("bonus-screen").classList.add("hidden")
+      document.getElementById("end-screen").classList.add("hidden")
+      document.getElementById("intro").classList.remove("hidden")
+      document.getElementById("sticky-title").style.display = "none"
+      document.getElementById("pl-footer").classList.add("hidden")
+      document.getElementById("skyline").style.display = "block"
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -954,11 +959,17 @@
       const input = document.getElementById("answer").value.trim()
       answers[current] = input; saveState();
       const correct = (questions[current].a || "").toLowerCase()
+      attemptsByQuestion[current] = (attemptsByQuestion[current] || 0) + 1; saveState();
       if (input.toLowerCase() === correct || input.toLowerCase() === MASTER_ANSWER.toLowerCase()) {
+        if (attemptsByQuestion[current] === 1) firstTryCorrect[current] = true;
         current++; saveState();
         if (current >= questions.length) { showBonus(); return }
         showQuestion()
-      } else { document.getElementById("message").textContent = "❌ Wrong answer, try again!" }
+      } else {
+        if (attemptsByQuestion[current] === 1) firstTryCorrect[current] = false;
+        saveState();
+        document.getElementById("message").textContent = "❌ Wrong answer, try again!"
+      }
     }
 
     function goBack() { if (current > 0) current--; showQuestion() }
@@ -969,6 +980,8 @@
       const bets = betLog.map(r => r.odds).filter(n => n > 0)
       const totalStake = bets.reduce((s, n) => s + n, 0)
       document.getElementById("end-score").textContent = `Overall score: ${wins} / ${attempts} correct`
+      const firstCount = firstTryCorrect.filter(v => v === true).length
+      document.getElementById("end-firsttry").textContent = `First-try correct answers: ${firstCount} / ${questions.length}`
       document.getElementById("end-pl").textContent = `Final P/L: ${formatMoney(playerPL)}`
       document.getElementById("end-bets-total").textContent = bets.length ? `Total staked: €${totalStake.toFixed(2)}` : ""
       document.getElementById("end-bets").textContent = bets.length ? `Your bet sizes: ${bets.map(n => "€" + n.toFixed(2)).join(", ")}` : ""

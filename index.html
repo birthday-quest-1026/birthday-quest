@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes, minimum-scale=1, maximum-scale=5">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes, minimum-scale=0.2, maximum-scale=6">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
@@ -477,7 +477,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 13:03 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 13:16 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
 
       <div id="intro-instruction" class="bubble">
@@ -937,8 +937,8 @@
     const pdfClose = document.getElementById('pdf-close');
 
     function openPdf() {
-      // Hint most mobile viewers to fit width initially; pinch-zoom remains available
-      pdfIframe.src = 'kozbeszerzesi.pdf#zoom=page-width';
+      // Fit whole page on open; pinch-zoom remains available
+      pdfIframe.src = 'kozbeszerzesi.pdf#zoom=page-fit';
       pdfModal.style.display = 'flex';
     }
     function closePdf() {

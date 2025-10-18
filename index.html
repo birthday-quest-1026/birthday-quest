@@ -206,7 +206,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 17:44 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 17:45 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
 
       <div id="intro-instruction" class="bubble">
@@ -795,7 +795,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const s = loadState();
       if (s && s.started) {
-        const wants = confirm('Resume your previous progress?');
+        const wants = confirm('Ha gyökér vagy és veletlen frissítetted akkor menj rá, hogy "OK"!');
         if (wants) startGame(true);
         else resetState();
       }

@@ -28,7 +28,6 @@
 
     html { -webkit-text-size-adjust: 100% }
 
-    /* enable pinch zoom gestures */
     html, body { touch-action: pan-x pan-y pinch-zoom; }
 
     body {
@@ -167,7 +166,6 @@
       appearance: none; border: 1px solid #ddd; background: #f6f6f6; border-radius: 8px; padding: 6px 10px; cursor: pointer;
     }
 
-    /* Zoom controls */
     .zoom-controls { display:flex; align-items:center; gap:8px; font-weight: normal; }
     .zoom-controls input[type="number"] { width: 68px; text-align: right; padding: 6px 8px; border:1px solid #ddd; border-radius:8px; }
     .zoom-controls button {
@@ -175,19 +173,29 @@
     }
     .zoom-slider { width: 140px; }
 
-    /* The viewer area that we’ll scale */
     #pdf-viewport {
       flex: 1; overflow:auto; -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y pinch-zoom;
       background: #fff;
     }
     #pdf-iframe {
       border: 0;
-      /* These will be overwritten by JS when zoom changes */
       transform-origin: top left;
       display:block;
     }
 
     #pdf-hint.hidden { display: none !important; }
+
+    #go-start {
+      display: block;
+      margin: 24px auto 40px auto;
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      background: #f6f6f6;
+      cursor: pointer;
+      max-width: 600px;
+      width: 90%;
+    }
   </style>
 </head>
 
@@ -198,7 +206,7 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 13:26 🔐 Birthday Escape Room</h1>
+      <h1>TO BE REMOVED ❌❌❌❌ 17:14 🔐 Birthday Escape Room</h1>
       <h3>Birthday Quest</h3>
 
       <div id="intro-instruction" class="bubble">
@@ -214,12 +222,11 @@
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
 
-      <!-- Single clickable bubble BEFORE bet -->
       <div id="pdf-hint" class="bubble hidden"
            style="margin:0 auto 10px; cursor:pointer;"
            role="button" tabindex="0"
            aria-label="Megnyitás: Értesítő (PDF)">
-        📄📄 <strong>Közbeszerzési Értesítő</strong> — Kattintson a megtekintéshez! 📄📄
+        📄📄 <strong>Közbeszerzési Értesítő</strong> 📄📄<br> Kattintson a megtekintéshez!
       </div>
 
       <div id="number-section">
@@ -289,7 +296,6 @@
 
   <div id="skyline" aria-hidden="true"></div>
 
-  <!-- PDF Modal -->
   <div id="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-title">
     <div id="pdf-dialog">
       <div id="pdf-dialog-header">
@@ -297,7 +303,6 @@
           <div id="pdf-title">Értesítő (PDF)</div>
         </div>
 
-        <!-- Zoom controls -->
         <div class="zoom-controls" aria-label="Zoom controls">
           <button id="zoom-out" type="button">−</button>
           <input id="zoom-range" class="zoom-slider" type="range" min="30" max="300" value="100" step="5" aria-label="Zoom slider">
@@ -318,6 +323,8 @@
     <span>Current P/L:</span>
     <span id="pl-value" class="pill">€0.00</span>
   </div>
+
+  <button id="go-start" type="button">Go Back To Start</button>
 
   <script>
     const MASTER_CODES = ["XXXXXX", "0000XX"]
@@ -409,7 +416,24 @@
       return new Promise(resolve => { function f(now) { const t = Math.min(1, (now - startTime) / durationMs); const e = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t; const p = lerpLatLng(from, to, e); marker.setLatLng(p); if (t < 1) requestAnimationFrame(f); else resolve() } requestAnimationFrame(f) })
     }
 
-    function startGame() {
+    const STORAGE_KEY = 'escape_room_state_v1';
+    function saveState() {
+      try {
+        const state = { current, answers, oddsByQuestion, playerPL, betLog, lastReachedIndex, started: true };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+    function resetState() {
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    }
+
+    function startGame(resume = false) {
       document.getElementById("skyline").style.display = "none";
       document.getElementById("intro").classList.add("hidden")
       document.getElementById("question-stage").classList.remove("hidden")
@@ -417,9 +441,52 @@
       document.getElementById("end-screen").classList.add("hidden")
       document.getElementById("sticky-title").style.display = "block"
       document.getElementById("pl-footer").classList.remove("hidden")
+
+      if (resume) {
+        const s = loadState();
+        if (s && s.started) {
+          current = Math.min(s.current ?? 0, questions.length - 1);
+          answers = Array.isArray(s.answers) ? s.answers : answers;
+          oddsByQuestion = s.oddsByQuestion ?? {};
+          playerPL = Number.isFinite(s.playerPL) ? s.playerPL : 0;
+          betLog = Array.isArray(s.betLog) ? s.betLog : [];
+          lastReachedIndex = Number.isInteger(s.lastReachedIndex) ? s.lastReachedIndex : -1;
+        } else {
+          resetState();
+        }
+      } else {
+        resetState();
+        current = 0;
+        answers = Array(questions.length).fill("");
+        oddsByQuestion = {};
+        playerPL = 0;
+        betLog = [];
+        lastReachedIndex = -1;
+      }
+
       ensureMap()
       refreshPL()
       showQuestion()
+      saveState()
+    }
+
+    function goToStart() {
+      resetState();
+      current = 0;
+      answers = Array(questions.length).fill("");
+      oddsByQuestion = {};
+      playerPL = 0;
+      betLog = [];
+      lastReachedIndex = -1;
+
+      document.getElementById("question-stage").classList.add("hidden");
+      document.getElementById("bonus-screen").classList.add("hidden");
+      document.getElementById("end-screen").classList.add("hidden");
+      document.getElementById("intro").classList.remove("hidden");
+      document.getElementById("sticky-title").style.display = "none";
+      document.getElementById("pl-footer").classList.add("hidden");
+      document.getElementById("skyline").style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function updateVerificationVisibility() {
@@ -497,13 +564,14 @@
       updateVerificationVisibility();
       window.scrollTo({ top: 0, behavior: "smooth" });
 
-      // Show PDF bubble only for Checkpoint 6
       const pdfHint = document.getElementById("pdf-hint");
       if ((questions[current].code || "") === "1017PC") {
         pdfHint.classList.remove("hidden");
       } else {
         pdfHint.classList.add("hidden");
       }
+
+      saveState();
     }
 
     function checkVerification() {
@@ -511,7 +579,7 @@
       const odds = parseOdds(raw)
       if (raw !== "" && odds === null) { document.getElementById("number-warning").style.display = "block"; return }
       document.getElementById("number-warning").style.display = "none"
-      if (odds !== null) { oddsByQuestion[current] = odds }
+      if (odds !== null) { oddsByQuestion[current] = odds; saveState(); }
       const code = questions[current].code || ""
       const inputs = document.querySelectorAll("#code-inputs input")
       let entered = "", expected = ""
@@ -520,9 +588,8 @@
       inputs.forEach((inp, i) => { if (!inp.disabled) { if (inp.value === "") allFilled = false; entered += inp.value.toUpperCase(); expected += (code[i] || "").toUpperCase(); for (let k = 0; k < MASTER_CODES.length; k++) { masterSlices[k] += (MASTER_CODES[k][i] || "") } } })
       if (!allFilled) { document.getElementById("verification-message").textContent = ""; return }
       if (entered === expected || masterSlices.includes(entered)) {
-        playerPL += 1; refreshPL()
         const usedOdds = oddsByQuestion[current] ?? odds ?? 0
-        betLog.push({ q: current + 1, odds: usedOdds, outcome: 1 })
+        playerPL += 1; refreshPL(); betLog.push({ q: current + 1, odds: usedOdds, outcome: 1 }); saveState();
         const stat = document.getElementById('map-status');
         const to = questions[current].coords;
         const from = lastReachedIndex < 0 ? BASE_START : questions[lastReachedIndex].coords;
@@ -532,6 +599,7 @@
           animateLeg(from, to, 3500).then(() => {
             lastReachedIndex = current;
             stat.textContent = `Rough Rider is at ${questions[current].titleQ}`;
+            saveState();
           });
         }
         document.getElementById("verification").classList.add("hidden")
@@ -542,18 +610,17 @@
         document.getElementById("answer").focus()
         document.getElementById("message").textContent = ""
       } else {
-        const loss = odds ?? 0; playerPL -= loss; refreshPL()
-        betLog.push({ q: current + 1, odds: loss, outcome: -loss })
+        const loss = odds ?? 0; playerPL -= loss; refreshPL(); betLog.push({ q: current + 1, odds: loss, outcome: -loss }); saveState();
         document.getElementById("verification-message").textContent = loss > 0 ? `❌ Wrong code. You lose €${loss.toFixed(2)} this round.` : "❌ Wrong code. Enter odds to risk an amount."
       }
     }
 
     function checkAnswer() {
       const input = document.getElementById("answer").value.trim()
-      answers[current] = input
+      answers[current] = input; saveState();
       const correct = (questions[current].a || "").toLowerCase()
       if (input.toLowerCase() === correct || input.toLowerCase() === MASTER_ANSWER.toLowerCase()) {
-        current++
+        current++; saveState();
         if (current >= questions.length) { showBonus(); return }
         showQuestion()
       } else { document.getElementById("message").textContent = "❌ Wrong answer, try again!" }
@@ -578,6 +645,7 @@
       document.getElementById("title-question").textContent = FINAL_TITLE
       document.getElementById("pl-footer").classList.add("hidden")
       document.getElementById("skyline").style.display = "block";
+      resetState();
     }
 
     function showBonus() {
@@ -590,6 +658,7 @@
       document.getElementById("rgb-b").value = "";
       document.getElementById("bonus-msg").textContent = "";
       setupRGBInputs();
+      saveState();
     }
 
     function verifyBonus() {
@@ -665,7 +734,6 @@
     document.getElementById("intro-info-btn").onclick = toggleIntroInfo;
     document.getElementById("skyline").style.display = "block";
 
-    // ---------- PDF modal + Zoom ----------
     const pdfModal = document.getElementById('pdf-modal');
     const pdfIframe = document.getElementById('pdf-iframe');
     const pdfViewport = document.getElementById('pdf-viewport');
@@ -677,13 +745,11 @@
     const zoomInBtn = document.getElementById('zoom-in');
     const zoomOutBtn = document.getElementById('zoom-out');
 
-    // Use CSS transform scaling on the iframe so we can zoom out past iOS limits
-    let zoom = 100; // percent
+    let zoom = 100;
 
     function applyZoom() {
       const s = zoom / 100;
       pdfIframe.style.transform = `scale(${s})`;
-      // Expand the iframe so its scaled content still fills/scrolls correctly
       pdfIframe.style.width = (100 / s) + '%';
       pdfIframe.style.height = (100 / s) + '%';
       zoomInput.value = Math.round(zoom);
@@ -696,12 +762,9 @@
     }
 
     function openPdf() {
-      // A default scale that shows the full page on most phones; adjust if you want a different default.
       const isPhone = window.innerWidth <= 430;
-      const defaultPercent = isPhone ? 62 : 90; // tweak these two numbers if needed
+      const defaultPercent = isPhone ? 62 : 90;
       setZoom(defaultPercent);
-
-      // Hint internal viewer to fit page; our transform handles the rest
       pdfIframe.src = 'kozbeszerzesi.pdf#page=1&zoom=page-fit';
       pdfModal.style.display = 'flex';
     }
@@ -710,7 +773,6 @@
       pdfIframe.src = '';
     }
 
-    // Controls
     zoomInBtn.addEventListener('click', () => setZoom(zoom + 10));
     zoomOutBtn.addEventListener('click', () => setZoom(zoom - 10));
     zoomRange.addEventListener('input', (e) => setZoom(Number(e.target.value)));
@@ -727,6 +789,19 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && pdfModal.style.display === 'flex') closePdf();
     });
+
+    document.getElementById('go-start').addEventListener('click', goToStart);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const s = loadState();
+      if (s && s.started) {
+        const wants = confirm('Resume your previous progress?');
+        if (wants) startGame(true);
+        else resetState();
+      }
+    });
+
+    window.addEventListener('beforeunload', () => { saveState(); });
   </script>
 </body>
 

@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes, minimum-scale=0.2, maximum-scale=6">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes, minimum-scale=0.2, maximum-scale=6">
   <title>Escape Room</title>
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
@@ -26,9 +27,14 @@
       letter-spacing: 0.05em;
     }
 
-    html { -webkit-text-size-adjust: 100% }
+    html {
+      -webkit-text-size-adjust: 100%
+    }
 
-    html, body { touch-action: pan-x pan-y pinch-zoom; }
+    html,
+    body {
+      touch-action: pan-x pan-y pinch-zoom;
+    }
 
     body {
       font-family: 'Special Elite', monospace;
@@ -41,149 +47,476 @@
       padding-bottom: calc(var(--footer-h) + 12px)
     }
 
-    *, *::before, *::after { box-sizing: border-box; font: inherit; color: inherit }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      font: inherit;
+      color: inherit
+    }
 
     #sticky-title {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: none; padding: 10px 14px; background: transparent
-    }
-    #sticky-title .title-box {
-      margin: 0 auto; max-width: 700px; border-radius: 14px; background: rgb(0,66,37); color: rgb(255,253,208);
-      padding: 14px 18px; text-align: center; box-shadow: 0 6px 18px rgba(0,0,0,.25); letter-spacing: .5px
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: none;
+      padding: 10px 14px;
+      background: transparent
     }
 
-    #game { max-width: 600px; margin: auto; text-align: center }
-    #number-section { margin: 18px 0 8px }
+    #sticky-title .title-box {
+      margin: 0 auto;
+      max-width: 700px;
+      border-radius: 14px;
+      background: rgb(0, 66, 37);
+      color: rgb(255, 253, 208);
+      padding: 14px 18px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+      letter-spacing: .5px
+    }
+
+    #game {
+      max-width: 600px;
+      margin: auto;
+      text-align: center
+    }
+
+    #number-section {
+      margin: 18px 0 8px
+    }
 
     .bubble {
-      display: inline-block; max-width: 100%; padding: 16px 20px; border-radius: 16px; background: #f2f7ff;
-      border: 1px solid #cfe1ff; text-align: center; position: relative
+      display: inline-block;
+      max-width: 100%;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: #f2f7ff;
+      border: 1px solid #cfe1ff;
+      text-align: center;
+      position: relative
     }
+
     .bubble:after {
-      content: ""; position: absolute; left: 24px; bottom: -10px; border-width: 10px 10px 0 10px; border-style: solid;
+      content: "";
+      position: absolute;
+      left: 24px;
+      bottom: -10px;
+      border-width: 10px 10px 0 10px;
+      border-style: solid;
       border-color: #f2f7ff transparent transparent transparent
     }
 
-    #num-title { font-size: 20px; font-weight: 700; margin-bottom: 8px }
-    #number-instruction .info-btn {
-      display: inline-block; margin-top: 8px; padding: 6px 14px; border-radius: 999px; background: #eef0ff;
-      border: 1px solid #c9d0ff; font-size: 14px; cursor: pointer
+    #num-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px
     }
-    #number-instruction .info-btn:focus { outline: none }
-    #number-instruction .info-btn:focus-visible { outline: 2px solid #c9d0ff }
+
+    #number-instruction .info-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #eef0ff;
+      border: 1px solid #c9d0ff;
+      font-size: 14px;
+      cursor: pointer
+    }
+
+    #number-instruction .info-btn:focus {
+      outline: none
+    }
+
+    #number-instruction .info-btn:focus-visible {
+      outline: 2px solid #c9d0ff
+    }
 
     #number-instruction .info-pop {
-      margin: 14px auto 0; padding: 14px 18px; border-radius: 12px; background: #fff; border: 1px solid #cfe1ff;
-      font-size: 16px; line-height: 1.55; text-align: center; display: inline-block; width: min(520px, 90%);
-      box-shadow: 0 3px 8px rgba(0,0,0,.08)
+      margin: 14px auto 0;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #cfe1ff;
+      font-size: 16px;
+      line-height: 1.55;
+      text-align: center;
+      display: inline-block;
+      width: min(520px, 90%);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .08)
     }
-    #number-instruction .info-pop.hidden { display: none !important }
 
-    .number-box { margin-top: 10px; display: flex; justify-content: center; gap: 10px; align-items: center }
-    #number-input { width: 200px; padding: 8px 10px; border: 1px solid #bbb; border-radius: 8px; text-align: center; font-size: 18px; line-height: 1.4 }
-
-    .code-box { display: flex; justify-content: center; gap: 5px; margin: 10px 0; flex-wrap: wrap }
-    .code-box input { width: clamp(35px, 12vw, 45px); height: clamp(40px, 12vw, 50px); line-height: 1.2; text-align: center; text-transform: uppercase; padding: 0 }
-    .code-box input:disabled { color: black; opacity: 1; -webkit-text-fill-color: black }
-
-    input[type="text"], textarea, select {
-      margin-top: 10px; padding: 8px; width: 100%; border: 1px solid #bbb; border-radius: 6px; text-transform: capitalize; font-size: 18px; line-height: 1.4
+    #number-instruction .info-pop.hidden {
+      display: none !important
     }
-    input::placeholder { opacity: .6; font-size: inherit }
-    button { margin-top: 10px; padding: 8px 15px; border-radius: 10px; border: none; background: #eee; cursor: pointer }
 
-    .hidden { display: none !important }
-    #pl-footer.hidden { display: none !important }
-    .hint { margin-top: 8px; font-style: italic; color: #444 }
+    .number-box {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      align-items: center
+    }
 
-    #intro-question, #main-q-text { text-align: justify; text-justify: inter-word; margin-bottom: 15px }
-    #intro-question br, #main-q-text br { display: block; margin-bottom: 75px; content: "" }
+    #number-input {
+      width: 200px;
+      padding: 8px 10px;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.4
+    }
+
+    .code-box {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin: 10px 0;
+      flex-wrap: wrap
+    }
+
+    .code-box input {
+      width: clamp(35px, 12vw, 45px);
+      height: clamp(40px, 12vw, 50px);
+      line-height: 1.2;
+      text-align: center;
+      text-transform: uppercase;
+      padding: 0
+    }
+
+    .code-box input:disabled {
+      color: black;
+      opacity: 1;
+      -webkit-text-fill-color: black
+    }
+
+    input[type="text"],
+    textarea,
+    select {
+      margin-top: 10px;
+      padding: 8px;
+      width: 100%;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      text-transform: capitalize;
+      font-size: 18px;
+      line-height: 1.4
+    }
+
+    input::placeholder {
+      opacity: .6;
+      font-size: inherit
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 8px 15px;
+      border-radius: 10px;
+      border: none;
+      background: #eee;
+      cursor: pointer
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    #pl-footer.hidden {
+      display: none !important
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-style: italic;
+      color: #444
+    }
+
+    #intro-question,
+    #main-q-text {
+      text-align: justify;
+      text-justify: inter-word;
+      margin-bottom: 15px
+    }
+
+    #intro-question br,
+    #main-q-text br {
+      display: block;
+      margin-bottom: 75px;
+      content: ""
+    }
 
     #pl-footer {
-      position: fixed; left: 0; right: 0; bottom: 0; height: var(--footer-h); background: var(--pl-zero);
-      transition: background-color 200ms ease; color: rgb(255,253,208); display: flex; align-items: center; justify-content: center;
-      gap: 14px; padding: 0 16px; z-index: 1100; box-shadow: 0 -6px 18px rgba(0,0,0,.15); font-size: 18px
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--footer-h);
+      background: var(--pl-zero);
+      transition: background-color 200ms ease;
+      color: rgb(255, 253, 208);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 0 16px;
+      z-index: 1100;
+      box-shadow: 0 -6px 18px rgba(0, 0, 0, .15);
+      font-size: 18px
     }
-    #pl-footer.pl-positive { background: var(--pl-pos) }
-    #pl-footer.pl-negative { background: var(--pl-neg) }
-    #pl-footer .pill { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2) }
 
-    #map { width: 100%; height: 340px; border-radius: 14px; overflow: hidden; margin: 10px 0 4px }
-    #map-status { font-size: 14px; color: #555; margin-bottom: 8px }
-    #intro { padding-bottom: 350px }
+    #pl-footer.pl-positive {
+      background: var(--pl-pos)
+    }
 
-    #intro-instruction .info-btn { display: inline-block; margin-top: 8px; padding: 6px 14px; border-radius: 999px; background: #eef0ff; border: 1px solid #c9d0ff; font-size: 14px; cursor: pointer }
-    #intro-instruction .info-btn:focus { outline: none }
-    #intro-instruction .info-btn:focus-visible { outline: 2px solid #c9d0ff }
+    #pl-footer.pl-negative {
+      background: var(--pl-neg)
+    }
+
+    #pl-footer .pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .1);
+      border: 1px solid rgba(255, 255, 255, .2)
+    }
+
+    #map {
+      width: 100%;
+      height: 340px;
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 10px 0 4px
+    }
+
+    #map-status {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 8px
+    }
+
+    #intro {
+      padding-bottom: 350px
+    }
+
+    #intro-instruction .info-btn {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #eef0ff;
+      border: 1px solid #c9d0ff;
+      font-size: 14px;
+      cursor: pointer
+    }
+
+    #intro-instruction .info-btn:focus {
+      outline: none
+    }
+
+    #intro-instruction .info-btn:focus-visible {
+      outline: 2px solid #c9d0ff
+    }
 
     #intro-instruction .info-pop {
-      margin: 14px auto 0; padding: 14px 18px; border-radius: 12px; background: #fff; border: 1px solid #cfe1ff;
-      font-size: 16px; line-height: 1.55; text-align: center; display: inline-block; width: min(520px, 90%); box-shadow: 0 3px 8px rgba(0,0,0,.08)
+      margin: 14px auto 0;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #cfe1ff;
+      font-size: 16px;
+      line-height: 1.55;
+      text-align: center;
+      display: inline-block;
+      width: min(520px, 90%);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, .08)
     }
-    #intro-instruction .info-pop.hidden { display: none !important }
+
+    #intro-instruction .info-pop.hidden {
+      display: none !important
+    }
 
     #skyline {
-      position: fixed; left: 0; right: 0; bottom: 0; height: 300px; pointer-events: none; background-image: url('silhouette2.png');
-      background-repeat: repeat-x; background-position: center calc(100% + 70px); background-size: auto 100%; opacity: .9; z-index: 0;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 300px;
+      pointer-events: none;
+      background-image: url('silhouette2.png');
+      background-repeat: repeat-x;
+      background-position: center calc(100% + 70px);
+      background-size: auto 100%;
+      opacity: .9;
+      z-index: 0;
     }
 
     @media (max-width:600px) {
-      body { padding: 32px 20px calc(var(--footer-h) + 16px) 20px; padding-top: var(--header-height-mobile); font-size: 16px; }
-      #game { max-width: 100%; }
-      #sticky-title .title-box { font-size: 18px; padding: 10px 14px; }
-      #num-title { font-size: 18px; }
-      button, input[type="text"], textarea, select { font-size: 16px; }
-      #number-input { width: 170px; }
-      .code-box input { width: clamp(32px, 11vw, 40px); height: clamp(36px, 11vw, 46px); }
-      #map { height: 260px; }
-      #skyline { background-position: center calc(100% + 120px); }
+      body {
+        padding: 32px 20px calc(var(--footer-h) + 16px) 20px;
+        padding-top: var(--header-height-mobile);
+        font-size: 16px;
+      }
+
+      #game {
+        max-width: 100%;
+      }
+
+      #sticky-title .title-box {
+        font-size: 18px;
+        padding: 10px 14px;
+      }
+
+      #num-title {
+        font-size: 18px;
+      }
+
+      button,
+      input[type="text"],
+      textarea,
+      select {
+        font-size: 16px;
+      }
+
+      #number-input {
+        width: 170px;
+      }
+
+      .code-box input {
+        width: clamp(32px, 11vw, 40px);
+        height: clamp(36px, 11vw, 46px);
+      }
+
+      #map {
+        height: 260px;
+      }
+
+      #skyline {
+        background-position: center calc(100% + 120px);
+      }
     }
 
-    #intro-instruction { display: block; margin: 0 auto 16px; }
-    #intro>button[onclick="startGame()"] { display: block; margin: 0 auto; }
-    #end-screen { padding-bottom: 350px; }
+    #intro-instruction {
+      display: block;
+      margin: 0 auto 16px;
+    }
+
+    #intro>button[onclick="startGame()"] {
+      display: block;
+      margin: 0 auto;
+    }
+
+    #end-screen {
+      padding-bottom: 350px;
+    }
 
     @media (max-width: 600px) {
-      #skyline { height: 420px; }
-      #intro, #end-screen { padding-bottom: 500px; }
+      #skyline {
+        height: 420px;
+      }
+
+      #intro,
+      #end-screen {
+        padding-bottom: 500px;
+      }
     }
 
     /* -------- PDF modal (zoomable) -------- */
     #pdf-modal {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; align-items: center; justify-content: center;
-      z-index: 1200; padding: 12px; overscroll-behavior: contain;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      padding: 12px;
+      overscroll-behavior: contain;
     }
+
     #pdf-dialog {
-      background: #fff; width: min(900px, 95vw); height: min(92vh, 900px);
-      border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.3); display: flex; flex-direction: column; overflow: hidden;
+      background: #fff;
+      width: min(900px, 95vw);
+      height: min(92vh, 900px);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
+
     #pdf-dialog-header {
-      display: flex; gap: 10px; justify-content: space-between; align-items: center; padding: 10px 12px;
-      border-bottom: 1px solid #eee; font-weight: 700;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+      font-weight: 700;
       flex-wrap: wrap;
     }
-    #pdf-left { display:flex; align-items:center; gap:10px; }
-    #pdf-close {
-      appearance: none; border: 1px solid #ddd; background: #f6f6f6; border-radius: 8px; padding: 6px 10px; cursor: pointer;
+
+    #pdf-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    .zoom-controls { display:flex; align-items:center; gap:8px; font-weight: normal; }
-    .zoom-controls input[type="number"] { width: 68px; text-align: right; padding: 6px 8px; border:1px solid #ddd; border-radius:8px; }
-    .zoom-controls button {
-      margin: 0; padding:6px 10px; border-radius:8px; border:1px solid #ddd; background:#f6f6f6; cursor:pointer;
+    #pdf-close {
+      appearance: none;
+      border: 1px solid #ddd;
+      background: #f6f6f6;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
     }
-    .zoom-slider { width: 140px; }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: normal;
+    }
+
+    .zoom-controls input[type="number"] {
+      width: 68px;
+      text-align: right;
+      padding: 6px 8px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .zoom-controls button {
+      margin: 0;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: #f6f6f6;
+      cursor: pointer;
+    }
+
+    .zoom-slider {
+      width: 140px;
+    }
 
     #pdf-viewport {
-      flex: 1; overflow:auto; -webkit-overflow-scrolling: touch; touch-action: pan-x pan-y pinch-zoom;
+      flex: 1;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x pan-y pinch-zoom;
       background: #fff;
     }
+
     #pdf-iframe {
       border: 0;
       transform-origin: top left;
-      display:block;
+      display: block;
     }
 
-    #pdf-hint.hidden { display: none !important; }
+    #pdf-hint.hidden {
+      display: none !important;
+    }
 
     #go-start {
       display: block;
@@ -206,8 +539,11 @@
 
   <div id="game">
     <div id="intro">
-      <h1>TO BE REMOVED ❌❌❌❌ 17:45 🔐 Birthday Escape Room</h1>
-      <h3>Birthday Quest</h3>
+      <h1 style="font-size: 32px;">Boldog születésnapot!</h1>
+      <h3 style="font-size: 20px;">🕵️‍♂️🕵️‍♂️ Birthday Quest 🕵️‍♂️🕵️‍♂️</h3>
+
+      <!-- <h1 style="font-size: 32px;">TO BE REMOVED ❌❌❌❌ 17:45 🔐 Birthday Escape Room</h1>
+      <h3 style="font-size: 20px;">Birthday Quest</h3> -->
 
       <div id="intro-instruction" class="bubble">
         <div id="intro-num-title">Instructions</div>
@@ -222,10 +558,8 @@
     <div id="question-stage" class="hidden">
       <h2 id="intro-question"></h2>
 
-      <div id="pdf-hint" class="bubble hidden"
-           style="margin:0 auto 10px; cursor:pointer;"
-           role="button" tabindex="0"
-           aria-label="Megnyitás: Értesítő (PDF)">
+      <div id="pdf-hint" class="bubble hidden" style="margin:0 auto 10px; cursor:pointer;" role="button" tabindex="0"
+        aria-label="Megnyitás: Értesítő (PDF)">
         📄📄 <strong>Közbeszerzési Értesítő</strong> 📄📄<br> Kattintson a megtekintéshez!
       </div>
 
@@ -305,7 +639,8 @@
 
         <div class="zoom-controls" aria-label="Zoom controls">
           <button id="zoom-out" type="button">−</button>
-          <input id="zoom-range" class="zoom-slider" type="range" min="30" max="300" value="100" step="5" aria-label="Zoom slider">
+          <input id="zoom-range" class="zoom-slider" type="range" min="30" max="300" value="100" step="5"
+            aria-label="Zoom slider">
           <button id="zoom-in" type="button">+</button>
           <input id="zoom-input" type="number" min="30" max="300" step="5" value="100" aria-label="Zoom percent">%
         </div>
@@ -421,7 +756,7 @@
       try {
         const state = { current, answers, oddsByQuestion, playerPL, betLog, lastReachedIndex, started: true };
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) {}
+      } catch (e) { }
     }
     function loadState() {
       try {
@@ -430,7 +765,7 @@
       } catch (e) { return null; }
     }
     function resetState() {
-      try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      try { localStorage.removeItem(STORAGE_KEY); } catch (e) { }
     }
 
     function startGame(resume = false) {
@@ -779,7 +1114,7 @@
     zoomInput.addEventListener('change', (e) => setZoom(Number(e.target.value)));
 
     pdfHint.addEventListener('click', openPdf);
-    pdfHint.addEventListener('keydown', function(e){
+    pdfHint.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPdf(); }
     });
     pdfClose.addEventListener('click', closePdf);
@@ -795,7 +1130,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const s = loadState();
       if (s && s.started) {
-        const wants = confirm('Ha gyökér vagy és veletlen frissítetted akkor menj rá, hogy "OK"!');
+        const wants = confirm('Ha gyökér vagy és véletlen frissítetted akkor menj rá, hogy "OK"!');
         if (wants) startGame(true);
         else resetState();
       }

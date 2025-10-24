@@ -683,7 +683,7 @@
       { titleQ: "Checkpoint 2", introQ: `Utadat egyik kedves utcádon folytatod, ahol a város lüktető világa ölel körbe.`, mainQ: `Kezdj el sétálni az utcán. Mielőtt az véget érne, megpillantasz valamit, amitől hirtelen felcsillan a szemed. Mit látsz? Milyen állat néz veled farkasszemet?`, a: "Bagoly", code: "1017XK", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma.", coords: [52.361062, 4.899437] },
       { titleQ: "Checkpoint 3", introQ: `Újdonsült titkosmikkentyűd azt kéri tőled, hogy menj a második legközelebbi térre, hogy elfogyaszd. (A legközelebbi nyilvánvalóan kiesik).`, mainQ: `Ezen a ponton valószínűleg Arnoldnak már pisilnie kell, miután elvégzi dolgát megtetszik a csatorna látványa. Ideális esetben ezelőtt a gyönyörű ház előtt fogtok leülni Bismarck társaságában megvitatni az élet kérdéseit. Mi a házszám?`, a: "59", code: "1017JD", coords: [52.362313, 4.897438] },
       { titleQ: "Checkpoint 4", introQ: `Keresd meg a Vijzelstraat és Reguliersgracht között található (nagy valószínűséggel őrült) porcelános néni üzletét`, mainQ: `Hogy hívják az üzletet?`, a: "Golden Bend", code: "1017CC", coords: [52.364812, 4.893937] },
-      { titleQ: "Checkpoint 5", introQ: `Következő checkpointod (tulajdonképp) a VOC egyik (volt) irodaépülete.`, mainQ: `Kezdj el felfele haladni a lépcsőházban. Ki van Mercurius és Jupiter között?`, a: "F.S. Van Nierop", code: "1017CB", coords: [52.364438, 4.892188] },
+      { titleQ: "Checkpoint 5", introQ: `Következő checkpointod (tulajdonképp) a VOC egyik (volt) irodaépülete.`, mainQ: `Kezdj el felfele haladni a lépcsőházban. Ki van Mercurius és Jupiter között?`, a: "F S Van Nierop", code: "1017CB", coords: [52.364438, 4.892188] },
       { titleQ: "Checkpoint 6", introQ: `Gratulálunk, Ön közbeszerzést nyert! <p> Hol eszközölné beszerzését a pályázatban foglaltak teljesítésére?`, mainQ: "Hány eurót hagytál a boltban?", a: "5", code: "1017PC", coords: [52.365562, 4.885438] },
       { titleQ: "Checkpoint 7", introQ: `A bolttól elindulván egyszerre csak meghallod a természet hívását. Honnan jöhet?`, mainQ: "Milyen márka kapható az üzlettel szembeni boltban?", a: "NIO", code: "1017EJ", coords: [52.365813, 4.886062] },
       { titleQ: "Checkpoint 8", introQ: `After a wise decision of taking a rain check on those magic mushrooms you are still craving some miracle. Where would an Amsterdammer from a bygone era go to view some miracle? Where does your journey continue?`, mainQ: `You want to test your brand new lighter. But not anyhow. In style. Like a movie star. Which coffeeshop in the close vicinity is featured in a movie?`, a: "Dampkring", code: "1012WP", hint: "💡 A Te szemszögedből nézve az utca elején levő jobb oldali épület irányítószáma.", coords: [52.367438, 4.890187] },
@@ -980,9 +980,9 @@
       const wins = betLog.filter(r => r.outcome > 0).length
       const bets = betLog.map(r => r.odds).filter(n => n > 0)
       const totalStake = bets.reduce((s, n) => s + n, 0)
-      document.getElementById("end-score").textContent = `Overall score: ${wins} / ${attempts} correct`
+      // document.getElementById("end-score").textContent = `Overall score: ${wins} / ${attempts} correct`
       const firstCount = firstTryCorrect.filter(v => v === true).length
-      document.getElementById("end-firsttry").textContent = `First-try correct answers: ${firstCount} / ${questions.length}`
+      document.getElementById("end-firsttry").textContent = `Overall Score: ${firstCount} / ${questions.length}`
       document.getElementById("end-pl").textContent = `Final P/L: ${formatMoney(playerPL)}`
       document.getElementById("end-bets-total").textContent = bets.length ? `Total staked: €${totalStake.toFixed(2)}` : ""
       document.getElementById("end-bets").textContent = bets.length ? `Your bet sizes: ${bets.map(n => "€" + n.toFixed(2)).join(", ")}` : ""
